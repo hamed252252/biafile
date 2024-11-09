@@ -374,47 +374,44 @@ export default function Component() {
                             />
                             <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
                         </form>
-
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <Button
-                                    variant="ghost"
-                                    size="icon"
+                        <div dir="rtl">
+                            <DropdownMenu>
+                                <DropdownMenuTrigger
+                                    asChild
                                 >
-                                    <User className="h-5 w-5" />
-                                </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent className="bg-primary-foreground p-2 w-40 text-primary shadow-lg rounded space-y-2">
-                                <DropdownMenuLabel>
-                                    پروفایل من
-                                </DropdownMenuLabel>
-                                <DropdownMenuSeparator />
+                                    <Button
+                                        variant="ghost"
+                                        size="icon"
+                                    >
+                                        <User className="h-5 w-5" />
+                                    </Button>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="bg-primary-foreground p-2 w-40 text-primary shadow-lg rounded space-y-4 text-right ">
+                                    <DropdownMenuLabel className="text-primary">
+                                        پروفایل من
+                                    </DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
 
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem
-                                        asChild
-                                    >
-                                        <Link href="/profile">
-                                            پروفایل
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                        asChild
-                                    >
-                                        <Link href="/settings">
-                                            تنظیمات
-                                        </Link>
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem
-                                        asChild
-                                    >
-                                        <Link href="/logout">
-                                            خروج
-                                        </Link>
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
+                                    <DropdownMenuGroup className="text-primary/75">
+                                        <DropdownMenuItem>
+                                            <Link href="/profile">
+                                                پروفایل
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <Link href="/settings">
+                                                تنظیمات
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem>
+                                            <Link href="/logout">
+                                                خروج
+                                            </Link>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        </div>
                     </div>
 
                     {/* منوی موبایل با Sheet */}
@@ -535,7 +532,7 @@ export default function Component() {
                         </Link>
                     </div>
                     <div>
-                        <MdAccountCircle className="size-8" />
+                        <MdAccountCircle className="size-8 hidden " />
                     </div>
                 </div>
             </div>
