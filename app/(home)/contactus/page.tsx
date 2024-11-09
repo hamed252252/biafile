@@ -12,12 +12,12 @@ function page() {
             <div className="flex justify-center items-center relative bg-gradient-to-r from-[#3064C0] to-[#172F5A] w-full h-[30vh]">
                 <Image
                     alt="spark"
-                    className="absolute  hidden md:right-0"
+                    className="absolute  hidden  md:block md:right-0"
                     src={spark}
                 />
                 <Image
                     alt="spark"
-                    className="absolute hidden left-0"
+                    className="absolute hidden md:block  left-0"
                     src={spark}
                 />
                 <Image
