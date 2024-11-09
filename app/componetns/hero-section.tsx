@@ -9,11 +9,12 @@ export default function HeroSection() {
             <div className="container mx-auto px-4 flex flex-col md:flex-row-reverse items-center justify-between">
                 <div className="md:w-1/2 text-right mb-8 md:mb-0 md:pr-8 text-primary">
                     <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 mb-4  w-full">
-                        آموزش برای همه، هر زمان و هر مکان
+                        بیافایل؛ دقیق، قابل اتکا و مقرون به
+                        صرفه
                     </h1>
                     <p className="text-lg md:text-xl text-gray-600 mb-6 leading-relaxed">
-                        با ما، دانش خود را به چالش بکشید و
-                        مهارت‌های جدیدی بیاموزید
+                        فایل های کمک آموزشی ، همیشه و هرجا
+                        در دسترس شماست
                     </p>
                 </div>
                 <div className="md:w-1/2">

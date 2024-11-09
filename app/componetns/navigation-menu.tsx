@@ -1,5 +1,5 @@
 "use client";
-
+import logoImage from "@/public/logo.svg";
 import * as React from "react";
 import Link from "next/link";
 import {
@@ -37,6 +37,7 @@ import {
     DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
 import { MdAccountCircle } from "react-icons/md";
+import Image from "next/image";
 
 interface LinkItem {
     href: string;
@@ -283,9 +284,15 @@ export default function Component() {
                             href="/"
                             className="flex items-center"
                         >
-                            <Book className="h-8 w-8 ml-2" />
+                            <Image
+                                alt="logo"
+                                width={45}
+                                height={45}
+                                src={logoImage}
+                            />
+                            {/* <Book className="h-8 w-8 ml-2" /> */}
                             <span className="text-xl font-bold">
-                                فرایار
+                                بیافایل
                             </span>
                         </Link>
                     </div>
@@ -427,7 +434,7 @@ export default function Component() {
                                     size="icon"
                                     className="text-primary-foreground"
                                 >
-                                    <Menu className="h-5 w-5" />
+                                    <Menu className="h-8 w-8" />
                                 </Button>
                             </SheetTrigger>
                             <SheetContent
@@ -435,9 +442,6 @@ export default function Component() {
                                 className="w-[300px] sm:w-[400px] rtl"
                             >
                                 <nav className="flex flex-col mt-4 space-y-4 rtl:space-x-reverse">
-                                    <Link href="/aboutus">
-                                        درباره ما
-                                    </Link>
                                     {Object.entries(
                                         courseLinks
                                     ).map(
@@ -498,7 +502,9 @@ export default function Component() {
                                             </details>
                                         )
                                     )}
-
+                                    <Link href="/aboutus">
+                                        درباره ما
+                                    </Link>
                                     <form className="relative">
                                         <Input
                                             type="search"
@@ -525,14 +531,20 @@ export default function Component() {
                             href="/"
                             className="flex items-center"
                         >
-                            <Book className="h-8 w-8 ml-2" />
-                            <span className="text-xl font-bold">
-                                فرایار
-                            </span>
+                            <Image
+                                alt="logo"
+                                width={45}
+                                height={45}
+                                quality={100}
+                                src={logoImage}
+                            />
+                            {/* <span className="text-xl font-bold">
+                                بیافایل
+                            </span> */}
                         </Link>
                     </div>
                     <div>
-                        <MdAccountCircle className="size-8 hidden " />
+                        <MdAccountCircle className="size-8 md:hidden " />
                     </div>
                 </div>
             </div>
