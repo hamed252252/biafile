@@ -42,7 +42,7 @@ export default function ContactForm() {
     return (
         <div
             dir="rtl"
-            className="font-sans min-h-screen bg-gradient-to-b from-blue-100 to-blue-200 flex items-center justify-center p-4"
+            className="font-sans min-h-screen bg-gradient-to-b mt-96 md:mt-0 from-blue-100 to-blue-200 flex items-center justify-center p-4"
         >
             <Card className="w-full max-w-md bg-white shadow-lg">
                 <CardHeader className="text-right">
