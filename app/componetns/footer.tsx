@@ -18,7 +18,7 @@ const Footer = () => {
         <>
             {/* Desktop Section
              */}
-            <div className="hidden md:flex mx-auto mt-20 gap-x-2 p-10 px-5   w-full text-primary-foreground  bg-gradient-to-r via-primary/80 from-primary to-primary/95   h-full justify-center items-center ">
+            <div className="hidden md:flex mx-auto  gap-x-2 p-10 px-5   w-full text-primary-foreground  bg-gradient-to-r via-primary/80 from-primary to-primary/95   h-full justify-center items-center ">
                 <div className="justify-center items-center flex-col space-y-6  w-full h-full gap-x-4 ">
                     <h1 className="text-2xl mt-4 font-bold">
                         تماس با ما
@@ -29,6 +29,7 @@ const Footer = () => {
                             dir="ltr"
                             className=""
                         >
+                            +98 933 357 1545
                             {/* +98 911 378 3360 */}
                         </span>
                     </div>
@@ -38,6 +39,7 @@ const Footer = () => {
                             dir="ltr"
                             className=""
                         >
+                            +98 933 357 1545
                             {/* +98 912 020 9248 */}
                         </span>
                     </div>

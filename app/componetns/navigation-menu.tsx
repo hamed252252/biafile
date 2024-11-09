@@ -298,7 +298,12 @@ export default function Component() {
                         >
                             درباره ما
                         </Link>
-
+                        <Link
+                            href="/contactus"
+                            className="hover:text-secondary-foreground"
+                        >
+                            تماس با ما
+                        </Link>
                         {Object.entries(courseLinks).map(
                             ([level, grades]) => (
                                 <MenubarMenu key={level}>

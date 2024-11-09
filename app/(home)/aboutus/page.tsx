@@ -26,7 +26,6 @@ import {
     Mail,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import ContactDialog from "@/app/componetns/contactus-dialog";
 
 export default function AboutUs() {
     const [currentTestimonial, setCurrentTestimonial] =
@@ -436,7 +435,6 @@ export default function AboutUs() {
                     className="text-center"
                 ></motion.div>
             </div>
-            <ContactDialog />
         </div>
     );
 }

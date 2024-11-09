@@ -15,15 +15,6 @@ export default function HeroSection() {
                         با ما، دانش خود را به چالش بکشید و
                         مهارت‌های جدیدی بیاموزید
                     </p>
-                    <Button
-                        variant={"expandIcon"}
-                        iconPlacement="right"
-                        Icon={MdCastForEducation}
-                    >
-                        <Link href="/quizzes">
-                            شروع آموزش
-                        </Link>
-                    </Button>
                 </div>
                 <div className="md:w-1/2">
                     <Image
