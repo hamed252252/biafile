@@ -273,6 +273,8 @@ const courseLinks: {
 
 export default function Component() {
     const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpenAvatar, setIsOpenAvatar] =
+        React.useState(false);
 
     return (
         <nav className="bg-primary text-primary-foreground rtl font-sans">
@@ -395,14 +397,14 @@ export default function Component() {
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="bg-primary-foreground p-2 w-40 text-primary shadow-lg rounded space-y-4 text-right ">
                                     <DropdownMenuLabel className="text-primary">
-                                        پروفایل من
+                                        حساب کاربری من
                                     </DropdownMenuLabel>
                                     <DropdownMenuSeparator />
 
                                     <DropdownMenuGroup className="text-primary/75">
                                         <DropdownMenuItem>
                                             <Link href="/profile">
-                                                پروفایل
+                                                حساب کاربری
                                             </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem>
@@ -441,6 +443,14 @@ export default function Component() {
                                 side="right"
                                 className="w-[300px] sm:w-[400px] rtl"
                             >
+                                <form className="relative mt-5">
+                                    <Input
+                                        type="search"
+                                        placeholder="جستجو..."
+                                        className="pl-8 pr-2 py-1 rounded-full"
+                                    />
+                                    <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4" />
+                                </form>
                                 <nav className="flex flex-col mt-4 space-y-4 rtl:space-x-reverse">
                                     {Object.entries(
                                         courseLinks
@@ -505,23 +515,6 @@ export default function Component() {
                                     <Link href="/aboutus">
                                         درباره ما
                                     </Link>
-                                    <form className="relative">
-                                        <Input
-                                            type="search"
-                                            placeholder="جستجو..."
-                                            className="pl-8 pr-2 py-1 rounded-full"
-                                        />
-                                        <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4" />
-                                    </form>
-                                    <Link href="/profile">
-                                        پروفایل
-                                    </Link>
-                                    <Link href="/settings">
-                                        تنظیمات
-                                    </Link>
-                                    <Link href="/logout">
-                                        خروج
-                                    </Link>
                                 </nav>
                             </SheetContent>
                         </Sheet>
@@ -543,8 +536,62 @@ export default function Component() {
                             </span> */}
                         </Link>
                     </div>
-                    <div>
-                        <MdAccountCircle className="size-8 md:hidden " />
+                    <div className="relative">
+                        <button
+                            onClick={() =>
+                                setIsOpenAvatar(
+                                    !isOpenAvatar
+                                )
+                            }
+                            className="flex items-center justify-center w-8 h-8 rounded-full bg-primary text-primary-foreground"
+                            aria-label="User menu"
+                        >
+                            <User className="w-5 h-5" />
+                        </button>
+                        {isOpenAvatar && (
+                            <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-popover text-popover-foreground">
+                                <div
+                                    className="py-1"
+                                    role="menu"
+                                    aria-orientation="vertical"
+                                    aria-labelledby="options-menu"
+                                >
+                                    <Link
+                                        href="/profile"
+                                        className="block px-4 py-2 text-sm hover:bg-muted"
+                                        onClick={() =>
+                                            setIsOpenAvatar(
+                                                false
+                                            )
+                                        }
+                                    >
+                                        حساب کاربری
+                                    </Link>
+                                    <Link
+                                        href="/settings"
+                                        className="block px-4 py-2 text-sm hover:bg-muted"
+                                        onClick={() =>
+                                            setIsOpenAvatar(
+                                                false
+                                            )
+                                        }
+                                    >
+                                        تنظیمات
+                                    </Link>
+                                    <Link
+                                        href="/logout"
+                                        className="block px-4 py-2 text-sm text-red-600 hover:bg-muted"
+                                        onClick={() =>
+                                            setIsOpenAvatar(
+                                                false
+                                            )
+                                        }
+                                    >
+                                        خروج
+                                    </Link>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
