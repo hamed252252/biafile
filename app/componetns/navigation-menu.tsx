@@ -271,7 +271,7 @@ const courseLinks: {
     },
 };
 
-export default function Component() {
+export default function NavigationMenuComponents() {
     const [isOpen, setIsOpen] = React.useState(false);
     const [isOpenAvatar, setIsOpenAvatar] =
         React.useState(false);

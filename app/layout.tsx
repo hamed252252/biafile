@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import NavigationMenuComponents from "../componetns/navigation-menu";
-import "../globals.css";
-import Footer from "../componetns/footer";
+import NavigationMenuComponents from "./componetns/navigation-menu";
+import "./globals.css";
+import Footer from "./componetns/footer";
 
 const myFont = localFont({
     src: [
@@ -10,57 +10,57 @@ const myFont = localFont({
         {
             weight: "100",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-Thin.woff2",
+            path: "./fonts/woff2/IRANSansX-Thin.woff2",
         },
         {
             weight: "200",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-UltraLight.woff2",
+            path: "./fonts/woff2/IRANSansX-UltraLight.woff2",
         },
         {
             weight: "300",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-Light.woff2",
+            path: "./fonts/woff2/IRANSansX-Light.woff2",
         },
         {
             weight: "500",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-Medium.woff2",
+            path: "./fonts/woff2/IRANSansX-Medium.woff2",
         },
         {
             weight: "600",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-DemiBold.woff2",
+            path: "./fonts/woff2/IRANSansX-DemiBold.woff2",
         },
         {
             weight: "800",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-ExtraBold.woff2",
+            path: "./fonts/woff2/IRANSansX-ExtraBold.woff2",
         },
         {
             weight: "900",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-Black.woff2",
+            path: "./fonts/woff2/IRANSansX-Black.woff2",
         },
         {
             weight: "950",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-ExtraBlack.woff2",
+            path: "./fonts/woff2/IRANSansX-ExtraBlack.woff2",
         },
         {
             weight: "1000",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-Heavy.woff2",
+            path: "./fonts/woff2/IRANSansX-Heavy.woff2",
         },
         {
             weight: "bold",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-Bold.woff2",
+            path: "./fonts/woff2/IRANSansX-Bold.woff2",
         },
         {
             weight: "normal",
             style: "normal",
-            path: "../fonts/woff2/IRANSansX-Regular.woff2",
+            path: "./fonts/woff2/IRANSansX-Regular.woff2",
         },
     ],
     display: "block",
@@ -78,13 +78,13 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <main
-            className={` ${myFont.className}  antialiased`}
+        <html
+            lang="fa-ir"
+            dir="rtl"
         >
-            <NavigationMenuComponents />
-
-            {children}
-            <Footer />
-        </main>
+            <body className={` ${myFont.className}  `}>
+                {children}
+            </body>
+        </html>
     );
 }

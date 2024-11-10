@@ -72,6 +72,7 @@ module.exports = {
             },
             fontFamily: {
                 sans: [
+                    "--font-Iransans--per",
                     "var(--font-sans)",
                     ...fontFamily.sans,
                 ],
