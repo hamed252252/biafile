@@ -395,7 +395,7 @@ export default function Component() {
                                         <User className="h-5 w-5" />
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent className="bg-primary-foreground p-2 w-40 text-primary shadow-lg rounded space-y-4 text-right ">
+                                <DropdownMenuContent className="bg-primary-foreground z-10 p-2 w-40 text-primary shadow-lg rounded space-y-4 text-right ">
                                     <DropdownMenuLabel className="text-primary">
                                         حساب کاربری من
                                     </DropdownMenuLabel>
@@ -536,7 +536,7 @@ export default function Component() {
                             </span> */}
                         </Link>
                     </div>
-                    <div className="relative">
+                    <div className="relative md:hidden">
                         <button
                             onClick={() =>
                                 setIsOpenAvatar(
@@ -549,7 +549,7 @@ export default function Component() {
                             <User className="w-5 h-5" />
                         </button>
                         {isOpenAvatar && (
-                            <div className="absolute left-0 mt-2 w-48 rounded-md shadow-lg bg-popover text-popover-foreground">
+                            <div className="absolute z-10 left-0 mt-2 w-48 rounded-md shadow-lg bg-popover text-popover-foreground">
                                 <div
                                     className="py-1"
                                     role="menu"
