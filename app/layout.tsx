@@ -3,6 +3,8 @@ import localFont from "next/font/local";
 import NavigationMenuComponents from "./componetns/navigation-menu";
 import "./globals.css";
 import Footer from "./componetns/footer";
+import ScrollToTopButton from "./componetns/ScrollToTopButton";
+import SupportButton from "./componetns/SupportButton";
 
 const myFont = localFont({
     src: [
@@ -84,6 +86,10 @@ export default function RootLayout({
         >
             <body className={` ${myFont.className}  `}>
                 {children}
+                <h1>صفحه اصلی</h1>
+                {/* محتوای صفحه */}
+                <ScrollToTopButton />
+                <SupportButton />
             </body>
         </html>
     );
