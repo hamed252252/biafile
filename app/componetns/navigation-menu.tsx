@@ -43,7 +43,8 @@ interface LinkItem {
     href: string;
     label: string;
 }
-
+const hoverMenu =
+    "hover:text-secondary-foreground hover:scale-150 ease-in-out duration-700";
 const courseLinks: {
     [key: string]: { [key: string]: LinkItem[] };
 } = {
@@ -157,118 +158,6 @@ const courseLinks: {
             },
         ],
     },
-    "متوسطه ی اول": {
-        اول: [
-            {
-                href: "/courses/middle/first/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/middle/first/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/middle/first/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/middle/first/language",
-                label: "زبان‌ها",
-            },
-        ],
-        دوم: [
-            {
-                href: "/courses/middle/second/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/middle/second/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/middle/second/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/middle/second/language",
-                label: "زبان‌ها",
-            },
-        ],
-        سوم: [
-            {
-                href: "/courses/middle/third/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/middle/third/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/middle/third/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/middle/third/language",
-                label: "زبان‌ها",
-            },
-        ],
-    },
-    "متوسطه ی دوم": {
-        اول: [
-            {
-                href: "/courses/high/first/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/high/first/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/high/first/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/high/first/language",
-                label: "زبان‌ها",
-            },
-        ],
-        دوم: [
-            {
-                href: "/courses/high/second/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/high/second/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/high/second/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/high/second/language",
-                label: "زبان‌ها",
-            },
-        ],
-        سوم: [
-            {
-                href: "/courses/high/third/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/high/third/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/high/third/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/high/third/language",
-                label: "زبان‌ها",
-            },
-        ],
-    },
 };
 
 export default function NavigationMenuComponents() {
@@ -302,16 +191,10 @@ export default function NavigationMenuComponents() {
                     {/* منوی دسکتاپ */}
                     <Menubar className="hidden md:flex items-center border-none space-x-4 rtl:space-x-reverse bg-transparent shadow-none">
                         <Link
-                            href="/aboutus"
-                            className="hover:text-secondary-foreground"
+                            href="/blog"
+                            className={hoverMenu}
                         >
-                            درباره ما
-                        </Link>
-                        <Link
-                            href="/contactus"
-                            className="hover:text-secondary-foreground"
-                        >
-                            تماس با ما
+                            مجله
                         </Link>
                         {Object.entries(courseLinks).map(
                             ([level, grades]) => (

@@ -6,6 +6,7 @@ import chatBubble from "@/public/chatBuble.svg";
 import { RiContactsBookFill } from "react-icons/ri";
 import { CiLocationOn } from "react-icons/ci";
 import { HiOutlineMail } from "react-icons/hi";
+import Link from "next/link";
 function page() {
     return (
         <div>
@@ -35,34 +36,34 @@ function page() {
                         </p>
                     </div>
                 </div>
-                <div className="bg-white border drop-shadow-md w-[70vw] h-[40vh] md:h-48 absolute top-48 rounded-2xl flex justify-center items-center flex-col md:flex-row text-black gap-y-10">
-                    <div className="flex justify-right mr-4 gap-x-2 items-center w-full">
-                        <RiContactsBookFill className="size-10 fill-[#1B71F2]" />
-                        <div>
-                            <h4>تماس بگیرید</h4>
-                            <p></p>
+                <div className="bg-white shadow-lg rounded-2xl mx-auto w-11/12 max-w-4xl p-6 md:p-8 absolute top-48">
+                    <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-10">
+                        <div className="flex items-center gap-4 w-full md:w-1/2">
+                            <RiContactsBookFill className="w-12 h-12 text-[#1B71F2]" />
+                            <div>
+                                <h2 className="font-semibold text-lg">
+                                    مکالمه ی تلفنی
+                                </h2>
+                                <p className="text-gray-600">
+                                    <Link href="tel:+98 912 020 9248">
+                                        تماس
+                                    </Link>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex justify-right mr-4 gap-x-2 items-center w-full">
-                        <CiLocationOn className="size-10 fill-[#1B71F2]" />
-                        <div>
-                            <h4>نشانی</h4>
-                            <p></p>
-                        </div>
-                    </div>
-
-                    <div className="flex justify-right mr-4 gap-x-2 items-center w-full">
-                        <HiOutlineMail className="size-10 stroke-[#1B71F2]" />
-                        <div>
-                            <h4>مکاتبه ی ایمیلی</h4>
-                            <p></p>
-                        </div>
-                    </div>
-                    <div className="flex justify-right mr-4 gap-x-2 items-center w-full">
-                        <HiOutlineMail className="size-10 stroke-[#1B71F2]" />
-                        <div>
-                            <h4>مکاتبه ی ایمیلی</h4>
-                            <p></p>
+                        <div className="flex items-center gap-4 w-full md:w-1/2">
+                            <HiOutlineMail className="w-12 h-12 text-[#1B71F2]" />
+                            <div>
+                                <h2 className="font-semibold text-lg">
+                                    مکاتبه ی ایمیلی
+                                </h2>
+                                <Link
+                                    href="mailto:13koromid75@gmail.com"
+                                    className="text-blue-600 hover:underline"
+                                >
+                                    13koromid75@gmail.com
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>
