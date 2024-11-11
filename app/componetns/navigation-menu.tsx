@@ -42,7 +42,6 @@ import { MdAccountCircle } from "react-icons/md";
 import Image from "next/image";
 import { courseLinks } from "../lib/mockData";
 import { cn } from "@/lib/utils";
-
 const ListItem = React.forwardRef<
     React.ElementRef<"a">,
     React.ComponentPropsWithoutRef<"a">
@@ -53,7 +52,7 @@ const ListItem = React.forwardRef<
                 <a
                     ref={ref}
                     className={cn(
-                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                        "block select-none space-y-1 rounded-lg p-3 leading-none no-underline outline-none transition-all duration-300 hover:bg-gradient-to-r from-primary to-primary/85 hover:text-white focus:bg-gradient-to-r focus:from-purple-400 focus:to-indigo-500 focus:text-white shadow-md",
                         className
                     )}
                     {...props}
@@ -61,7 +60,7 @@ const ListItem = React.forwardRef<
                     <div className="text-sm font-medium leading-none">
                         {title}
                     </div>
-                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                    <p className="line-clamp-2 text-xs leading-snug text-gray-600">
                         {children}
                     </p>
                 </a>
@@ -103,7 +102,7 @@ export default function NavigationMenuComponents() {
                     </div>
 
                     {/* منوی دسکتاپ */}
-                    <NavigationMenu className="hidden md:flex items-center border-none space-x-4 rtl:space-x-reverse bg-primary text-black shadow-none">
+                    <NavigationMenu className="hidden md:flex items-center border-none space-x-6 rtl:space-x-reverse bg-transparent shadow-none">
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <Link
@@ -112,7 +111,11 @@ export default function NavigationMenuComponents() {
                                     passHref
                                 >
                                     <NavigationMenuLink
-                                        className={`${navigationMenuTriggerStyle()} bg-transparent ${hoverMenu}`}
+                                        className={cn(
+                                            navigationMenuTriggerStyle(),
+                                            "text-lg font-semibold text-primary-foreground bg-transparent hover:text-indigo-600",
+                                            hoverMenu
+                                        )}
                                     >
                                         مجله
                                     </NavigationMenuLink>
@@ -122,16 +125,18 @@ export default function NavigationMenuComponents() {
                                 courseLinks
                             ).map(([level, grades]) => (
                                 <NavigationMenuItem
-                                    className="bg-transparent"
                                     key={level}
                                 >
                                     <NavigationMenuTrigger
-                                        className={`group bg-transparent ${hoverMenu} `}
+                                        className={cn(
+                                            "group text-lg bg-transparent font-semibold text-primary-foreground hover:text-indigo-600",
+                                            hoverMenu
+                                        )}
                                     >
                                         {level}
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
-                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                                        <ul className="grid w-[400px] gap-4 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white rounded-xl shadow-lg border border-gray-200">
                                             {Object.entries(
                                                 grades
                                             ).map(
@@ -145,13 +150,13 @@ export default function NavigationMenuComponents() {
                                                         }
                                                         className="row-span-3"
                                                     >
-                                                        <div className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
-                                                            <div className="mb-2 mt-4 text-lg font-medium">
+                                                        <div className="flex h-full w-full flex-col justify-start p-5 rounded-lg bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm">
+                                                            <div className="mb-3 text-lg font-semibold text-gray-800 border-b border-gray-300 pb-2">
                                                                 {
                                                                     grade
                                                                 }
                                                             </div>
-                                                            <ul className="space-y-1">
+                                                            <ul className="space-y-2">
                                                                 {links.map(
                                                                     ({
                                                                         href,
