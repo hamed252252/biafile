@@ -22,11 +22,11 @@ const ClassCard: React.FC<ClassCardProps> = ({
                 <span className="text-gray-500 text-sm">
                     آخرین به روز رسانی {timeAgo}
                 </span>
-                <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
+                <span className="bg-gradient-to-r from-primary to-primary/85  text-white text-xs p-2 rounded-full">
                     {className}
                 </span>
             </div>
-            <h3 className="text-purple-700 text-lg font-semibold mb-2">
+            <h3 className=" bg-clip-text bg-gradient-to-r text-transparent from-primary  to-primary/85 text-lg font-semibold mb-2">
                 {description}
             </h3>
             <a
