@@ -1,8 +1,4 @@
-// components/ClassCard.tsx
-import React from "react";
-
-// تعریف اینترفیس برای نوع داده‌ها
-interface ClassCardProps {
+export interface ClassCardProps {
     className: string;
     timeAgo: string;
     description: string;
@@ -10,10 +6,7 @@ interface ClassCardProps {
         label: string;
         value: number;
     }[];
-    bestSellers: {
-        rank: number;
-        title: string;
-    }[];
+    lessons: string[]; // اضافه کردن دروس
 }
 
 const ClassCard: React.FC<ClassCardProps> = ({
@@ -21,13 +14,13 @@ const ClassCard: React.FC<ClassCardProps> = ({
     timeAgo,
     description,
     stats,
-    bestSellers,
+    lessons,
 }) => {
     return (
         <div className="bg-white rounded-lg shadow-lg m-4 p-4 my-2 w-full max-w-xs">
             <div className="flex justify-between items-center mb-4">
                 <span className="text-gray-500 text-sm">
-                    {timeAgo}
+                    آخرین به روز رسانی {timeAgo}
                 </span>
                 <span className="bg-purple-500 text-white text-xs px-2 py-1 rounded-full">
                     {className}
@@ -42,7 +35,6 @@ const ClassCard: React.FC<ClassCardProps> = ({
             >
                 بیشتر
             </a>
-
             <div className="grid grid-cols-4 gap-2 text-center my-4">
                 {stats.map((stat, index) => (
                     <div key={index}>
@@ -55,26 +47,18 @@ const ClassCard: React.FC<ClassCardProps> = ({
                     </div>
                 ))}
             </div>
-
-            <div className="bg-orange-100 text-orange-700 text-xs font-semibold px-2 py-1 rounded-full mb-2 inline-block">
-                پرفروش‌ترین‌ها
+            {/* بخش اضافه شده برای نمایش دروس */}
+            <div className="my-4">
+                <h4 className="text-gray-700 text-md font-semibold mb-2">
+                    دروس:
+                </h4>
+                <ul className="list-disc list-inside text-gray-600 text-sm">
+                    {lessons.map((lesson, index) => (
+                        <li key={index}>{lesson}</li>
+                    ))}
+                </ul>
             </div>
-
-            <ul className="text-gray-700 text-sm space-y-2">
-                {bestSellers.map((item, index) => (
-                    <li
-                        key={index}
-                        className="flex items-center"
-                    >
-                        <span className="bg-yellow-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
-                            {item.rank}
-                        </span>
-                        <p className="ml-2">{item.title}</p>
-                    </li>
-                ))}
-            </ul>
         </div>
     );
 };
-
 export default ClassCard;

@@ -10,15 +10,39 @@ import {
 import samane from "@/public/footer/enamad/samane.svg";
 import neshan from "@/public/footer/enamad/neshan.svg";
 
-const Footer = () => {
-    const socialIcons = [
+interface SocialIconProps {
+    Icon: React.ElementType;
+    label: string;
+}
+
+interface QuickLinkProps {
+    href: string;
+    label: string;
+}
+
+interface FooterSectionProps {
+    title: string;
+    href?: string;
+    children?: React.ReactNode;
+}
+
+interface SocialIconsProps {
+    icons: SocialIconProps[];
+}
+
+interface QuickLinksProps {
+    links: QuickLinkProps[];
+}
+
+const Footer: React.FC = () => {
+    const socialIcons: SocialIconProps[] = [
         { Icon: FaSquareInstagram, label: "Instagram" },
         { Icon: FaTelegram, label: "Telegram" },
         { Icon: FaWhatsapp, label: "WhatsApp" },
         { Icon: FaSquarePinterest, label: "Pinterest" },
     ];
 
-    const quickLinks = [
+    const quickLinks: QuickLinkProps[] = [
         { href: "/services", label: "خدمات" },
         { href: "/aboutus", label: "درباره ما" },
     ];
@@ -70,7 +94,11 @@ const Footer = () => {
     );
 };
 
-const FooterSection = ({ title, href, children }) => (
+const FooterSection: React.FC<FooterSectionProps> = ({
+    title,
+    href,
+    children,
+}) => (
     <div className="flex flex-col items-center md:items-start space-y-6 w-full">
         <h2 className="text-2xl font-bold">
             {href ? (
@@ -83,7 +111,7 @@ const FooterSection = ({ title, href, children }) => (
     </div>
 );
 
-const ContactInfo = () => (
+const ContactInfo: React.FC = () => (
     <div className="flex items-center gap-x-4">
         <div
             className="w-3 h-3 rounded-full bg-primary-foreground"
@@ -98,7 +126,9 @@ const ContactInfo = () => (
     </div>
 );
 
-const QuickLinks = ({ links }) => (
+const QuickLinks: React.FC<QuickLinksProps> = ({
+    links,
+}) => (
     <>
         {links.map((link) => (
             <div
@@ -120,7 +150,9 @@ const QuickLinks = ({ links }) => (
     </>
 );
 
-const SocialIcons = ({ icons }) => (
+const SocialIcons: React.FC<SocialIconsProps> = ({
+    icons,
+}) => (
     <div className="flex justify-center gap-x-4">
         {icons.map(({ Icon, label }) => (
             <Link
@@ -134,7 +166,7 @@ const SocialIcons = ({ icons }) => (
     </div>
 );
 
-const TrustLogos = () => (
+const TrustLogos: React.FC = () => (
     <div className="flex justify-center gap-x-4 mt-6">
         <Image
             src={samane}
