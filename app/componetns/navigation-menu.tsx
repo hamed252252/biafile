@@ -13,15 +13,17 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
-    Menubar,
-    MenubarMenu,
-    MenubarTrigger,
-    MenubarContent,
-    MenubarItem,
-    MenubarSub,
-    MenubarSubTrigger,
-    MenubarSubContent,
-} from "@/components/ui/menubar";
+    NavigationMenu,
+    NavigationMenuContent,
+    NavigationMenuIndicator,
+    NavigationMenuItem,
+    NavigationMenuLink,
+    NavigationMenuList,
+    NavigationMenuTrigger,
+    navigationMenuTriggerStyle,
+    NavigationMenuViewport,
+} from "@/components/ui/navigation-menu";
+
 import {
     Sheet,
     SheetContent,
@@ -38,127 +40,39 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { MdAccountCircle } from "react-icons/md";
 import Image from "next/image";
+import { courseLinks } from "../lib/mockData";
+import { cn } from "@/lib/utils";
 
-interface LinkItem {
-    href: string;
-    label: string;
-}
+const ListItem = React.forwardRef<
+    React.ElementRef<"a">,
+    React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+    return (
+        <li>
+            <NavigationMenuLink asChild>
+                <a
+                    ref={ref}
+                    className={cn(
+                        "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+                        className
+                    )}
+                    {...props}
+                >
+                    <div className="text-sm font-medium leading-none">
+                        {title}
+                    </div>
+                    <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+                        {children}
+                    </p>
+                </a>
+            </NavigationMenuLink>
+        </li>
+    );
+});
+ListItem.displayName = "ListItem";
+
 const hoverMenu =
-    "hover:text-secondary-foreground hover:scale-150 ease-in-out duration-700";
-const courseLinks: {
-    [key: string]: { [key: string]: LinkItem[] };
-} = {
-    دبستان: {
-        اول: [
-            {
-                href: "/courses/elementary/first/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/elementary/first/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/elementary/first/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/elementary/first/language",
-                label: "زبان‌ها",
-            },
-        ],
-        دوم: [
-            {
-                href: "/courses/elementary/second/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/elementary/second/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/elementary/second/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/elementary/second/language",
-                label: "زبان‌ها",
-            },
-        ],
-        سوم: [
-            {
-                href: "/courses/elementary/third/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/elementary/third/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/elementary/third/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/elementary/third/language",
-                label: "زبان‌ها",
-            },
-        ],
-        چهارم: [
-            {
-                href: "/courses/elementary/fourth/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/elementary/fourth/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/elementary/fourth/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/elementary/fourth/language",
-                label: "زبان‌ها",
-            },
-        ],
-        پنجم: [
-            {
-                href: "/courses/elementary/fifth/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/elementary/fifth/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/elementary/fifth/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/elementary/fifth/language",
-                label: "زبان‌ها",
-            },
-        ],
-        ششم: [
-            {
-                href: "/courses/elementary/sixth/math",
-                label: "ریاضیات",
-            },
-            {
-                href: "/courses/elementary/sixth/science",
-                label: "علوم",
-            },
-            {
-                href: "/courses/elementary/sixth/history",
-                label: "تاریخ",
-            },
-            {
-                href: "/courses/elementary/sixth/language",
-                label: "زبان‌ها",
-            },
-        ],
-    },
-};
+    "hover:text-secondary-foreground hover:scale-125 ease-in-out duration-700";
 
 export default function NavigationMenuComponents() {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -189,72 +103,84 @@ export default function NavigationMenuComponents() {
                     </div>
 
                     {/* منوی دسکتاپ */}
-                    <Menubar className="hidden md:flex items-center border-none space-x-4 rtl:space-x-reverse bg-transparent shadow-none">
-                        <Link
-                            href="/blog"
-                            className={hoverMenu}
-                        >
-                            مجله
-                        </Link>
-                        {Object.entries(courseLinks).map(
-                            ([level, grades]) => (
-                                <MenubarMenu key={level}>
-                                    <MenubarTrigger className="flex items-center">
+                    <NavigationMenu className="hidden md:flex items-center border-none space-x-4 rtl:space-x-reverse bg-primary text-black shadow-none">
+                        <NavigationMenuList>
+                            <NavigationMenuItem>
+                                <Link
+                                    href="/blog"
+                                    legacyBehavior
+                                    passHref
+                                >
+                                    <NavigationMenuLink
+                                        className={`${navigationMenuTriggerStyle()} bg-transparent ${hoverMenu}`}
+                                    >
+                                        مجله
+                                    </NavigationMenuLink>
+                                </Link>
+                            </NavigationMenuItem>
+                            {Object.entries(
+                                courseLinks
+                            ).map(([level, grades]) => (
+                                <NavigationMenuItem
+                                    className="bg-transparent"
+                                    key={level}
+                                >
+                                    <NavigationMenuTrigger
+                                        className={`group bg-transparent ${hoverMenu} `}
+                                    >
                                         {level}
-                                        <ChevronDown className="ml-1 h-4 w-4" />
-                                    </MenubarTrigger>
-                                    <MenubarContent className="bg-primary-foreground text-primary shadow-lg rounded p-2 space-y-2">
-                                        {Object.entries(
-                                            grades
-                                        ).map(
-                                            ([
-                                                grade,
-                                                links,
-                                            ]) => (
-                                                <MenubarSub
-                                                    key={
-                                                        grade
-                                                    }
-                                                >
-                                                    <MenubarSubTrigger className="flex items-center">
-                                                        {
+                                    </NavigationMenuTrigger>
+                                    <NavigationMenuContent>
+                                        <ul className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
+                                            {Object.entries(
+                                                grades
+                                            ).map(
+                                                ([
+                                                    grade,
+                                                    links,
+                                                ]) => (
+                                                    <li
+                                                        key={
                                                             grade
                                                         }
-                                                    </MenubarSubTrigger>
-                                                    <MenubarSubContent className="bg-primary-foreground text-primary shadow-lg rounded p-2 space-y-2">
-                                                        {links.map(
-                                                            ({
-                                                                href,
-                                                                label,
-                                                            }) => (
-                                                                <MenubarItem
-                                                                    asChild
-                                                                    key={
-                                                                        href
-                                                                    }
-                                                                >
-                                                                    <Link
-                                                                        href={
-                                                                            href
-                                                                        }
-                                                                        className="block px-2 py-1 hover:bg-primary hover:text-primary-foreground rounded"
-                                                                    >
-                                                                        {
-                                                                            label
-                                                                        }
-                                                                    </Link>
-                                                                </MenubarItem>
-                                                            )
-                                                        )}
-                                                    </MenubarSubContent>
-                                                </MenubarSub>
-                                            )
-                                        )}
-                                    </MenubarContent>
-                                </MenubarMenu>
-                            )
-                        )}
-                    </Menubar>
+                                                        className="row-span-3"
+                                                    >
+                                                        <div className="flex h-full w-full select-none flex-col justify-end rounded-md bg-gradient-to-b from-muted/50 to-muted p-6 no-underline outline-none focus:shadow-md">
+                                                            <div className="mb-2 mt-4 text-lg font-medium">
+                                                                {
+                                                                    grade
+                                                                }
+                                                            </div>
+                                                            <ul className="space-y-1">
+                                                                {links.map(
+                                                                    ({
+                                                                        href,
+                                                                        label,
+                                                                    }) => (
+                                                                        <ListItem
+                                                                            key={
+                                                                                href
+                                                                            }
+                                                                            href={
+                                                                                href
+                                                                            }
+                                                                            title={
+                                                                                label
+                                                                            }
+                                                                        />
+                                                                    )
+                                                                )}
+                                                            </ul>
+                                                        </div>
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
+                                    </NavigationMenuContent>
+                                </NavigationMenuItem>
+                            ))}
+                        </NavigationMenuList>
+                    </NavigationMenu>
 
                     {/* بخش جستجو و آیکون کاربر */}
                     <div className="hidden md:flex items-center space-x-4 rtl:space-x-reverse">

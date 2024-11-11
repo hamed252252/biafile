@@ -10,6 +10,124 @@ export interface Post {
     readingTime: number;
     tags: string[];
 }
+export interface LinkItem {
+    href: string;
+    label: string;
+}
+export const courseLinks: {
+    [key: string]: { [key: string]: LinkItem[] };
+} = {
+    دبستان: {
+        اول: [
+            {
+                href: "/courses/elementary/first/math",
+                label: "ریاضیات",
+            },
+            {
+                href: "/courses/elementary/first/science",
+                label: "علوم",
+            },
+            {
+                href: "/courses/elementary/first/history",
+                label: "تاریخ",
+            },
+            {
+                href: "/courses/elementary/first/language",
+                label: "زبان‌ها",
+            },
+        ],
+        دوم: [
+            {
+                href: "/courses/elementary/second/math",
+                label: "ریاضیات",
+            },
+            {
+                href: "/courses/elementary/second/science",
+                label: "علوم",
+            },
+            {
+                href: "/courses/elementary/second/history",
+                label: "تاریخ",
+            },
+            {
+                href: "/courses/elementary/second/language",
+                label: "زبان‌ها",
+            },
+        ],
+        سوم: [
+            {
+                href: "/courses/elementary/third/math",
+                label: "ریاضیات",
+            },
+            {
+                href: "/courses/elementary/third/science",
+                label: "علوم",
+            },
+            {
+                href: "/courses/elementary/third/history",
+                label: "تاریخ",
+            },
+            {
+                href: "/courses/elementary/third/language",
+                label: "زبان‌ها",
+            },
+        ],
+        چهارم: [
+            {
+                href: "/courses/elementary/fourth/math",
+                label: "ریاضیات",
+            },
+            {
+                href: "/courses/elementary/fourth/science",
+                label: "علوم",
+            },
+            {
+                href: "/courses/elementary/fourth/history",
+                label: "تاریخ",
+            },
+            {
+                href: "/courses/elementary/fourth/language",
+                label: "زبان‌ها",
+            },
+        ],
+        پنجم: [
+            {
+                href: "/courses/elementary/fifth/math",
+                label: "ریاضیات",
+            },
+            {
+                href: "/courses/elementary/fifth/science",
+                label: "علوم",
+            },
+            {
+                href: "/courses/elementary/fifth/history",
+                label: "تاریخ",
+            },
+            {
+                href: "/courses/elementary/fifth/language",
+                label: "زبان‌ها",
+            },
+        ],
+        ششم: [
+            {
+                href: "/courses/elementary/sixth/math",
+                label: "ریاضیات",
+            },
+            {
+                href: "/courses/elementary/sixth/science",
+                label: "علوم",
+            },
+            {
+                href: "/courses/elementary/sixth/history",
+                label: "تاریخ",
+            },
+            {
+                href: "/courses/elementary/sixth/language",
+                label: "زبان‌ها",
+            },
+        ],
+    },
+};
 
 export const posts: Post[] = [
     {
