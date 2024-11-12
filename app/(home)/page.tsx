@@ -2,6 +2,8 @@
 import React from "react";
 import HeroSection from "../componetns/hero-section";
 import ClassCard from "../componetns/classCard";
+import { Rss } from "lucide-react";
+import RssComponet from "../componetns/rss";
 
 // Define interfaces
 interface LessonLink {
@@ -182,6 +184,7 @@ const Home: React.FC = () => {
                     </section>
                 );
             })}
+            <RssComponet />
         </div>
     );
 };
