@@ -9,12 +9,17 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Calendar, Clock, User } from "lucide-react";
 
+// تعریف تایپ به عنوان Promise برای `params` با مقدار `slug`
+interface PageProps {
+    params: Promise<{ slug: string }>;
+}
+
 export default async function PostPage({
     params,
-}: {
-    params: { slug: string };
-}) {
-    const post = getPostBySlug(params.slug);
+}: PageProps) {
+    // استفاده از `await` برای دریافت مقدار `params`
+    const resolvedParams = await params;
+    const post = getPostBySlug(resolvedParams.slug);
 
     if (!post) {
         return notFound();
