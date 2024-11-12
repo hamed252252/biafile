@@ -36,7 +36,7 @@ function page() {
                         </p>
                     </div>
                 </div>
-                <div className="bg-white shadow-lg rounded-2xl mx-auto w-11/12 max-w-4xl p-6 md:p-8 absolute top-48">
+                <div className="bg-white shadow-lg h-44 rounded-2xl mx-auto w-11/12 max-w-4xl p-6 md:p-8 absolute top-48">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6 md:gap-10">
                         <div className="flex items-center gap-4 w-full md:w-1/2">
                             <RiContactsBookFill className="w-12 h-12 text-[#1B71F2]" />

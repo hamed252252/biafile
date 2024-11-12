@@ -86,7 +86,7 @@ export default function RootLayout({
         >
             <body className={` ${myFont.className}   `}>
                 {children}
-                <h1>صفحه اصلی</h1>
+
                 {/* محتوای صفحه */}
                 <ScrollToTopButton />
                 <SupportButton />
