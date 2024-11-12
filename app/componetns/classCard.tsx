@@ -48,8 +48,23 @@ interface ClassCardProps {
     href: string;
 }
 
+// Function to localize numbers to Persian
+const localizeNumber = (num: number | string) =>
+    num.toString().replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[+d]);
+
 const MotionCard = motion(Card);
 const MotionBadge = motion(Badge);
+
+const localizeDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("fa-IR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+    }).format(date);
+};
 
 export default function ClassCard({
     className,
@@ -68,21 +83,23 @@ export default function ClassCard({
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.4 }}
         >
-            <CardHeader className="relative p-4 bg-blue-50 rounded-t-lg">
-                <CardTitle className="text-lg font-semibold text-blue-700">
+            <CardHeader className="relative p-4 bg-blue-50 rounded-t-lg text-center">
+                <CardTitle className="text-lg font-semibold text-black flex justify-center text-center">
                     <Link
                         href={href}
                         className="hover:text-blue-500 transition-colors duration-200"
                     >
-                        {className}
+                        {localizeNumber(className)}
                     </Link>
                 </CardTitle>
-                <CardDescription className="mt-1 text-sm text-blue-500">
-                    {description}
+                <CardDescription className="mt-1 text-sm text-slate-700">
+                    {description
+                        ? localizeNumber(description)
+                        : ""}
                 </CardDescription>
             </CardHeader>
             <CardContent className="p-4">
-                <div className="text-sm text-blue-400 mb-4 flex items-center">
+                <div className="text-sm text-black mb-4 flex items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 mr-2"
@@ -97,7 +114,10 @@ export default function ClassCard({
                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                     </svg>
-                    آخرین بروزرسانی: {timeAgo}
+                    <span className="text-black ml-1">
+                        آخرین بروزرسانی:
+                    </span>
+                    {localizeNumber(timeAgo)}
                 </div>
                 <div className="grid grid-cols-2 gap-4 mb-6">
                     {stats.map((stat, index) => {
@@ -106,18 +126,20 @@ export default function ClassCard({
                         return (
                             <motion.div
                                 key={index}
-                                className="flex items-center space-x-2 text-sm p-2 rounded-lg bg-blue-100/20 text-blue-600"
+                                className="flex items-center space-x-2 text-sm p-2 rounded-lg bg-blue-100/20 hover:text-sky-600 text-black"
                                 whileHover={{ scale: 1.05 }}
                                 transition={{
                                     type: "spring",
                                     stiffness: 300,
                                 }}
                             >
-                                <IconComponent className="text-blue-500 h-5 w-5" />
+                                <IconComponent className="h-5 w-5" />
                                 <span>
                                     {stat.label}:{" "}
                                     <strong>
-                                        {stat.value}
+                                        {localizeNumber(
+                                            stat.value
+                                        )}
                                     </strong>
                                 </span>
                             </motion.div>
@@ -129,7 +151,7 @@ export default function ClassCard({
                         <MotionBadge
                             key={index}
                             variant="secondary"
-                            className="hover:bg-blue-200 hover:text-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 bg-blue-100 text-blue-500"
+                            className="hover:bg-blue-200 hover:text-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 bg-blue-100 text-black"
                             whileTap={{ scale: 0.95 }}
                         >
                             <Link
@@ -145,7 +167,7 @@ export default function ClassCard({
             <CardFooter className="p-4 bg-blue-50 rounded-b-lg">
                 <Button
                     variant="outline"
-                    className="w-full group flex justify-center border-blue-300 text-blue-500 hover:bg-blue-500 hover:text-white transition-all"
+                    className="w-full group flex justify-center border-blue-300 text-black hover:bg-blue-500 hover:text-white transition-all"
                     asChild
                 >
                     <Link
