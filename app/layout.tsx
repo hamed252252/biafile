@@ -84,7 +84,7 @@ export default function RootLayout({
             lang="fa-ir"
             dir="rtl"
         >
-            <body className={` ${myFont.className}  `}>
+            <body className={` ${myFont.className}   `}>
                 {children}
                 <h1>صفحه اصلی</h1>
                 {/* محتوای صفحه */}

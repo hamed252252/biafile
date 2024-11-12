@@ -10,7 +10,7 @@ module.exports = {
     ],
     theme: {
         container: {
-            center: true,
+            center: "true",
             padding: "2rem",
             screens: {
                 "2xl": "1400px",
@@ -48,11 +48,26 @@ module.exports = {
                     foreground:
                         "hsl(var(--destructive-foreground))",
                 },
+                sidebar: {
+                    DEFAULT:
+                        "hsl(var(--sidebar-background))",
+                    foreground:
+                        "hsl(var(--sidebar-foreground))",
+                    primary: "hsl(var(--sidebar-primary))",
+                    "primary-foreground":
+                        "hsl(var(--sidebar-primary-foreground))",
+                    accent: "hsl(var(--sidebar-accent))",
+                    "accent-foreground":
+                        "hsl(var(--sidebar-accent-foreground))",
+                    border: "hsl(var(--sidebar-border))",
+                    ring: "hsl(var(--sidebar-ring))",
+                },
             },
             fontFamily: {
                 sans: [
                     "var(--font-sans)",
                     ...fontFamily.sans,
+                    "var(--font-iran-sans)",
                 ],
             },
         },
