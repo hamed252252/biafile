@@ -62,27 +62,27 @@ export default function ClassCard({
 }: ClassCardProps) {
     return (
         <MotionCard
-            className="overflow-hidden transition-all duration-300 hover:shadow-2xl rounded-lg bg-blue-50 dark:bg-blue-900"
+            className="relative overflow-hidden transition-all duration-300 rounded-lg bg-white shadow-lg hover:shadow-xl border border-blue-100"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.4 }}
         >
-            <CardHeader className="pb-2 bg-gradient-to-r from-blue-600 to-blue-400 text-white rounded-t-lg">
-                <CardTitle className="text-2xl font-bold">
+            <CardHeader className="relative p-4 bg-blue-50 rounded-t-lg">
+                <CardTitle className="text-lg font-semibold text-blue-700">
                     <Link
                         href={href}
-                        className="hover:text-blue-200 transition-colors duration-200"
+                        className="hover:text-blue-500 transition-colors duration-200"
                     >
                         {className}
                     </Link>
                 </CardTitle>
-                <CardDescription className="mt-2 text-sm text-blue-100">
+                <CardDescription className="mt-1 text-sm text-blue-500">
                     {description}
                 </CardDescription>
             </CardHeader>
-            <CardContent className="pt-4">
-                <div className="text-sm text-blue-300 mb-4 flex items-center">
+            <CardContent className="p-4">
+                <div className="text-sm text-blue-400 mb-4 flex items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 mr-2"
@@ -106,19 +106,15 @@ export default function ClassCard({
                         return (
                             <motion.div
                                 key={index}
-                                className="flex items-center space-x-2 text-sm bg-blue-200/20 p-2 rounded-lg shadow-md"
-                                whileHover={{
-                                    scale: 1.05,
-                                    backgroundColor:
-                                        "#B3D1FF",
-                                }}
+                                className="flex items-center space-x-2 text-sm p-2 rounded-lg bg-blue-100/20 text-blue-600"
+                                whileHover={{ scale: 1.05 }}
                                 transition={{
                                     type: "spring",
                                     stiffness: 300,
                                 }}
                             >
-                                <IconComponent className="text-blue-700 h-5 w-5" />
-                                <span className="text-blue-700">
+                                <IconComponent className="text-blue-500 h-5 w-5" />
+                                <span>
                                     {stat.label}:{" "}
                                     <strong>
                                         {stat.value}
@@ -133,7 +129,7 @@ export default function ClassCard({
                         <MotionBadge
                             key={index}
                             variant="secondary"
-                            className="hover:bg-blue-700 hover:text-white transition-all duration-300 ease-in-out transform hover:scale-105"
+                            className="hover:bg-blue-200 hover:text-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 bg-blue-100 text-blue-500"
                             whileTap={{ scale: 0.95 }}
                         >
                             <Link
@@ -146,10 +142,10 @@ export default function ClassCard({
                     ))}
                 </div>
             </CardContent>
-            <CardFooter className="bg-gradient-to-r from-blue-200 to-blue-100 mt-4 rounded-b-lg">
+            <CardFooter className="p-4 bg-blue-50 rounded-b-lg">
                 <Button
                     variant="outline"
-                    className="w-full group flex justify-center border-blue-700 text-blue-700 hover:bg-blue-700 hover:text-white transition-all"
+                    className="w-full group flex justify-center border-blue-300 text-blue-500 hover:bg-blue-500 hover:text-white transition-all"
                     asChild
                 >
                     <Link
@@ -159,7 +155,7 @@ export default function ClassCard({
                         دیدن جزپیات
                         <motion.svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 ml-2 transition-transform duration-300 group-hover:translate-x-2"
+                            className="h-4 w-4 ml-2 transition-transform duration-300 group-hover:translate-x-1"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
