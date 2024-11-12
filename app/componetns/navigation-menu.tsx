@@ -136,7 +136,7 @@ export default function NavigationMenuComponents() {
                                         {level}
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
-                                        <ul className="grid w-[400px] gap-4 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white rounded-xl shadow-lg border border-gray-200">
+                                        <ul className="grid w-[400px] gap-4 text-black p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px] bg-white rounded-xl shadow-lg border border-gray-200">
                                             {Object.entries(
                                                 grades
                                             ).map(

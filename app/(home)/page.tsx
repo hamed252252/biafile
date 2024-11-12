@@ -1,125 +1,189 @@
-import ClassCard from "../componetns/classCard";
+// components/Home.tsx
+import React from "react";
 import HeroSection from "../componetns/hero-section";
+import ClassCard from "../componetns/classCard";
 
-// داده‌های نمونه برای پایه‌های اول تا ششم
-const mockDataList = [
+// Define interfaces
+interface LessonLink {
+    name: string;
+    url: string;
+}
+
+type IconName =
+    | "sampleQuestion"
+    | "educationalFile"
+    | "QnA"
+    | "onlineTest";
+
+interface Stat {
+    label: string;
+    value: number;
+    iconName: IconName; // Use the IconName type here
+}
+
+interface ClassData {
+    className: string;
+    lastUpdatedDate: string; // ISO date string
+    timeAgo: string;
+    description?: string;
+    stats: Stat[];
+    lessons: LessonLink[];
+    href: string; // New property for the class link
+}
+
+interface EducationalLevel {
+    levelName: string;
+    numberOfClasses: number;
+    levelSlug: string; // New property for URL slugs
+}
+
+// Educational levels data
+const educationalLevels: EducationalLevel[] = [
     {
-        className: "کلاس اول",
-        timeAgo: "۱۹ ساعت قبل",
-        description: "ریاضی، علوم تجربی، فارسی، نگارش...",
-        stats: [
-            { label: "نمونه سوال", value: 1995 },
-            { label: "فایل آموزشی", value: 1369 },
-            { label: "پرسش و پاسخ", value: 156 },
-            { label: "آزمون آنلاین", value: 110 },
-        ],
-        lessons: [
-            "کتاب کار و تمرین درس ۱۲ تا ۱۳ فارسی و نگارش اول ابتدایی",
-            "آزمون فارسی اول دبستان تا نشانه ی م",
-            "کتاب کار مجموعه تمرین‌های طلایی موضوع فارسی اول دبستان از تمرین ۱۴ تا ۲۲",
-        ],
+        levelName: "ابتدایی",
+        numberOfClasses: 6,
+        levelSlug: "elementary",
     },
     {
-        className: "کلاس دوم",
-        timeAgo: "۱۸ ساعت قبل",
-        description: "ریاضی، علوم تجربی، فارسی، نگارش...",
-        stats: [
-            { label: "نمونه سوال", value: 2117 },
-            { label: "فایل آموزشی", value: 1586 },
-            { label: "پرسش و پاسخ", value: 184 },
-            { label: "آزمون آنلاین", value: 201 },
-        ],
-        lessons: [
-            "سری ارزیابی فصل دوم ریاضی پایه دوم دبستان بهار آزادی",
-            "آزمونک پایانی دوم دبستان شهدا، فصل ۲: جمع و تفریق اعداد",
-            "آزمون درس ۲ فارسی و نگارش دوم ابتدایی",
-        ],
+        levelName: "متوسطه اول",
+        numberOfClasses: 3,
+        levelSlug: "middle",
     },
     {
-        className: "کلاس سوم",
-        timeAgo: "۱۹ ساعت قبل",
-        description: "ریاضی، علوم تجربی، فارسی، نگارش...",
-        stats: [
-            { label: "نمونه سوال", value: 2845 },
-            { label: "فایل آموزشی", value: 2047 },
-            { label: "پرسش و پاسخ", value: 444 },
-            { label: "آزمون آنلاین", value: 371 },
-        ],
-        lessons: [
-            "آزمون فصل پایان دوم ریاضی سوم دبستان امیر صادقی",
-            "آزمون فصل ۲ ریاضی سوم: عددهای چهار رقمی",
-            "آزمون املا و انشا خلاق فارسی سوم",
-        ],
-    },
-    {
-        className: "کلاس چهارم",
-        timeAgo: "۵ ساعت قبل",
-        description: "ریاضی، علوم تجربی، فارسی، نگارش...",
-        stats: [
-            { label: "نمونه سوال", value: 5107 },
-            { label: "فایل آموزشی", value: 809 },
-            { label: "پرسش و پاسخ", value: 1658 },
-            { label: "آزمون آنلاین", value: 381 },
-        ],
-        lessons: [
-            "کاربرگ فصل دوم ریاضی چهارم ابتدایی: جمع و تفریق کسرها",
-            "کاربرگ تستی و مقایسه کسرها: ریاضی چهارم دبستان",
-            "کاربرگ جمع و تفریق کسرها: ریاضی چهارم دبستان",
-        ],
-    },
-    {
-        className: "کلاس پنجم",
-        timeAgo: "۶ ساعت قبل",
-        description: "ریاضی، علوم تجربی، فارسی، نگارش...",
-        stats: [
-            { label: "نمونه سوال", value: 4125 },
-            { label: "فایل آموزشی", value: 987 },
-            { label: "پرسش و پاسخ", value: 1234 },
-            { label: "آزمون آنلاین", value: 678 },
-        ],
-        lessons: [
-            "کاربرگ حل سوالات ریاضی پنجم",
-            "تست علمی درس علوم پنجم ابتدایی",
-            "تمرین‌های فارسی و نگارش پنجم",
-        ],
-    },
-    {
-        className: "کلاس ششم",
-        timeAgo: "۷ ساعت قبل",
-        description: "ریاضی، علوم تجربی، فارسی، نگارش...",
-        stats: [
-            { label: "نمونه سوال", value: 6543 },
-            { label: "فایل آموزشی", value: 765 },
-            { label: "پرسش و پاسخ", value: 2345 },
-            { label: "آزمون آنلاین", value: 987 },
-        ],
-        lessons: [
-            "کاربرگ دروس پایه ششم",
-            "تمرین‌های ریاضی ششم: جمع و تفریق",
-            "پرسش و پاسخ‌های فارسی ششم ابتدایی",
-        ],
+        levelName: "متوسطه دوم",
+        numberOfClasses: 3,
+        levelSlug: "high",
     },
 ];
 
-export default function Home() {
+// Generate mock data for each class
+const generateMockData = (): ClassData[] => {
+    const lessons = ["علوم", "ریاضیات", "تاریخ", "زبان"];
+    const mockDataList: ClassData[] = [];
+
+    educationalLevels.forEach((level) => {
+        for (let i = 1; i <= level.numberOfClasses; i++) {
+            const className = `کلاس ${i} ${level.levelName}`;
+            const hoursAgo = Math.floor(Math.random() * 24);
+            const timeAgo = `${hoursAgo} ساعت قبل`;
+            const lastUpdatedDate = new Date(
+                Date.now() - hoursAgo * 3600000
+            ).toISOString();
+
+            const stats: Stat[] = [
+                {
+                    label: "نمونه سوال",
+                    value:
+                        Math.floor(Math.random() * 1000) +
+                        500,
+                    iconName: "sampleQuestion",
+                },
+                {
+                    label: "فایل آموزشی",
+                    value:
+                        Math.floor(Math.random() * 1000) +
+                        500,
+                    iconName: "educationalFile",
+                },
+                {
+                    label: "پرسش و پاسخ",
+                    value:
+                        Math.floor(Math.random() * 500) +
+                        100,
+                    iconName: "QnA",
+                },
+                {
+                    label: "آزمون آنلاین",
+                    value:
+                        Math.floor(Math.random() * 300) +
+                        50,
+                    iconName: "onlineTest",
+                },
+            ];
+
+            // Create lesson links
+            const lessonLinks: LessonLink[] = lessons.map(
+                (lesson) => ({
+                    name: lesson,
+                    url: `/${encodeURIComponent(
+                        level.levelSlug
+                    )}/${i}/${encodeURIComponent(lesson)}`,
+                })
+            );
+
+            // Construct the href for the ClassCard
+            const href = `/${encodeURIComponent(
+                level.levelSlug
+            )}/${i}`;
+
+            mockDataList.push({
+                className,
+                lastUpdatedDate,
+                timeAgo,
+                description: `توضیحات مربوط به ${className}`,
+                stats,
+                lessons: lessonLinks,
+                href, // Add the href to the class data
+            });
+        }
+    });
+
+    return mockDataList;
+};
+
+const mockDataList = generateMockData();
+
+const Home: React.FC = () => {
     return (
         <div>
             <HeroSection />
-            <h1 className="my-2 text-2xl font-semibold p-4">
-                ابتدایی
-            </h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 p-4 bg-gray-100 min-h-screen">
-                {mockDataList.map((data, index) => (
-                    <ClassCard
-                        key={index}
-                        className={data.className}
-                        timeAgo={data.timeAgo}
-                        description={data.description}
-                        stats={data.stats}
-                        lessons={data.lessons} // اضافه کردن لیست دروس
-                    />
-                ))}
-            </div>
+            {educationalLevels.map((level) => {
+                const classesForLevel = mockDataList.filter(
+                    (data) =>
+                        data.className.includes(
+                            level.levelName
+                        )
+                );
+
+                return (
+                    <section
+                        key={level.levelName}
+                        className="my-8"
+                    >
+                        <h2 className="text-2xl font-bold text-gray-800 mb-6 px-4">
+                            {level.levelName}
+                        </h2>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
+                            {classesForLevel.map(
+                                (data, index) => (
+                                    <ClassCard
+                                        key={index}
+                                        className={
+                                            data.className
+                                        }
+                                        lastUpdatedDate={
+                                            data.lastUpdatedDate
+                                        }
+                                        timeAgo={
+                                            data.timeAgo
+                                        }
+                                        description={
+                                            data.description
+                                        }
+                                        stats={data.stats}
+                                        lessons={
+                                            data.lessons
+                                        }
+                                        href={data.href} // Pass the href to ClassCard
+                                    />
+                                )
+                            )}
+                        </div>
+                    </section>
+                );
+            })}
         </div>
     );
-}
+};
+
+export default Home;
