@@ -166,8 +166,8 @@ export default function ClassCard({
             </CardContent>
             <CardFooter className="p-4 bg-blue-50 rounded-b-lg">
                 <Button
-                    variant="outline"
-                    className="w-full group flex justify-center border-blue-300 text-black hover:bg-blue-500 hover:text-white transition-all"
+                    variant="secondary"
+                    className="w-full group bg-blue-300 flex justify-center border-blue-300 text-black hover:bg-blue-500 hover:text-white transition-all"
                     asChild
                 >
                     <Link
@@ -177,7 +177,7 @@ export default function ClassCard({
                         دیدن جزپیات
                         <motion.svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 ml-2 transition-transform duration-300 group-hover:translate-x-1"
+                            className="h-4 w-4 ml-2 transition-transform duration-300  group-hover:translate-x-1"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -186,7 +186,7 @@ export default function ClassCard({
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
                                 strokeWidth={2}
-                                d="M9 5l7 7-7 7"
+                                d="M1 5l7 7-7 7"
                             />
                         </motion.svg>
                     </Link>
