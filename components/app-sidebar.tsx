@@ -1,4 +1,6 @@
+"use client";
 import * as React from "react";
+import { usePathname } from "next/navigation"; // اضافه کردن usePathname
 import logo from "@/public/logo.svg";
 import {
     Sidebar,
@@ -6,7 +8,6 @@ import {
     SidebarFooter,
     SidebarGroup,
     SidebarGroupContent,
-    SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
@@ -22,58 +23,14 @@ import {
     AvatarImage,
 } from "./ui/avatar";
 import Image from "next/image";
-
-// این داده نمونه است.
-const data = {
-    personalProfile: [
-        {
-            title: "مشخصات فردی",
-            url: "#",
-            items: [
-                {
-                    title: "مشخصات فردی",
-                    url: "/personalprofile",
-                },
-            ],
-        },
-        {
-            title: "کیف پول",
-            url: "#",
-            items: [
-                {
-                    title: "اعتبار اصلی",
-                    url: "#",
-                },
-                {
-                    title: "شگفت انگیز",
-                    url: "#",
-                },
-                {
-                    title: "تاریخچه ی شارژ",
-                    url: "#",
-                },
-            ],
-        },
-        {
-            title: "تاریخچه ی تراکنش ها",
-            url: "#",
-            items: [
-                {
-                    title: "دانلود تراکنش ها",
-                    url: "#",
-                },
-                {
-                    title: "تاریخ پرداخت",
-                    url: "#",
-                },
-            ],
-        },
-    ],
-};
+import Link from "next/link";
+import { dataOfDashboardMenu } from "@/lib/constants";
 
 export function AppSidebar({
     ...props
 }: React.ComponentProps<typeof Sidebar>) {
+    const pathname = usePathname();
+
     return (
         <Sidebar
             dir="rtl"
@@ -81,24 +38,25 @@ export function AppSidebar({
             {...props}
         >
             <SidebarHeader>
-                <div className="flex justify-start items-center">
-                    <Image
-                        width={45}
-                        height={45}
-                        alt="logo of websit"
-                        src={logo}
-                    />
-                    <h1>فرایار</h1>
-                </div>
+                <Link href={"/"}>
+                    <div className="flex justify-start items-center">
+                        <Image
+                            width={45}
+                            height={45}
+                            alt="logo of website"
+                            src={logo}
+                        />
+                        <h1>فرایار</h1>
+                    </div>
+                </Link>
             </SidebarHeader>
             <SidebarContent>
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
-                            {data.personalProfile.map(
+                            {dataOfDashboardMenu.personalProfile.map(
                                 (item) => (
                                     <SidebarMenuItem
-                                        className=""
                                         key={item.title}
                                     >
                                         <SidebarMenuButton
@@ -115,7 +73,7 @@ export function AppSidebar({
                                         </SidebarMenuButton>
                                         {item.items
                                             ?.length ? (
-                                            <SidebarMenuSub className=" ">
+                                            <SidebarMenuSub className="">
                                                 {item.items.map(
                                                     (
                                                         subItem
@@ -124,6 +82,12 @@ export function AppSidebar({
                                                             key={
                                                                 subItem.title
                                                             }
+                                                            className={`${
+                                                                pathname ===
+                                                                subItem.url
+                                                                    ? "bg-primary/25 rounded-md"
+                                                                    : ""
+                                                            }`}
                                                         >
                                                             <SidebarMenuSubButton
                                                                 asChild

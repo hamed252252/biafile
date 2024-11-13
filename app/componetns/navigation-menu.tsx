@@ -217,12 +217,12 @@ export default function NavigationMenuComponents() {
 
                                     <DropdownMenuGroup className="text-primary/75">
                                         <DropdownMenuItem>
-                                            <Link href="/profile">
+                                            <Link href="/dashboard">
                                                 حساب کاربری
                                             </Link>
                                         </DropdownMenuItem>
                                         <DropdownMenuItem>
-                                            <Link href="/settings">
+                                            <Link href="/dashboard/account/settings">
                                                 تنظیمات
                                             </Link>
                                         </DropdownMenuItem>

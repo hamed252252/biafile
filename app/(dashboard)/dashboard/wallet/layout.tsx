@@ -12,20 +12,11 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import HeaderOfDashboardPages from "../componetns/HeaderOfDashboardPages";
 
 export default function Layout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    return (
-        <SidebarProvider dir="ltr">
-            <SidebarInset>
-                <HeaderOfDashboardPages />
-                <main className=" ">{children}</main>
-            </SidebarInset>
-            <AppSidebar side="right" />
-        </SidebarProvider>
-    );
+    return <main className=" ">{children}</main>;
 }
