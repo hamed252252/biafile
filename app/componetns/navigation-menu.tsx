@@ -42,6 +42,87 @@ import { MdAccountCircle } from "react-icons/md";
 import Image from "next/image";
 import { courseLinks } from "../lib/mockData";
 import { cn } from "@/lib/utils";
+import {
+    Accordion,
+    AccordionItem,
+    AccordionTrigger,
+    AccordionContent,
+} from "@/components/ui/accordion"; // فرض کنید که این کامپوننت‌های آکاردئون وجود دارند یا از کتابخانه شبیه به آن استفاده می‌کنید.
+const DynamicAccordion = ({
+    courseLinks,
+}: {
+    courseLinks: Record<
+        string,
+        Record<string, { href: string; label: string }[]>
+    >;
+}) => {
+    return (
+        <Accordion
+            type="multiple"
+            className="w-full"
+        >
+            {Object.entries(courseLinks).map(
+                ([level, grades]) => (
+                    <AccordionItem
+                        key={level}
+                        value={level}
+                        className="border-b border-gray-200"
+                    >
+                        <AccordionTrigger className="flex items-center justify-between font-bold text-lg py-3 px-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all">
+                            <span>{level}</span>
+                        </AccordionTrigger>
+                        <AccordionContent className="pl-6 mt-2">
+                            {Object.entries(grades).map(
+                                ([grade, links]) => (
+                                    <Accordion
+                                        key={grade}
+                                        type="single"
+                                        collapsible
+                                    >
+                                        <AccordionItem
+                                            value={grade}
+                                        >
+                                            <AccordionTrigger className="flex items-center justify-between font-medium text-base py-2 px-3 hover:bg-gray-100 rounded-md transition-all">
+                                                <span>
+                                                    {grade}
+                                                </span>
+                                            </AccordionTrigger>
+                                            <AccordionContent>
+                                                <div className="flex flex-col ml-4 gap-3 mt-2">
+                                                    {links.map(
+                                                        ({
+                                                            href,
+                                                            label,
+                                                        }) => (
+                                                            <Link
+                                                                key={
+                                                                    href
+                                                                }
+                                                                href={
+                                                                    href
+                                                                }
+                                                                className="block text-sm text-primary hover:text-secondary-foreground hover:underline transition-all"
+                                                            >
+                                                                {
+                                                                    label
+                                                                }
+                                                            </Link>
+                                                        )
+                                                    )}
+                                                </div>
+                                            </AccordionContent>
+                                        </AccordionItem>
+                                    </Accordion>
+                                )
+                            )}
+                        </AccordionContent>
+                    </AccordionItem>
+                )
+            )}
+        </Accordion>
+    );
+};
+
 const ListItem = React.forwardRef<
     React.ElementRef<"a">,
     React.ComponentPropsWithoutRef<"a">
@@ -209,7 +290,7 @@ export default function NavigationMenuComponents() {
                                         <User className="h-5 w-5" />
                                     </Button>
                                 </DropdownMenuTrigger>
-                                <DropdownMenuContent className="bg-primary-foreground z-10 p-2 w-40 text-primary shadow-lg rounded space-y-4 text-right ">
+                                <DropdownMenuContent className="bg-primary-foreground z-10 p-2 w-40 text-black shadow-lg rounded space-y-4 text-right ">
                                     <DropdownMenuLabel className="text-primary">
                                         حساب کاربری من
                                     </DropdownMenuLabel>
@@ -266,66 +347,11 @@ export default function NavigationMenuComponents() {
                                     <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4" />
                                 </form>
                                 <nav className="flex flex-col mt-4 space-y-4 rtl:space-x-reverse">
-                                    {Object.entries(
-                                        courseLinks
-                                    ).map(
-                                        ([
-                                            level,
-                                            grades,
-                                        ]) => (
-                                            <details
-                                                key={level}
-                                                className="flex flex-col"
-                                            >
-                                                <summary className="font-bold cursor-pointer">
-                                                    {level}
-                                                </summary>
-                                                {Object.entries(
-                                                    grades
-                                                ).map(
-                                                    ([
-                                                        grade,
-                                                        links,
-                                                    ]) => (
-                                                        <details
-                                                            key={
-                                                                grade
-                                                            }
-                                                            className="ml-4"
-                                                        >
-                                                            <summary className="font-semibold cursor-pointer">
-                                                                {
-                                                                    grade
-                                                                }
-                                                            </summary>
-                                                            <div className="flex flex-col ml-4">
-                                                                {links.map(
-                                                                    ({
-                                                                        href,
-                                                                        label,
-                                                                    }) => (
-                                                                        <Link
-                                                                            key={
-                                                                                href
-                                                                            }
-                                                                            href={
-                                                                                href
-                                                                            }
-                                                                            className="block hover:text-secondary-foreground ml-4"
-                                                                        >
-                                                                            {
-                                                                                label
-                                                                            }
-                                                                        </Link>
-                                                                    )
-                                                                )}
-                                                            </div>
-                                                        </details>
-                                                    )
-                                                )}
-                                            </details>
-                                        )
-                                    )}
+                                    <DynamicAccordion
+                                        courseLinks={
+                                            courseLinks
+                                        }
+                                    />
                                     <Link href="/aboutus">
                                         درباره ما
                                     </Link>
@@ -345,9 +371,6 @@ export default function NavigationMenuComponents() {
                                 quality={100}
                                 src={logoImage}
                             />
-                            {/* <span className="text-xl font-bold">
-                                بیافایل
-                            </span> */}
                         </Link>
                     </div>
                     <div className="relative md:hidden">
@@ -363,7 +386,7 @@ export default function NavigationMenuComponents() {
                             <User className="w-5 h-5" />
                         </button>
                         {isOpenAvatar && (
-                            <div className="absolute z-10 left-0 mt-2 w-48 rounded-md shadow-lg bg-popover text-popover-foreground">
+                            <div className="absolute z-10 left-0 mt-2 w-48 rounded-md shadow-lg bg-popover text-primary bg-white">
                                 <div
                                     className="py-1"
                                     role="menu"

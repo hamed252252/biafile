@@ -87,20 +87,6 @@ const generateMockData = (): ClassData[] => {
                         500,
                     iconName: "educationalFile",
                 },
-                {
-                    label: "پرسش و پاسخ",
-                    value:
-                        Math.floor(Math.random() * 500) +
-                        100,
-                    iconName: "QnA",
-                },
-                {
-                    label: "آزمون آنلاین",
-                    value:
-                        Math.floor(Math.random() * 300) +
-                        50,
-                    iconName: "onlineTest",
-                },
             ];
 
             // Create lesson links
