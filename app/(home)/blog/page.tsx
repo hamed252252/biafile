@@ -11,7 +11,6 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Clock, Calendar } from "lucide-react";
-
 export default function Home() {
     const posts = getPosts();
     const featuredPost = posts[0];
@@ -30,6 +29,9 @@ export default function Home() {
                             alt={featuredPost.title}
                             fill
                             className="object-cover"
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            placeholder="blur"
+                            blurDataURL="/fallback-image.jpg"
                         />
                     </div>
                     <CardHeader>
@@ -75,7 +77,7 @@ export default function Home() {
                             <Link
                                 href={`/blog/${featuredPost.slug}`}
                             >
-                                Read More
+                                ادامه مطلب
                             </Link>
                         </Button>
                     </CardFooter>
@@ -98,6 +100,9 @@ export default function Home() {
                                     alt={post.title}
                                     fill
                                     className="object-cover rounded-t-lg"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                                    placeholder="blur"
+                                    blurDataURL="/fallback-image.jpg"
                                 />
                             </div>
                             <CardHeader>
@@ -137,6 +142,13 @@ export default function Home() {
                                     {post.readingTime} min
                                     read
                                 </span>
+                                <Button asChild>
+                                    <Link
+                                        href={`/blog/${post.slug}`}
+                                    >
+                                        ادامه مطلب
+                                    </Link>
+                                </Button>
                             </CardFooter>
                         </Card>
                     ))}

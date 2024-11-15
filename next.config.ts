@@ -4,13 +4,37 @@ const nextConfig: NextConfig = {
     images: {
         remotePatterns: [
             {
-                protocol: "https", // بهتر است از https استفاده کنید
-                hostname: "images.unsplash.com",
-                pathname: "/**", // این علامت * تمامی مسیرها را شامل می‌شود
+                protocol: "https",
+                hostname: "media.licdn.com",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "tse1.mm.bing.net",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "tse2.mm.bing.net",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "tse3.mm.bing.net",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "tse4.mm.bing.net",
+                pathname: "/**",
+            },
+            {
+                protocol: "https",
+                hostname: "encrypted-tbn0.gstatic.com",
+                pathname: "/**",
             },
         ],
     },
-    /* config options here */
 };
 
 export default nextConfig;

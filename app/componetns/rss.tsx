@@ -39,15 +39,13 @@ function RssComponet() {
                                 id="email"
                                 type="email"
                                 placeholder="آدرس ایمیل خود را وارد کنید"
-                                className="pl-10 pr-4"
+                                className="pl-10 pr-4 border border-slate-400"
                             />
                             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         </div>
                     </div>
-                    <Button
-                        type="submit"
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                    >
+
+                    <Button className="bg-primary border-none h-10 w-full ">
                         عضویت
                     </Button>
                 </form>

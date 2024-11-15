@@ -10,6 +10,7 @@ export interface Post {
     readingTime: number;
     tags: string[];
 }
+
 export interface LinkItem {
     href: string;
     label: string;
@@ -128,89 +129,150 @@ export const courseLinks: {
         ],
     },
 };
-
 export const posts: Post[] = [
     {
         id: 1,
         slug: "getting-started-with-nextjs",
-        title: "Getting Started with Next.js",
-        author: "John Doe",
+        title: "شروع کار با Next.js",
+        author: "جان دو",
         date: "2023-06-01",
         excerpt:
-            "Learn how to build modern web applications with Next.js, the React framework for production.",
-        content:
-            "Next.js is a powerful React framework that enables you to build server-side rendered and statically generated web applications with ease. In this post, we'll explore the key features of Next.js and how to get started with your first project.\n\n## Why Next.js?\n\nNext.js offers several advantages over traditional React applications:\n\n1. **Server-Side Rendering (SSR)**: Improves initial load time and SEO.\n2. **Static Site Generation (SSG)**: Generate static pages for even faster load times.\n3. **File-based Routing**: Simplifies the creation of routes in your application.\n4. **API Routes**: Easily create API endpoints as part of your Next.js app.\n\n## Setting Up Your First Next.js Project\n\nTo create a new Next.js project, run the following command:\n\n```bash\nnpx create-next-app my-next-app\n```\n\nThis will set up a new Next.js project with all the necessary configurations.\n\n## Conclusion\n\nNext.js provides a robust framework for building modern web applications. Its features like SSR, SSG, and file-based routing make it an excellent choice for developers looking to create fast, SEO-friendly React applications.",
+            "یاد بگیرید چگونه با Next.js برنامه‌های وب مدرن بسازید.",
+        content: `
+            <h2>چرا Next.js؟</h2>
+            <p>Next.js چندین مزیت نسبت به برنامه‌های سنتی React ارائه می‌دهد:</p>
+            <ul>
+                <li><strong>رندر سمت سرور (SSR)</strong>: بهبود زمان بارگذاری اولیه و SEO.</li>
+                <li><strong>تولید سایت استاتیک (SSG)</strong>: صفحات استاتیک برای بارگذاری سریع‌تر تولید می‌کند.</li>
+                <li><strong>مسیریابی بر اساس فایل</strong>: ساده‌سازی ایجاد مسیرها در برنامه شما.</li>
+                <li><strong>مسیرهای API</strong>: به‌راحتی نقاط پایانی API را در بخشی از برنامه Next.js خود ایجاد کنید.</li>
+            </ul>
+            <h2>ایجاد اولین پروژه Next.js شما</h2>
+            <p>برای ایجاد یک پروژه جدید Next.js، دستور زیر را اجرا کنید:</p>
+            <pre><code>npx create-next-app my-next-app</code></pre>
+            <h3>ساختار پروژه</h3>
+            <p>Next.js به‌طور خودکار ساختار پایه پروژه را تنظیم می‌کند:</p>
+            <ul>
+                <li><code>pages/</code> - پوشه‌ای برای کامپوننت‌های صفحه.</li>
+                <li><code>public/</code> - دارایی‌های استاتیک مانند تصاویر و آیکون‌ها.</li>
+                <li><code>styles/</code> - فایل‌های CSS و استایل‌ها.</li>
+            </ul>
+            <h2>نتیجه‌گیری</h2>
+            <p>Next.js یک چارچوب قوی برای ساخت برنامه‌های وب مدرن فراهم می‌کند. ویژگی‌هایی مانند SSR، SSG و مسیریابی بر اساس فایل آن را به انتخابی عالی برای برنامه‌های سریع و مناسب SEO تبدیل می‌کند.</p>
+        `,
         coverImage:
-            "/placeholder.svg?height=600&width=1200",
+            "https://tse2.mm.bing.net/th?id=OIP.mV_iCcEdN8qgDdINNOhNYQHaEK&pid=Api",
         readingTime: 5,
-        tags: ["Next.js", "React", "Web Development"],
+        tags: ["Next.js", "React", "توسعه وب"],
     },
     {
         id: 2,
         slug: "mastering-react-hooks",
-        title: "Mastering React Hooks",
-        author: "Jane Smith",
+        title: "تسلط بر هوک‌های React",
+        author: "جین اسمیت",
         date: "2023-06-15",
         excerpt:
-            "Dive deep into React Hooks and learn how to write more efficient and cleaner React components.",
-        content:
-            "React Hooks have revolutionized the way we write React components. They allow you to use state and other React features without writing a class. In this post, we'll explore some of the most commonly used hooks and how to use them effectively.\n\n## useState\n\nThe useState hook allows you to add state to functional components. Here's a simple example:\n\n```jsx\nconst [count, setCount] = useState(0);\n```\n\n## useEffect\n\nuseEffect lets you perform side effects in functional components. It's similar to componentDidMount, componentDidUpdate, and componentWillUnmount combined.\n\n```jsx\nuseEffect(() => {\n  document.title = `You clicked ${count} times`;\n}, [count]);\n```\n\n## useContext\n\nuseContext is used for consuming context in a functional component:\n\n```jsx\nconst theme = useContext(ThemeContext);\n```\n\n## Custom Hooks\n\nYou can also create your own custom hooks to reuse stateful logic between components.\n\n## Conclusion\n\nMastering React Hooks can significantly improve your React development experience, leading to cleaner and more efficient code.",
+            "به عمیق‌ترین ویژگی‌های هوک‌های React بپردازید و یاد بگیرید چگونه کامپوننت‌های بهینه‌تر بنویسید.",
+        content: `
+            <h2>معرفی هوک‌ها</h2>
+            <p>هوک‌های React به شما امکان می‌دهند بدون نوشتن کلاس، از ویژگی‌های React مانند حالت در کامپوننت‌های تابعی استفاده کنید.</p>
+            <h2>هوک‌های رایج</h2>
+            <h3>استفاده از useState</h3>
+            <p>هوک <code>useState</code> به شما امکان می‌دهد حالت به کامپوننت‌های تابعی اضافه کنید:</p>
+            <pre><code>const [count, setCount] = useState(0);</code></pre>
+            <h3>استفاده از useEffect</h3>
+            <p>هوک <code>useEffect</code> به شما امکان می‌دهد اثرات جانبی در کامپوننت‌های تابعی انجام دهید.</p>
+            <pre><code>useEffect(() => { document.title = \`شما \${count} بار کلیک کردید\`; }, [count]);</code></pre>
+            <h2>نتیجه‌گیری</h2>
+            <p>تسلط بر هوک‌های React می‌تواند تجربه توسعه شما را بهبود بخشد و به کد پاک‌تر و مؤثرتری منجر شود.</p>
+        `,
         coverImage:
-            "/placeholder.svg?height=600&width=1200",
+            "https://media.licdn.com/dms/image/D4D12AQFJWfUQaQ1qPg/article-cover_image-shrink_600_2000/0/1675674296261?e=2147483647&v=beta&t=zcfSqc5__VRvgFu6e6Ll8vL4xNP_PYnbQYG4YpL9ysE",
         readingTime: 7,
-        tags: ["React", "Hooks", "JavaScript"],
+        tags: ["React", "هوک‌ها", "JavaScript"],
     },
     {
         id: 3,
         slug: "introduction-to-graphql",
-        title: "Introduction to GraphQL",
-        author: "Alex Johnson",
+        title: "مقدمه‌ای بر GraphQL",
+        author: "الکس جانسون",
         date: "2023-07-01",
         excerpt:
-            "Discover GraphQL, the query language for your API, and why it's becoming increasingly popular among developers.",
-        content:
-            'GraphQL is a query language for APIs and a runtime for executing those queries with your existing data. It provides a complete and understandable description of the data in your API, gives clients the power to ask for exactly what they need and nothing more, makes it easier to evolve APIs over time, and enables powerful developer tools.\n\n## Key Concepts\n\n1. **Schema**: Defines the structure of your data and the operations that can be performed.\n2. **Queries**: Allow clients to request specific data.\n3. **Mutations**: Enable clients to modify data.\n4. **Subscriptions**: Real-time updates when data changes.\n\n## Example Query\n\n```graphql\nquery {\n  user(id: "123") {\n    name\n    email\n    posts {\n      title\n      content\n    }\n  }\n}\n```\n\n## Benefits of GraphQL\n\n- **Efficient Data Loading**: Clients can request exactly what they need.\n- **Strongly Typed**: The schema provides a clear contract for client-server communication.\n- **Introspection**: Clients can query the schema for details about the API.\n\n## Conclusion\n\nGraphQL offers a more flexible and efficient alternative to traditional REST APIs, making it an excellent choice for modern web and mobile applications.',
+            "با GraphQL، زبان کوئری برای API‌های خود آشنا شوید.",
+        content: `
+            <h2>GraphQL چیست؟</h2>
+            <p>GraphQL یک زبان کوئری برای API‌ها و یک زمان اجرا برای اجرای آن کوئری‌ها است.</p>
+            <h2>مفاهیم کلیدی</h2>
+            <h3>Schema</h3>
+            <p>Schema ساختار داده‌های شما و عملیات‌هایی که می‌توان انجام داد را تعریف می‌کند.</p>
+            <h3>کوئری‌ها</h3>
+            <p>کوئری‌ها به مشتریان امکان درخواست داده‌های خاص را می‌دهند.</p>
+            <h3>تغییرات (Mutations)</h3>
+            <p>تغییرات به مشتریان امکان تغییر داده‌ها را می‌دهند.</p>
+            <h2>نتیجه‌گیری</h2>
+            <p>GraphQL یک جایگزین انعطاف‌پذیر و کارآمد برای API‌های REST است که برای برنامه‌های مدرن مناسب است.</p>
+        `,
         coverImage:
-            "/placeholder.svg?height=600&width=1200",
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToyxGpecilojAhBulAhaWwPnX9cGDon-qbGg&s",
         readingTime: 6,
-        tags: ["GraphQL", "API", "Web Development"],
+        tags: ["GraphQL", "API", "توسعه وب"],
     },
     {
         id: 4,
         slug: "css-grid-layout-explained",
-        title: "CSS Grid Layout Explained",
-        author: "Emily Brown",
+        title: "توضیح ساختار CSS Grid",
+        author: "امیلی براون",
         date: "2023-07-15",
         excerpt:
-            "Learn how to create complex layouts with ease using CSS Grid, the most powerful layout system available in CSS.",
-        content:
-            "CSS Grid Layout is a two-dimensional layout system for the web. It lets you lay content out in rows and columns, and has many features that make building complex layouts straightforward.\n\n## Basic Concepts\n\n1. **Grid Container**: The element on which `display: grid` is applied.\n2. **Grid Items**: The children of the grid container.\n3. **Grid Lines**: The dividing lines that make up the structure of the grid.\n4. **Grid Tracks**: The space between two adjacent grid lines.\n5. **Grid Cell**: The space between four grid lines.\n6. **Grid Area**: The total space surrounded by four grid lines.\n\n## Creating a Grid\n\n```css\n.container {\n  display: grid;\n  grid-template-columns: repeat(3, 1fr);\n  grid-gap: 20px;\n}\n```\n\n## Placing Items\n\n```css\n.item {\n  grid-column: 1 / 3;\n  grid-row: 1 / 3;\n}\n```\n\n## Advanced Features\n\n- **fr unit**: Represents a fraction of the available space.\n- **minmax()**: Sets a minimum and maximum size for a track.\n- **auto-fit and auto-fill**: Create a responsive grid without media queries.\n\n## Conclusion\n\nCSS Grid Layout provides a powerful toolset for creating complex layouts with clean, easy-to-understand CSS. It's well-supported in modern browsers and can significantly simplify your layout code.",
+            "یاد بگیرید چگونه با CSS Grid ساختارهای پیچیده‌ای ایجاد کنید.",
+        content: `
+            <h2>CSS Grid چیست؟</h2>
+            <p>CSS Grid یک سیستم ساختار دو بعدی قدرتمند برای وب است.</p>
+            <h2>مفاهیم پایه</h2>
+            <h3>ظرف شبکه (Grid Container)</h3>
+            <p>عنصری که <code>display: grid</code> روی آن اعمال می‌شود.</p>
+            <h3>اقلام شبکه (Grid Items)</h3>
+            <p>فرزندان ظرف شبکه.</p>
+            <h2>ایجاد یک شبکه</h2>
+            <pre><code>.container { display: grid; grid-template-columns: repeat(3, 1fr); grid-gap: 20px; }</code></pre>
+            <h2>نتیجه‌گیری</h2>
+            <p>CSS Grid به شما ابزار قدرتمندی برای ایجاد ساختارهای پیچیده با CSS تمیز می‌دهد و در مرورگرهای مدرن پشتیبانی می‌شود.</p>
+        `,
         coverImage:
-            "/placeholder.svg?height=600&width=1200",
+            "https://tse2.mm.bing.net/th?id=OIP.mV_iCcEdN8qgDdINNOhNYQHaEK&pid=Api",
         readingTime: 8,
-        tags: ["CSS", "Web Design", "Layout"],
+        tags: ["CSS", "طراحی وب", "Layout"],
     },
     {
         id: 5,
         slug: "typescript-best-practices",
-        title: "TypeScript Best Practices",
-        author: "Michael Lee",
+        title: "بهترین شیوه‌ها در TypeScript",
+        author: "مایکل لی",
         date: "2023-08-01",
         excerpt:
-            "Explore best practices for writing clean, maintainable, and error-free TypeScript code.",
-        content:
-            "TypeScript has become increasingly popular due to its ability to add static typing to JavaScript. However, to get the most out of TypeScript, it's important to follow best practices. In this post, we'll explore some key practices to improve your TypeScript code.\n\n## Use Strict Mode\n\nEnable strict mode in your `tsconfig.json` to catch more errors:\n\n```json\n{\n  \"compilerOptions\": {\n    \"strict\": true\n  }\n}\n```\n\n## Prefer Interfaces over Type Aliases\n\nInterfaces are often more flexible and can be extended:\n\n```typescript\ninterface User {\n  name: string;\n  age: number;\n}\n```\n\n## Use Union Types\n\nUnion types allow a value to be one of several types:\n\n```typescript\ntype Result = Success | Error;\n```\n\n## Avoid `any`\n\nUse `unknown` instead of `any` when the type is not known:\n\n```typescript\nfunction processValue(value: unknown) {\n  if (typeof value === 'string') {\n    // value is treated as a string here\n  }\n}\n```\n\n## Use Generics\n\nGenerics provide more reusable and type-safe code:\n\n```typescript\nfunction identity<T>(arg: T): T {\n  return arg;\n}\n```\n\n## Conclusion\n\nBy following these best practices, you can write more robust and maintainable TypeScript code, leveraging the full power of the type system to catch errors early and improve your development experience.",
+            "بهترین شیوه‌ها برای نوشتن کدهای تمیز TypeScript را کشف کنید.",
+        content: `
+            <h2>استفاده از حالت سختگیرانه</h2>
+            <p>حالت سختگیرانه را در <code>tsconfig.json</code> فعال کنید تا خطاهای بیشتری را شناسایی کنید.</p>
+            <h2>ترجیح دادن اینترفیس‌ها به جای نوع‌ها</h2>
+            <p>اینترفیس‌ها اغلب انعطاف‌پذیرتر هستند و می‌توان آن‌ها را گسترش داد.</p>
+            <h2>استفاده از انواع ترکیبی</h2>
+            <p>انواع ترکیبی به شما اجازه می‌دهند که یک مقدار یکی از چند نوع باشد.</p>
+            <h2>اجتناب از <code>any</code></h2>
+            <p>به جای <code>any</code> از <code>unknown</code> استفاده کنید وقتی نوع ناشناخته است.</p>
+            <h2>نتیجه‌گیری</h2>
+            <p>با پیروی از این بهترین شیوه‌ها، می‌توانید کدهای TypeScript قوی‌تر و قابل نگهداری‌تری بنویسید.</p>
+        `,
         coverImage:
-            "/placeholder.svg?height=600&width=1200",
+            "https://tse2.mm.bing.net/th?id=OIP.mV_iCcEdN8qgDdINNOhNYQHaEK&pid=Api",
         readingTime: 7,
         tags: [
             "TypeScript",
             "JavaScript",
-            "Best Practices",
+            "بهترین شیوه‌ها",
         ],
     },
 ];
-
 export function getPosts() {
     return posts;
 }

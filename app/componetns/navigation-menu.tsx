@@ -48,6 +48,7 @@ import {
     AccordionTrigger,
     AccordionContent,
 } from "@/components/ui/accordion"; // فرض کنید که این کامپوننت‌های آکاردئون وجود دارند یا از کتابخانه شبیه به آن استفاده می‌کنید.
+import { ModeToggle } from "@/components/ModeToggle";
 const DynamicAccordion = ({
     courseLinks,
 }: {
