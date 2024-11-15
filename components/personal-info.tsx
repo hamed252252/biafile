@@ -247,6 +247,7 @@ export default function PersonalInfo() {
                                 نقش
                             </Label>
                             <Select
+                                dir="rtl"
                                 onValueChange={
                                     handleSelectChange
                                 }
