@@ -48,14 +48,6 @@ export default function SettingPage() {
                 <h1 className="text-2xl font-bold">
                     تنظیمات
                 </h1>
-                <div className="flex items-center gap-2">
-                    <span className="text-sm">
-                        نام کاربر
-                    </span>
-                    <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                        <User className="h-6 w-6 text-gray-600" />
-                    </div>
-                </div>
             </div>
 
             <Card
