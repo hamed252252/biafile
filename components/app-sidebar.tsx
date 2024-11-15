@@ -46,7 +46,7 @@ export function AppSidebar({
                             alt="logo of website"
                             src={logo}
                         />
-                        <h1>فرایار</h1>
+                        <h1>بیا فایل</h1>
                     </div>
                 </Link>
             </SidebarHeader>
