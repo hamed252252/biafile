@@ -12,7 +12,7 @@ export const dataOfDashboardMenu = {
         },
         {
             title: "کیف پول",
-            url: "/dashboard/wallet",
+            url: "/dashboard/wallet/credit",
             items: [
                 {
                     title: "اعتبار اصلی",
@@ -30,7 +30,7 @@ export const dataOfDashboardMenu = {
         },
         {
             title: "تاریخچه ی تراکنش ها",
-            url: "/dashboard/transactions",
+            url: "/dashboard/transactions/download",
             items: [
                 {
                     title: "دانلود تراکنش ها",
@@ -44,12 +44,8 @@ export const dataOfDashboardMenu = {
         },
         {
             title: "حساب کاربری",
-            url: "/dashboard/account",
+            url: "/dashboard/account/settings",
             items: [
-                {
-                    title: "مشخصات حساب کاربری",
-                    url: "/dashboard/account/profile",
-                },
                 {
                     title: "تنظیمات",
                     url: "/dashboard/account/settings",

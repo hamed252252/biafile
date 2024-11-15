@@ -123,7 +123,7 @@ export function AppSidebar({
                     </Avatar>
                     <div className="flex flex-col justify-center items-center mr-4">
                         <div className="text-md">
-                            useName
+                            User Name
                         </div>
                         <div className="text-sm ">
                             Email
