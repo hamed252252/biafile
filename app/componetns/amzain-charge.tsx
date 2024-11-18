@@ -37,7 +37,30 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-const rechargeData = [
+interface RechargeData {
+    date: string;
+    balance: number;
+}
+
+interface TransactionData {
+    id: number;
+    date: string;
+    description: string;
+    amount: number;
+    expiryDate: Date | null;
+}
+
+interface UsageData {
+    month: string;
+    internet: number;
+    calls: number;
+}
+
+interface CountdownProps {
+    expiryDate: Date;
+}
+
+const rechargeData: RechargeData[] = [
     { date: "فروردین", balance: 50000 },
     { date: "اردیبهشت", balance: 70000 },
     { date: "خرداد", balance: 60000 },
@@ -46,7 +69,7 @@ const rechargeData = [
     { date: "شهریور", balance: 90000 },
 ];
 
-const initialTransactionData = [
+const initialTransactionData: TransactionData[] = [
     {
         id: 1,
         date: "۱۴۰۲/۰۳/۲۵",
@@ -90,7 +113,7 @@ const initialTransactionData = [
     },
 ];
 
-const usageData = [
+const usageData: UsageData[] = [
     { month: "فروردین", internet: 4, calls: 2 },
     { month: "اردیبهشت", internet: 5, calls: 3 },
     { month: "خرداد", internet: 3, calls: 4 },
@@ -99,8 +122,13 @@ const usageData = [
     { month: "شهریور", internet: 7, calls: 5 },
 ];
 
-function Countdown({ expiryDate }: any) {
-    const [timeLeft, setTimeLeft] = useState({
+function Countdown({ expiryDate }: CountdownProps) {
+    const [timeLeft, setTimeLeft] = useState<{
+        days: number;
+        hours: number;
+        minutes: number;
+        seconds: number;
+    }>({
         days: 0,
         hours: 0,
         minutes: 0,
@@ -144,43 +172,42 @@ function Countdown({ expiryDate }: any) {
 
     return (
         <div className="grid grid-cols-4 gap-1 text-center">
-            <div className="bg-primary text-primary-foreground rounded p-1">
-                <div className="text-lg font-bold">
-                    {timeLeft.days}
-                </div>
-                <div className="text-xs">روز</div>
-            </div>
-            <div className="bg-primary text-primary-foreground rounded p-1">
-                <div className="text-lg font-bold">
-                    {timeLeft.hours}
-                </div>
-                <div className="text-xs">ساعت</div>
-            </div>
-            <div className="bg-primary text-primary-foreground rounded p-1">
-                <div className="text-lg font-bold">
-                    {timeLeft.minutes}
-                </div>
-                <div className="text-xs">دقیقه</div>
-            </div>
-            <div className="bg-primary text-primary-foreground rounded p-1">
-                <div className="text-lg font-bold">
-                    {timeLeft.seconds}
-                </div>
-                <div className="text-xs">ثانیه</div>
-            </div>
+            {["روز", "ساعت", "دقیقه", "ثانیه"].map(
+                (unit, index) => (
+                    <div
+                        key={unit}
+                        className="bg-primary text-primary-foreground rounded p-1"
+                    >
+                        <div className="text-lg font-bold">
+                            {
+                                [
+                                    timeLeft.days,
+                                    timeLeft.hours,
+                                    timeLeft.minutes,
+                                    timeLeft.seconds,
+                                ][index]
+                            }
+                        </div>
+                        <div className="text-xs">
+                            {unit}
+                        </div>
+                    </div>
+                )
+            )}
         </div>
     );
 }
 
 export default function Component() {
-    const [phoneNumber, setPhoneNumber] = useState("");
-    const [amount, setAmount] = useState("");
-    const [transactionData, setTransactionData] = useState(
-        initialTransactionData
-    );
+    const [phoneNumber, setPhoneNumber] =
+        useState<string>("");
+    const [amount, setAmount] = useState<string>("");
+    const [transactionData, setTransactionData] = useState<
+        TransactionData[]
+    >(initialTransactionData);
 
     const handleRecharge = () => {
-        const newTransaction = {
+        const newTransaction: TransactionData = {
             id: transactionData.length + 1,
             date: new Date().toLocaleDateString("fa-IR"),
             description: "شارژ جدید",
@@ -197,7 +224,6 @@ export default function Component() {
         setPhoneNumber("");
         setAmount("");
     };
-
     return (
         <div
             dir="rtl"
