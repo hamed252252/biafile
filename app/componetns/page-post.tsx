@@ -147,49 +147,10 @@ export default function PostPage({ post }: PostPageProps) {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
-            <aside className="lg:sticky lg:top-20 h-fit bg-muted rounded-lg shadow-lg p-4">
-                <div
-                    className={cn("space-y-4", {
-                        hidden: !isMenuOpen,
-                        "lg:block": true,
-                    })}
-                >
-                    <h2 className="text-lg font-semibold">
-                        در این صفحه
-                    </h2>
-                    <nav>
-                        <ul className="space-y-2">
-                            {headings.map((heading) => (
-                                <li key={heading.id}>
-                                    <Button
-                                        onClick={() => {
-                                            scrollToSection(
-                                                heading.id
-                                            );
-                                            setIsMenuOpen(
-                                                false
-                                            );
-                                        }}
-                                        variant="ghost"
-                                        className={cn(
-                                            "text-sm justify-start w-full",
-                                            activeHeading ===
-                                                heading.id
-                                                ? "text-primary font-medium"
-                                                : "text-muted-foreground hover:text-foreground",
-                                            heading.level ===
-                                                3 && "pl-4"
-                                        )}
-                                    >
-                                        {heading.text}
-                                    </Button>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
-                </div>
-            </aside>
+        <div
+            dir="rtl"
+            className="container mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-3 gap-8 relative"
+        >
             <div className="lg:col-span-2 bg-background rounded-lg shadow-lg p-6">
                 <div className="mb-6 space-y-4">
                     <div className="relative h-[400px] rounded-lg overflow-hidden">
@@ -249,6 +210,48 @@ export default function PostPage({ post }: PostPageProps) {
                     }}
                 />
             </div>
+            <aside className="lg:sticky lg:top-20 h-fit bg-muted rounded-lg shadow-lg p-4">
+                <div
+                    className={cn("space-y-4", {
+                        hidden: !isMenuOpen,
+                        "lg:block": true,
+                    })}
+                >
+                    <h2 className="text-lg font-semibold">
+                        در این صفحه
+                    </h2>
+                    <nav>
+                        <ul className="space-y-2">
+                            {headings.map((heading) => (
+                                <li key={heading.id}>
+                                    <Button
+                                        onClick={() => {
+                                            scrollToSection(
+                                                heading.id
+                                            );
+                                            setIsMenuOpen(
+                                                false
+                                            );
+                                        }}
+                                        variant="ghost"
+                                        className={cn(
+                                            "text-sm justify-start w-full",
+                                            activeHeading ===
+                                                heading.id
+                                                ? "text-primary font-medium"
+                                                : "text-muted-foreground hover:text-foreground",
+                                            heading.level ===
+                                                3 && "pl-4"
+                                        )}
+                                    >
+                                        {heading.text}
+                                    </Button>
+                                </li>
+                            ))}
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
         </div>
     );
 }
