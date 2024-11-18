@@ -5,6 +5,8 @@ import {
     FaSquarePinterest,
     FaTelegram,
     FaWhatsapp,
+    FaSquareTwitter,
+    FaFacebook,
 } from "react-icons/fa6";
 
 import samane from "@/public/footer/enamad/samane.svg";
@@ -40,11 +42,20 @@ const Footer: React.FC = () => {
         { Icon: FaTelegram, label: "Telegram" },
         { Icon: FaWhatsapp, label: "WhatsApp" },
         { Icon: FaSquarePinterest, label: "Pinterest" },
+        { Icon: FaSquareTwitter, label: "Twitter" },
+        { Icon: FaFacebook, label: "Facebook" },
     ];
 
     const quickLinks: QuickLinkProps[] = [
-        { href: "/services", label: "خدمات" },
+        { href: "/", label: "خانه" },
         { href: "/aboutus", label: "درباره ما" },
+        { href: "/blog", label: "وبلاگ" },
+        { href: "/faq", label: "سوالات متداول" },
+        {
+            href: "/privacy-policy",
+            label: "سیاست حفظ حریم خصوصی",
+        },
+        { href: "/terms", label: "شرایط و ضوابط" },
     ];
 
     return (
@@ -112,17 +123,38 @@ const FooterSection: React.FC<FooterSectionProps> = ({
 );
 
 const ContactInfo: React.FC = () => (
-    <div className="flex items-center gap-x-4">
-        <div
-            className="w-3 h-3 rounded-full bg-primary-foreground"
-            aria-hidden="true"
-        />
-        <Link
-            href="tel:+989120209248"
-            className="hover:underline"
-        >
-            تماس
-        </Link>
+    <div className="flex flex-col items-center gap-y-4">
+        <div className="flex items-center gap-x-4">
+            <div
+                className="w-3 h-3 rounded-full bg-primary-foreground"
+                aria-hidden="true"
+            />
+            <Link
+                href="tel:+989120209248"
+                className="hover:underline"
+            >
+                تماس تلفنی
+            </Link>
+        </div>
+        <div className="flex items-center gap-x-4">
+            <div
+                className="w-3 h-3 rounded-full bg-primary-foreground"
+                aria-hidden="true"
+            />
+            <Link
+                href="mailto:info@example.com"
+                className="hover:underline"
+            >
+                ایمیل: info@example.com
+            </Link>
+        </div>
+        {/* <div className="flex items-center gap-x-4">
+            <div
+                className="w-3 h-3 rounded-full bg-primary-foreground"
+                aria-hidden="true"
+            />
+            <span>آدرس: تهران، خیابان مثال، پلاک ۱</span>
+        </div> */}
     </div>
 );
 

@@ -11,6 +11,7 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import React from "react";
 import { usePathname } from "next/navigation"; // اضافه کردن usePathname
 import { dataOfDashboardMenu } from "@/lib/constants";
+import { TbLayoutSidebarRightExpandFilled } from "react-icons/tb";
 
 // داده‌های سایدبار به صورت prop به کامپوننت ارسال می‌شوند
 function HeaderOfDashboardPages() {
@@ -56,6 +57,7 @@ function HeaderOfDashboardPages() {
                         )}
                     </BreadcrumbList>
                 </Breadcrumb>
+
                 <SidebarTrigger className="-mr-1 ml-auto rotate-180" />
             </header>
         </div>

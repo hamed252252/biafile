@@ -95,7 +95,7 @@ export default function AccountBalance() {
             className="container mx-auto p-4 space-y-6 font-sans"
         >
             <h1 className="text-3xl font-bold text-center mb-6">
-                اعتبار حساب
+                اعتبار اصلی شما
             </h1>
 
             <Card>

@@ -4,6 +4,7 @@ import HeroSection from "../componetns/hero-section";
 import ClassCard from "../componetns/classCard";
 import { Rss } from "lucide-react";
 import RssComponet from "../componetns/rss";
+import UsefulLinks from "../componetns/usefull-links";
 
 // Define interfaces
 interface LessonLink {
@@ -171,6 +172,7 @@ const Home: React.FC = () => {
                 );
             })}
             <RssComponet />
+            <UsefulLinks />
         </div>
     );
 };

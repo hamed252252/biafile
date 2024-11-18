@@ -2,14 +2,7 @@
 import logoImage from "@/public/logo.svg";
 import * as React from "react";
 import Link from "next/link";
-import {
-    Book,
-    ChevronDown,
-    ChevronRight,
-    Menu,
-    Search,
-    User,
-} from "lucide-react";
+import { Menu, Search, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -38,7 +31,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
-import { MdAccountCircle } from "react-icons/md";
 import Image from "next/image";
 import { courseLinks } from "../lib/mockData";
 import { cn } from "@/lib/utils";
@@ -48,7 +40,6 @@ import {
     AccordionTrigger,
     AccordionContent,
 } from "@/components/ui/accordion"; // فرض کنید که این کامپوننت‌های آکاردئون وجود دارند یا از کتابخانه شبیه به آن استفاده می‌کنید.
-import { ModeToggle } from "@/components/ModeToggle";
 const DynamicAccordion = ({
     courseLinks,
 }: {
@@ -355,6 +346,9 @@ export default function NavigationMenuComponents() {
                                     />
                                     <Link href="/aboutus">
                                         درباره ما
+                                    </Link>
+                                    <Link href="/blog">
+                                        مجله
                                     </Link>
                                 </nav>
                             </SheetContent>

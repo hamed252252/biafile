@@ -39,9 +39,9 @@ function RssComponet() {
                                 id="email"
                                 type="email"
                                 placeholder="آدرس ایمیل خود را وارد کنید"
-                                className="pl-10 pr-4 border border-slate-400"
+                                className=" border w-96 border-slate-400"
                             />
-                            <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                            <Mail className="absolute left-2 md:left-20 top-1/2 transform -translate-y-1/2 text-gray-400" />
                         </div>
                     </div>
 

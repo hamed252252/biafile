@@ -36,6 +36,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import CountdownTimer from "./countdown-timer";
+import { toast } from "@/hooks/use-toast";
 
 const rechargeData = [
     { date: "فروردین", balance: 50000 },
@@ -106,7 +108,7 @@ export default function AmazingRecharge() {
             className="container mx-auto p-4 space-y-6 font-sans"
         >
             <h1 className="text-3xl font-bold text-center mb-6">
-                شارژ شگفت انگیز
+                اعتبار هدیه
             </h1>
 
             <Card>
@@ -151,118 +153,19 @@ export default function AmazingRecharge() {
                     </ChartContainer>
                 </CardContent>
             </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>تراکنش‌های اخیر</CardTitle>
-                    <CardDescription>
-                        پنج تراکنش آخر حساب شما
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <Table>
-                        <TableHeader>
-                            <TableRow>
-                                <TableHead className="text-right">
-                                    تاریخ
-                                </TableHead>
-                                <TableHead className="text-right">
-                                    شرح
-                                </TableHead>
-                                <TableHead className="text-left">
-                                    مبلغ (تومان)
-                                </TableHead>
-                            </TableRow>
-                        </TableHeader>
-                        <TableBody>
-                            {transactionData.map(
-                                (transaction) => (
-                                    <TableRow
-                                        key={transaction.id}
-                                    >
-                                        <TableCell className="text-right">
-                                            {
-                                                transaction.date
-                                            }
-                                        </TableCell>
-                                        <TableCell className="text-right">
-                                            {
-                                                transaction.description
-                                            }
-                                        </TableCell>
-                                        <TableCell
-                                            className={`text-left ${
-                                                transaction.amount >
-                                                0
-                                                    ? "text-green-600"
-                                                    : "text-red-600"
-                                            }`}
-                                        >
-                                            {transaction.amount.toLocaleString(
-                                                "fa-IR"
-                                            )}
-                                        </TableCell>
-                                    </TableRow>
-                                )
-                            )}
-                        </TableBody>
-                    </Table>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>
-                        مصرف اینترنت و تماس
-                    </CardTitle>
-                    <CardDescription>
-                        مقایسه مصرف اینترنت و تماس در شش ماه
-                        گذشته
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ChartContainer
-                        config={{
-                            internet: {
-                                label: "اینترنت",
-                                color: "hsl(var(--chart-1))",
-                            },
-                            calls: {
-                                label: "تماس",
-                                color: "hsl(var(--chart-2))",
-                            },
-                        }}
-                        className="h-[300px]"
-                    >
-                        <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                        >
-                            <BarChart data={usageData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="month" />
-                                <YAxis />
-                                <ChartTooltip
-                                    content={
-                                        <ChartTooltipContent />
-                                    }
-                                />
-                                <Legend />
-                                <Bar
-                                    dataKey="internet"
-                                    fill="var(--color-internet)"
-                                    name="اینترنت"
-                                />
-                                <Bar
-                                    dataKey="calls"
-                                    fill="var(--color-calls)"
-                                    name="تماس"
-                                />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </ChartContainer>
-                </CardContent>
-            </Card>
+            <div className="p-4">
+                <CountdownTimer
+                    initialMinutes={5}
+                    initialSeconds={30}
+                    onComplete={() =>
+                        toast({
+                            title: "شمارش معکوس به پایان رسید!",
+                            description:
+                                "زمان تعیین شده به اتمام رسیده است.",
+                        })
+                    }
+                />
+            </div>
         </div>
     );
 }

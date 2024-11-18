@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import ScrollToTopButton from "./componetns/ScrollToTopButton";
 import SupportButton from "./componetns/SupportButton";
-
+import { Toaster } from "@/components/ui/toaster";
 const myFont = localFont({
     src: [
         // { , path: "./fonts/IRANSansXV.woff2" },
@@ -86,6 +86,7 @@ export default function RootLayout({
                 {children}
                 <ScrollToTopButton />
                 <SupportButton />
+                <Toaster />
             </body>
         </html>
     );

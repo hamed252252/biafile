@@ -1,5 +1,5 @@
 "use client";
-
+import { motion } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -20,6 +20,7 @@ import {
     Moon,
     Camera,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export default function SettingPage() {
     const [isEditing, setIsEditing] = useState(false);
@@ -76,20 +77,43 @@ export default function SettingPage() {
                                 <h2 className="text-xl font-semibold">
                                     مشخصات حساب کاربری
                                 </h2>
-                                <Button
-                                    variant="outline"
-                                    size="sm"
+                                <motion.button
+                                    whileHover={{
+                                        scale: 1.05,
+                                    }}
+                                    whileTap={{
+                                        scale: 0.95,
+                                    }}
+                                    initial={{
+                                        opacity: 0.8,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        transition: {
+                                            duration: 0.3,
+                                        },
+                                    }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 200,
+                                        damping: 20,
+                                    }}
                                     onClick={() =>
                                         setIsEditing(
                                             !isEditing
                                         )
                                     }
+                                    className={cn(
+                                        "outline-none border rounded-md px-4 py-2 flex items-center justify-center transition-all ease-in-out duration-300 hover:bg-primary/75",
+                                        isEditing &&
+                                            "bg-primary text-white"
+                                    )}
                                 >
                                     <Pencil className="h-4 w-4 ml-2" />
                                     {isEditing
                                         ? "ذخیره"
                                         : "ویرایش"}
-                                </Button>
+                                </motion.button>
                             </div>
                             <div className="space-y-4">
                                 <div className="flex flex-col space-y-1.5">
@@ -98,7 +122,7 @@ export default function SettingPage() {
                                     </Label>
                                     <Input
                                         id="name"
-                                        value="نام کاربر"
+                                        defaultValue="نام کاربر"
                                         readOnly={
                                             !isEditing
                                         }
@@ -110,7 +134,7 @@ export default function SettingPage() {
                                     </Label>
                                     <Input
                                         id="email"
-                                        value="user@example.com"
+                                        defaultValue="user@example.com"
                                         readOnly={
                                             !isEditing
                                         }
@@ -122,7 +146,7 @@ export default function SettingPage() {
                                     </Label>
                                     <Input
                                         id="phone"
-                                        value="۰۹۱۲۳۴۵۶۷۸۹"
+                                        defaultValue="۰۹۱۲۳۴۵۶۷۸۹"
                                         readOnly={
                                             !isEditing
                                         }
@@ -135,7 +159,7 @@ export default function SettingPage() {
                                     <Input
                                         id="password"
                                         type="password"
-                                        value="********"
+                                        defaultValue="********"
                                         readOnly={
                                             !isEditing
                                         }

@@ -20,7 +20,7 @@ export default function Home() {
         <div className="space-y-12 py-8">
             <section>
                 <h2 className="text-3xl font-bold mb-6">
-                    Featured Post
+                    پست ویژه
                 </h2>
                 <Card className="overflow-hidden">
                     <div className="relative h-64 md:h-80">
@@ -86,7 +86,7 @@ export default function Home() {
 
             <section>
                 <h2 className="text-3xl font-bold mb-6">
-                    Latest Posts
+                    آخرین پست ها
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {otherPosts.map((post) => (

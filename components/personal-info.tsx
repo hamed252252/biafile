@@ -105,8 +105,8 @@ export default function PersonalInfo() {
             dir="rtl"
             className="min-h-screen bg-background flex items-center justify-center p-4"
         >
-            <Card className="w-full max-w-2xl">
-                <CardHeader className="flex flex-row items-center justify-between">
+            <Card className="w-full text-cente max-w-2xl">
+                <CardHeader className="flex flex-row text-center items-center justify-between">
                     <CardTitle className="text-2xl font-bold">
                         اطلاعات شخصی
                     </CardTitle>

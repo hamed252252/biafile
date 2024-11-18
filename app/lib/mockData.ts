@@ -21,109 +21,109 @@ export const courseLinks: {
     دبستان: {
         اول: [
             {
-                href: "/courses/elementary/first/math",
+                href: "/elementary/first/math",
                 label: "ریاضیات",
             },
             {
-                href: "/courses/elementary/first/science",
+                href: "/elementary/first/science",
                 label: "علوم",
             },
             {
-                href: "/courses/elementary/first/history",
+                href: "/elementary/first/history",
                 label: "تاریخ",
             },
             {
-                href: "/courses/elementary/first/language",
+                href: "/elementary/first/language",
                 label: "زبان‌ها",
             },
         ],
         دوم: [
             {
-                href: "/courses/elementary/second/math",
+                href: "/elementary/second/math",
                 label: "ریاضیات",
             },
             {
-                href: "/courses/elementary/second/science",
+                href: "/elementary/second/science",
                 label: "علوم",
             },
             {
-                href: "/courses/elementary/second/history",
+                href: "/elementary/second/history",
                 label: "تاریخ",
             },
             {
-                href: "/courses/elementary/second/language",
+                href: "/elementary/second/language",
                 label: "زبان‌ها",
             },
         ],
         سوم: [
             {
-                href: "/courses/elementary/third/math",
+                href: "/elementary/third/math",
                 label: "ریاضیات",
             },
             {
-                href: "/courses/elementary/third/science",
+                href: "/elementary/third/science",
                 label: "علوم",
             },
             {
-                href: "/courses/elementary/third/history",
+                href: "/elementary/third/history",
                 label: "تاریخ",
             },
             {
-                href: "/courses/elementary/third/language",
+                href: "/elementary/third/language",
                 label: "زبان‌ها",
             },
         ],
         چهارم: [
             {
-                href: "/courses/elementary/fourth/math",
+                href: "/elementary/fourth/math",
                 label: "ریاضیات",
             },
             {
-                href: "/courses/elementary/fourth/science",
+                href: "/elementary/fourth/science",
                 label: "علوم",
             },
             {
-                href: "/courses/elementary/fourth/history",
+                href: "/elementary/fourth/history",
                 label: "تاریخ",
             },
             {
-                href: "/courses/elementary/fourth/language",
+                href: "/elementary/fourth/language",
                 label: "زبان‌ها",
             },
         ],
         پنجم: [
             {
-                href: "/courses/elementary/fifth/math",
+                href: "/elementary/fifth/math",
                 label: "ریاضیات",
             },
             {
-                href: "/courses/elementary/fifth/science",
+                href: "/elementary/fifth/science",
                 label: "علوم",
             },
             {
-                href: "/courses/elementary/fifth/history",
+                href: "/elementary/fifth/history",
                 label: "تاریخ",
             },
             {
-                href: "/courses/elementary/fifth/language",
+                href: "/elementary/fifth/language",
                 label: "زبان‌ها",
             },
         ],
         ششم: [
             {
-                href: "/courses/elementary/sixth/math",
+                href: "/elementary/sixth/math",
                 label: "ریاضیات",
             },
             {
-                href: "/courses/elementary/sixth/science",
+                href: "/elementary/sixth/science",
                 label: "علوم",
             },
             {
-                href: "/courses/elementary/sixth/history",
+                href: "/elementary/sixth/history",
                 label: "تاریخ",
             },
             {
-                href: "/courses/elementary/sixth/language",
+                href: "/elementary/sixth/language",
                 label: "زبان‌ها",
             },
         ],
