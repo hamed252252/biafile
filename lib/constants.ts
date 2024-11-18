@@ -19,7 +19,7 @@ export const dataOfDashboardMenu = {
                     url: "/dashboard/wallet/credit",
                 },
                 {
-                    title: "شگفت انگیز",
+                    title: " اعتبار هدیه",
                     url: "/dashboard/wallet/special",
                 },
                 {
