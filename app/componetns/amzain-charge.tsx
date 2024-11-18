@@ -73,7 +73,7 @@ const initialTransactionData: TransactionData[] = [
     {
         id: 1,
         date: "۱۴۰۲/۰۳/۲۵",
-        description: "شارژ مستقیم",
+        description: "اعتبار مستقیم",
         amount: 20000,
         expiryDate: new Date(
             new Date().getTime() + 30 * 24 * 60 * 60 * 1000
@@ -89,7 +89,7 @@ const initialTransactionData: TransactionData[] = [
     {
         id: 3,
         date: "۱۴۰۲/۰۳/۱۵",
-        description: "شارژ شگفت انگیز",
+        description: "اعتبار هدیه",
         amount: 30000,
         expiryDate: new Date(
             new Date().getTime() + 25 * 24 * 60 * 60 * 1000
@@ -105,7 +105,7 @@ const initialTransactionData: TransactionData[] = [
     {
         id: 5,
         date: "۱۴۰۲/۰۳/۰۵",
-        description: "شارژ مستقیم",
+        description: "اعتبار مستقیم",
         amount: 10000,
         expiryDate: new Date(
             new Date().getTime() + 20 * 24 * 60 * 60 * 1000
@@ -210,7 +210,7 @@ export default function Component() {
         const newTransaction: TransactionData = {
             id: transactionData.length + 1,
             date: new Date().toLocaleDateString("fa-IR"),
-            description: "شارژ جدید",
+            description: "اعتبار جدید",
             amount: parseInt(amount),
             expiryDate: new Date(
                 new Date().getTime() +
@@ -230,14 +230,14 @@ export default function Component() {
             className="container mx-auto p-4 space-y-6 font-sans"
         >
             <h1 className="text-3xl font-bold text-center mb-6">
-                شارژ شگفت انگیز
+                اعتبار هدیه
             </h1>
 
             <Card>
                 <CardHeader>
-                    <CardTitle>موجودی شارژ</CardTitle>
+                    <CardTitle>موجودی اعتبار</CardTitle>
                     <CardDescription>
-                        روند موجودی شارژ در شش ماه گذشته
+                        روند موجودی اعتبار در شش ماه گذشته
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -404,9 +404,10 @@ export default function Component() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>شارژ جدید</CardTitle>
+                    <CardTitle>اعتبار جدید</CardTitle>
                     <CardDescription>
-                        شماره تلفن و مبلغ شارژ را وارد کنید
+                        شماره تلفن و مبلغ اعتبار را وارد
+                        کنید
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -428,7 +429,7 @@ export default function Component() {
                         </div>
                         <div>
                             <Label htmlFor="amount">
-                                مبلغ شارژ (تومان)
+                                مبلغ اعتبار (تومان)
                             </Label>
                             <Input
                                 id="amount"
@@ -438,11 +439,11 @@ export default function Component() {
                                         e.target.value
                                     )
                                 }
-                                placeholder="مبلغ شارژ را وارد کنید"
+                                placeholder="مبلغ اعتبار را وارد کنید"
                             />
                         </div>
                         <Button onClick={handleRecharge}>
-                            شارژ کن
+                            اعتبار کن
                         </Button>
                     </div>
                 </CardContent>
