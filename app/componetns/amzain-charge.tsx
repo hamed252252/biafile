@@ -176,7 +176,7 @@ function Countdown({ expiryDate }: CountdownProps) {
                 (unit, index) => (
                     <div
                         key={unit}
-                        className="bg-primary text-primary-foreground rounded p-1"
+                        className="bg-primary text-primary-foreground rounded-full p-1"
                     >
                         <div className="text-lg font-bold">
                             {
@@ -345,107 +345,6 @@ export default function Component() {
                             )}
                         </TableBody>
                     </Table>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>
-                        مصرف اینترنت و تماس
-                    </CardTitle>
-                    <CardDescription>
-                        مقایسه مصرف اینترنت و تماس در شش ماه
-                        گذشته
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ChartContainer
-                        config={{
-                            internet: {
-                                label: "اینترنت",
-                                color: "hsl(var(--chart-1))",
-                            },
-                            calls: {
-                                label: "تماس",
-                                color: "hsl(var(--chart-2))",
-                            },
-                        }}
-                        className="h-[300px]"
-                    >
-                        <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                        >
-                            <BarChart data={usageData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="month" />
-                                <YAxis />
-                                <ChartTooltip
-                                    content={
-                                        <ChartTooltipContent />
-                                    }
-                                />
-                                <Legend />
-                                <Bar
-                                    dataKey="internet"
-                                    fill="var(--color-internet)"
-                                    name="اینترنت"
-                                />
-                                <Bar
-                                    dataKey="calls"
-                                    fill="var(--color-calls)"
-                                    name="تماس"
-                                />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </ChartContainer>
-                </CardContent>
-            </Card>
-
-            <Card>
-                <CardHeader>
-                    <CardTitle>اعتبار جدید</CardTitle>
-                    <CardDescription>
-                        شماره تلفن و مبلغ اعتبار را وارد
-                        کنید
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <div className="space-y-4">
-                        <div>
-                            <Label htmlFor="phone">
-                                شماره تلفن
-                            </Label>
-                            <Input
-                                id="phone"
-                                value={phoneNumber}
-                                onChange={(e) =>
-                                    setPhoneNumber(
-                                        e.target.value
-                                    )
-                                }
-                                placeholder="شماره تلفن را وارد کنید"
-                            />
-                        </div>
-                        <div>
-                            <Label htmlFor="amount">
-                                مبلغ اعتبار (تومان)
-                            </Label>
-                            <Input
-                                id="amount"
-                                value={amount}
-                                onChange={(e) =>
-                                    setAmount(
-                                        e.target.value
-                                    )
-                                }
-                                placeholder="مبلغ اعتبار را وارد کنید"
-                            />
-                        </div>
-                        <Button onClick={handleRecharge}>
-                            اعتبار کن
-                        </Button>
-                    </div>
                 </CardContent>
             </Card>
         </div>
