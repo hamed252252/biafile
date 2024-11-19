@@ -122,7 +122,10 @@ const ListItem = React.forwardRef<
 >(({ className, title, children, ...props }, ref) => {
     return (
         <li>
-            <NavigationMenuLink asChild>
+            <NavigationMenuLink
+                className="bg-primary text-accent-foreground"
+                asChild
+            >
                 <a
                     ref={ref}
                     className={cn(
@@ -131,10 +134,10 @@ const ListItem = React.forwardRef<
                     )}
                     {...props}
                 >
-                    <div className="text-sm font-medium leading-none">
+                    <div className="text-sm font-medium leading-none text-right">
                         {title}
                     </div>
-                    <p className="line-clamp-2 text-xs leading-snug text-gray-600">
+                    <p className="line-clamp-2 text-xs leading-snug text-gray-600 text-right">
                         {children}
                     </p>
                 </a>
@@ -176,7 +179,7 @@ export default function NavigationMenuComponents() {
                     </div>
 
                     {/* منوی دسکتاپ */}
-                    <NavigationMenu className="hidden md:flex items-center border-none space-x-6 rtl:space-x-reverse bg-transparent shadow-none">
+                    <NavigationMenu className="hidden md:flex items-center">
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <Link
@@ -187,8 +190,7 @@ export default function NavigationMenuComponents() {
                                     <NavigationMenuLink
                                         className={cn(
                                             navigationMenuTriggerStyle(),
-                                            "text-lg font-semibold text-primary-foreground dark:text-muted-foreground bg-transparent hover:text-indigo-600",
-                                            hoverMenu
+                                            "text-lg font-semibold hover:text-primary bg-transparent"
                                         )}
                                     >
                                         مجله
@@ -201,66 +203,68 @@ export default function NavigationMenuComponents() {
                                 <NavigationMenuItem
                                     key={level}
                                 >
-                                    <NavigationMenuTrigger
-                                        className={cn(
-                                            "group text-lg bg-transparent font-semibold dark:text-muted-foreground text-primary-foreground hover:text-indigo-600",
-                                            hoverMenu
-                                        )}
-                                    >
+                                    <NavigationMenuTrigger className="text-lg bg-transparent font-semibold hover:text-primary">
                                         {level}
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
-                                        <ul className="grid w-[400px] gap-4 text-black p-4 md:w-[500px] md:grid-cols-3 lg:w-[600px] bg-white rounded-xl shadow-lg border border-gray-200">
-                                            {Object.entries(
-                                                grades
-                                            ).map(
-                                                ([
-                                                    grade,
-                                                    links,
-                                                ]) => (
-                                                    <li
-                                                        key={
-                                                            grade
-                                                        }
-                                                        className="row-span-3"
-                                                    >
-                                                        <div className="flex h-full w-full flex-col justify-start p-5 rounded-lg bg-gradient-to-br from-gray-50 to-gray-100 shadow-sm">
-                                                            <div className="mb-3 text-lg font-semibold text-gray-800 border-b border-gray-300 pb-2">
+                                        <div className="w-[400px] dark:bg-muted p-4 md:w-[500px] lg:w-[600px]">
+                                            <Accordion
+                                                type="single"
+                                                collapsible
+                                                className="w-full"
+                                            >
+                                                {Object.entries(
+                                                    grades
+                                                ).map(
+                                                    ([
+                                                        grade,
+                                                        links,
+                                                    ]) => (
+                                                        <AccordionItem
+                                                            value={
+                                                                grade
+                                                            }
+                                                            key={
+                                                                grade
+                                                            }
+                                                        >
+                                                            <AccordionTrigger className="text-lg font-semibold">
                                                                 {
                                                                     grade
                                                                 }
-                                                            </div>
-                                                            <ul className="space-y-2">
-                                                                {links.map(
-                                                                    ({
-                                                                        href,
-                                                                        label,
-                                                                    }) => (
-                                                                        <ListItem
-                                                                            key={
-                                                                                href
-                                                                            }
-                                                                            href={
-                                                                                href
-                                                                            }
-                                                                            title={
-                                                                                label
-                                                                            }
-                                                                        />
-                                                                    )
-                                                                )}
-                                                            </ul>
-                                                        </div>
-                                                    </li>
-                                                )
-                                            )}
-                                        </ul>
+                                                            </AccordionTrigger>
+                                                            <AccordionContent>
+                                                                <ul className="grid gap-3  p-4 md:grid-cols-2">
+                                                                    {links.map(
+                                                                        ({
+                                                                            href,
+                                                                            label,
+                                                                        }) => (
+                                                                            <ListItem
+                                                                                key={
+                                                                                    href
+                                                                                }
+                                                                                href={
+                                                                                    href
+                                                                                }
+                                                                                title={
+                                                                                    label
+                                                                                }
+                                                                            />
+                                                                        )
+                                                                    )}
+                                                                </ul>
+                                                            </AccordionContent>
+                                                        </AccordionItem>
+                                                    )
+                                                )}
+                                            </Accordion>
+                                        </div>
                                     </NavigationMenuContent>
                                 </NavigationMenuItem>
                             ))}
                         </NavigationMenuList>
                     </NavigationMenu>
-
                     {/* بخش جستجو و آیکون کاربر */}
                     <div className="hidden md:flex items-center space-x-4 rtl:space-x-reverse">
                         <form className="relative">
