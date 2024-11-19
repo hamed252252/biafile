@@ -48,12 +48,11 @@ interface ClassCardProps {
     href: string;
 }
 
-// Function to localize numbers to Persian
-const localizeNumber = (num: number | string) =>
-    num.toString().replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[+d]);
-
 const MotionCard = motion(Card);
 const MotionBadge = motion(Badge);
+
+const localizeNumber = (num: number | string) =>
+    num.toString().replace(/\d/g, (d) => "۰۱۲۳۴۵۶۷۸۹"[+d]);
 
 const localizeDate = (dateString: string) => {
     const date = new Date(dateString);
@@ -77,35 +76,36 @@ export default function ClassCard({
 }: ClassCardProps) {
     return (
         <MotionCard
-            className="relative overflow-hidden transition-all duration-300 rounded-lg bg-white shadow-lg hover:shadow-xl border border-blue-100"
+            className="relative overflow-hidden transition-all duration-300 rounded-lg bg-card text-card-foreground shadow-lg hover:shadow-xl border border-border"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.4 }}
         >
-            <CardHeader className="relative p-4 bg-blue-50 rounded-t-lg text-center">
-                <CardTitle className="text-lg font-semibold text-black flex justify-center text-center">
+            <CardHeader className="relative p-4 bg-muted rounded-t-lg text-center">
+                <CardTitle className="text-lg font-semibold flex justify-center text-center">
                     <Link
                         href={href}
-                        className="hover:text-blue-500 transition-colors duration-200"
+                        className="hover:text-primary transition-colors duration-200"
                     >
                         {localizeNumber(className)}
                     </Link>
                 </CardTitle>
-                <CardDescription className="mt-1 text-sm text-slate-700">
+                <CardDescription className="mt-1 text-sm">
                     {description
                         ? localizeNumber(description)
                         : ""}
                 </CardDescription>
             </CardHeader>
             <CardContent className="p-4">
-                <div className="text-sm text-black mb-4 flex items-center">
+                <div className="text-sm mb-4 flex items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 mr-2"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
+                        aria-hidden="true"
                     >
                         <path
                             strokeLinecap="round"
@@ -114,7 +114,7 @@ export default function ClassCard({
                             d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                         />
                     </svg>
-                    <span className="text-black ml-1">
+                    <span className="ml-1">
                         آخرین بروزرسانی:
                     </span>
                     {localizeNumber(timeAgo)}
@@ -126,14 +126,17 @@ export default function ClassCard({
                         return (
                             <motion.div
                                 key={index}
-                                className="flex items-center space-x-2 text-sm p-2 rounded-lg bg-blue-100/20 hover:text-sky-600 text-black"
+                                className="flex items-center space-x-2 text-sm p-2 rounded-lg bg-muted hover:text-primary"
                                 whileHover={{ scale: 1.05 }}
                                 transition={{
                                     type: "spring",
                                     stiffness: 300,
                                 }}
                             >
-                                <IconComponent className="h-5 w-5" />
+                                <IconComponent
+                                    className="h-5 w-5"
+                                    aria-hidden="true"
+                                />
                                 <span>
                                     {stat.label}:{" "}
                                     <strong>
@@ -151,7 +154,7 @@ export default function ClassCard({
                         <MotionBadge
                             key={index}
                             variant="secondary"
-                            className="hover:bg-blue-200 hover:text-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 bg-blue-100 text-black"
+                            className="hover:bg-primary/20 hover:text-primary transition-all duration-300 ease-in-out transform hover:scale-105"
                             whileTap={{ scale: 0.95 }}
                         >
                             <Link
@@ -164,23 +167,24 @@ export default function ClassCard({
                     ))}
                 </div>
             </CardContent>
-            <CardFooter className="p-4 bg-blue-50 rounded-b-lg">
+            <CardFooter className="p-4 bg-muted rounded-b-lg">
                 <Button
                     variant="secondary"
-                    className="w-full group bg-blue-300 flex justify-center border-blue-300 text-black hover:bg-blue-500 hover:text-white transition-all"
+                    className="w-full group flex justify-center text-primary-foreground hover:bg-primary hover:text-primary-foreground transition-all"
                     asChild
                 >
                     <Link
                         href={href}
-                        className="flex items-center justify-center"
+                        className="flex items-center justify-center dark:bg-primary dark:text-muted"
                     >
                         دیدن جزپیات
                         <motion.svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 ml-2 transition-transform duration-300  group-hover:translate-x-1"
+                            className="h-4 w-4 ml-2 transition-transform duration-300 group-hover:translate-x-1"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
+                            aria-hidden="true"
                         >
                             <path
                                 strokeLinecap="round"

@@ -153,7 +153,7 @@ export default function NavigationMenuComponents() {
         React.useState(false);
 
     return (
-        <nav className="bg-primary text-primary-foreground rtl font-sans">
+        <nav className="bg-primary dark:bg-muted dark:text-muted-foreground text-primary-foreground rtl font-sans">
             <div className="container mx-auto px-4">
                 <div className="flex items-center justify-between h-16">
                     {/* بخش لوگو */}
@@ -187,7 +187,7 @@ export default function NavigationMenuComponents() {
                                     <NavigationMenuLink
                                         className={cn(
                                             navigationMenuTriggerStyle(),
-                                            "text-lg font-semibold text-primary-foreground bg-transparent hover:text-indigo-600",
+                                            "text-lg font-semibold text-primary-foreground dark:text-muted-foreground bg-transparent hover:text-indigo-600",
                                             hoverMenu
                                         )}
                                     >
@@ -203,7 +203,7 @@ export default function NavigationMenuComponents() {
                                 >
                                     <NavigationMenuTrigger
                                         className={cn(
-                                            "group text-lg bg-transparent font-semibold text-primary-foreground hover:text-indigo-600",
+                                            "group text-lg bg-transparent font-semibold dark:text-muted-foreground text-primary-foreground hover:text-indigo-600",
                                             hoverMenu
                                         )}
                                     >

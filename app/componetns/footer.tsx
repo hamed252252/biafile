@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { useTheme } from "next-themes";
 import {
     FaSquareInstagram,
     FaSquarePinterest,
@@ -15,6 +18,7 @@ import neshan from "@/public/footer/enamad/neshan.svg";
 interface SocialIconProps {
     Icon: React.ElementType;
     label: string;
+    href: string;
 }
 
 interface QuickLinkProps {
@@ -28,40 +32,50 @@ interface FooterSectionProps {
     children?: React.ReactNode;
 }
 
-interface SocialIconsProps {
-    icons: SocialIconProps[];
-}
+const socialIcons: SocialIconProps[] = [
+    {
+        Icon: FaSquareInstagram,
+        label: "Instagram",
+        href: "#",
+    },
+    { Icon: FaTelegram, label: "Telegram", href: "#" },
+    { Icon: FaWhatsapp, label: "WhatsApp", href: "#" },
+    {
+        Icon: FaSquarePinterest,
+        label: "Pinterest",
+        href: "#",
+    },
+    { Icon: FaSquareTwitter, label: "Twitter", href: "#" },
+    { Icon: FaFacebook, label: "Facebook", href: "#" },
+];
 
-interface QuickLinksProps {
-    links: QuickLinkProps[];
-}
+const quickLinks: QuickLinkProps[] = [
+    { href: "/", label: "خانه" },
+    { href: "/aboutus", label: "درباره ما" },
+    { href: "/blog", label: "وبلاگ" },
+    { href: "/faq", label: "سوالات متداول" },
+    {
+        href: "/privacy-policy",
+        label: "سیاست حفظ حریم خصوصی",
+    },
+    { href: "/terms", label: "شرایط و ضوابط" },
+];
 
-const Footer: React.FC = () => {
-    const socialIcons: SocialIconProps[] = [
-        { Icon: FaSquareInstagram, label: "Instagram" },
-        { Icon: FaTelegram, label: "Telegram" },
-        { Icon: FaWhatsapp, label: "WhatsApp" },
-        { Icon: FaSquarePinterest, label: "Pinterest" },
-        { Icon: FaSquareTwitter, label: "Twitter" },
-        { Icon: FaFacebook, label: "Facebook" },
-    ];
-
-    const quickLinks: QuickLinkProps[] = [
-        { href: "/", label: "خانه" },
-        { href: "/aboutus", label: "درباره ما" },
-        { href: "/blog", label: "وبلاگ" },
-        { href: "/faq", label: "سوالات متداول" },
-        {
-            href: "/privacy-policy",
-            label: "سیاست حفظ حریم خصوصی",
-        },
-        { href: "/terms", label: "شرایط و ضوابط" },
-    ];
+export default function Footer() {
+    const { theme } = useTheme();
 
     return (
-        <footer className="bg-gradient-to-r from-primary to-primary/80 text-primary-foreground">
+        <footer
+            className={`${
+                theme === "light" ? "bg-gray-200" : "" // Add a class for the light theme
+            } ${
+                theme === "dark"
+                    ? "dark:bg-muted text-muted-foreground"
+                    : ""
+            } text-primary-foreground`}
+        >
             {/* Desktop Footer */}
-            <div className="hidden md:flex justify-center p-10">
+            <div className="hidden md:flex justify-center p-10 dark:text-muted-foreground">
                 <div className="flex gap-x-8 w-full max-w-7xl">
                     <FooterSection
                         title="تماس با ما"
@@ -103,7 +117,7 @@ const Footer: React.FC = () => {
             </div>
         </footer>
     );
-};
+}
 
 const FooterSection: React.FC<FooterSectionProps> = ({
     title,
@@ -124,41 +138,36 @@ const FooterSection: React.FC<FooterSectionProps> = ({
 
 const ContactInfo: React.FC = () => (
     <div className="flex flex-col items-center gap-y-4">
-        <div className="flex items-center gap-x-4">
-            <div
-                className="w-3 h-3 rounded-full bg-primary-foreground"
-                aria-hidden="true"
-            />
-            <Link
-                href="tel:+989120209248"
-                className="hover:underline"
-            >
-                تماس تلفنی
-            </Link>
-        </div>
-        <div className="flex items-center gap-x-4">
-            <div
-                className="w-3 h-3 rounded-full bg-primary-foreground"
-                aria-hidden="true"
-            />
-            <Link
-                href="mailto:info@example.com"
-                className="hover:underline"
-            >
-                ایمیل: info@example.com
-            </Link>
-        </div>
-        {/* <div className="flex items-center gap-x-4">
-            <div
-                className="w-3 h-3 rounded-full bg-primary-foreground"
-                aria-hidden="true"
-            />
-            <span>آدرس: تهران، خیابان مثال، پلاک ۱</span>
-        </div> */}
+        <ContactItem
+            href="tel:+989120209248"
+            label="تماس تلفنی"
+        />
+        <ContactItem
+            href="mailto:info@example.com"
+            label="ایمیل: info@example.com"
+        />
     </div>
 );
 
-const QuickLinks: React.FC<QuickLinksProps> = ({
+const ContactItem: React.FC<{
+    href: string;
+    label: string;
+}> = ({ href, label }) => (
+    <div className="flex items-center gap-x-4">
+        <div
+            className="w-3 h-3 rounded-full bg-primary-foreground"
+            aria-hidden="true"
+        />
+        <Link
+            href={href}
+            className="hover:underline"
+        >
+            {label}
+        </Link>
+    </div>
+);
+
+const QuickLinks: React.FC<{ links: QuickLinkProps[] }> = ({
     links,
 }) => (
     <>
@@ -182,14 +191,14 @@ const QuickLinks: React.FC<QuickLinksProps> = ({
     </>
 );
 
-const SocialIcons: React.FC<SocialIconsProps> = ({
-    icons,
-}) => (
+const SocialIcons: React.FC<{
+    icons: SocialIconProps[];
+}> = ({ icons }) => (
     <div className="flex justify-center gap-x-4">
-        {icons.map(({ Icon, label }) => (
+        {icons.map(({ Icon, label, href }) => (
             <Link
                 key={label}
-                href="#"
+                href={href}
                 aria-label={label}
             >
                 <Icon className="size-10" />
@@ -214,5 +223,3 @@ const TrustLogos: React.FC = () => (
         />
     </div>
 );
-
-export default Footer;
