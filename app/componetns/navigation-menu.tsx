@@ -59,9 +59,9 @@ const DynamicAccordion = ({
                     <AccordionItem
                         key={level}
                         value={level}
-                        className="border-b border-gray-200"
+                        className=" dark:text-accent-foreground"
                     >
-                        <AccordionTrigger className="flex items-center justify-between font-bold text-lg py-3 px-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-all">
+                        <AccordionTrigger className="flex items-center justify-between font-bold text-lg py-3 px-4 bg-transparent hover:bg-gray-100 dark:hover:bg-primary/70 rounded-lg transition-all">
                             <span>{level}</span>
                         </AccordionTrigger>
                         <AccordionContent className="pl-6 mt-2">
@@ -75,7 +75,7 @@ const DynamicAccordion = ({
                                         <AccordionItem
                                             value={grade}
                                         >
-                                            <AccordionTrigger className="flex items-center justify-between font-medium text-base py-2 px-3 hover:bg-gray-100 rounded-md transition-all">
+                                            <AccordionTrigger className="flex items-center justify-between font-medium text-base py-2 px-3 bg-transparent hover:bg-gray-100 dark:hover:bg-primary/70  rounded-md transition-all">
                                                 <span>
                                                     {grade}
                                                 </span>
@@ -177,8 +177,6 @@ export default function NavigationMenuComponents() {
 
                     {/* منوی دسکتاپ */}
                     <NavigationMenu className="hidden md:flex items-center border-none space-x-6 rtl:space-x-reverse bg-transparent shadow-none">
-                        <ThemeToggle />
-
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <Link
@@ -273,6 +271,8 @@ export default function NavigationMenuComponents() {
                             />
                             <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
                         </form>
+                        <ThemeToggle />
+
                         <div dir="rtl">
                             <DropdownMenu>
                                 <DropdownMenuTrigger
@@ -302,6 +302,7 @@ export default function NavigationMenuComponents() {
                                                 تنظیمات
                                             </Link>
                                         </DropdownMenuItem>
+
                                         <DropdownMenuItem>
                                             <Link href="/logout">
                                                 خروج
@@ -314,7 +315,7 @@ export default function NavigationMenuComponents() {
                     </div>
 
                     {/* منوی موبایل با Sheet */}
-                    <div className="md:hidden rtl:flex-row-reverse">
+                    <div className="md:hidden rtl:flex-row-reverse ">
                         <Sheet
                             modal
                             open={isOpen}
@@ -324,14 +325,14 @@ export default function NavigationMenuComponents() {
                                 <Button
                                     variant="ghost"
                                     size="icon"
-                                    className="text-primary-foreground"
+                                    className="text-primary-foreground dark:text-white"
                                 >
                                     <Menu className="h-8 w-8" />
                                 </Button>
                             </SheetTrigger>
                             <SheetContent
                                 side="right"
-                                className="w-[300px] sm:w-[400px] rtl"
+                                className="w-[300px] sm:w-[400px] rtl  dark:text-white"
                             >
                                 <form className="relative mt-5">
                                     <Input
@@ -353,6 +354,7 @@ export default function NavigationMenuComponents() {
                                     <Link href="/blog">
                                         مجله
                                     </Link>
+                                    <ThemeToggle />
                                 </nav>
                             </SheetContent>
                         </Sheet>

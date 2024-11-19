@@ -12,6 +12,7 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { cn } from "@/lib/utils";
 
 export function ThemeToggle() {
     const { theme, setTheme } = useTheme();
@@ -22,7 +23,7 @@ export function ThemeToggle() {
                 <Button
                     variant="outline"
                     size="icon"
-                    className="relative w-10 h-10 rounded-full"
+                    className="relative w-10 h-10 rounded-full dark:bg-white"
                 >
                     <AnimatePresence
                         mode="wait"
@@ -36,35 +37,78 @@ export function ThemeToggle() {
                             transition={{ duration: 0.2 }}
                         >
                             {theme === "light" && (
-                                <Sun className="h-[1.2rem] w-[1.2rem]" />
+                                <Sun
+                                    className={cn(
+                                        "h-4 w-4",
+                                        theme ? "dark" : "",
+                                        "stroke-black"
+                                    )}
+                                />
                             )}
                             {theme === "dark" && (
-                                <Moon className="h-[1.2rem] w-[1.2rem]" />
+                                <Moon
+                                    className={cn(
+                                        "h-4 w-4",
+                                        theme
+                                            ? "dark"
+                                            : "stroke-white bg-white",
+                                        "stroke-black"
+                                    )}
+                                />
                             )}
                             {theme === "system" && (
-                                <Laptop className="h-[1.2rem] w-[1.2rem]" />
+                                <Laptop
+                                    className={cn(
+                                        "h-4 w-4",
+                                        theme
+                                            ? "dark"
+                                            : "stroke-white",
+                                        "stroke-black"
+                                    )}
+                                />
                             )}
                         </motion.div>
                     </AnimatePresence>
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent
+                className="bg-white dark:bg-accent"
+                align="end"
+            >
                 <DropdownMenuItem
                     onClick={() => setTheme("light")}
                 >
-                    <Sun className="mr-2 h-4 w-4" />
+                    <Sun
+                        className={cn(
+                            "mr-2 h-4 w-4",
+                            theme ? "dark" : "stroke-white",
+                            "stroke-black"
+                        )}
+                    />
                     <span>Light</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() => setTheme("dark")}
                 >
-                    <Moon className="mr-2 h-4 w-4" />
+                    <Moon
+                        className={cn(
+                            "mr-2 h-4 w-4",
+                            theme ? "dark" : "stroke-white",
+                            "stroke-black"
+                        )}
+                    />
                     <span>Dark</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() => setTheme("system")}
                 >
-                    <Laptop className="mr-2 h-4 w-4" />
+                    <Laptop
+                        className={cn(
+                            "mr-2 h-4 w-4",
+                            theme ? "dark" : "stroke-white",
+                            "stroke-black"
+                        )}
+                    />
                     <span>System</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
