@@ -170,7 +170,7 @@ export default function ClassCard({
             <CardFooter className="p-4 bg-muted rounded-b-lg">
                 <Button
                     variant="secondary"
-                    className="w-full group flex justify-center text-primary-foreground hover:bg-primary hover:text-primary-foreground transition-all"
+                    className="w-full group flex justify-center bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground transition-all"
                     asChild
                 >
                     <Link

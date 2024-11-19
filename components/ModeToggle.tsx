@@ -72,7 +72,7 @@ export function ThemeToggle() {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
-                className="bg-white dark:bg-accent"
+                className="bg-white dark:bg-background"
                 align="end"
             >
                 <DropdownMenuItem
@@ -80,36 +80,42 @@ export function ThemeToggle() {
                 >
                     <Sun
                         className={cn(
-                            "mr-2 h-4 w-4",
-                            theme ? "dark" : "stroke-white",
-                            "stroke-black"
+                            "mr-2 h-4 w-4 ",
+                            theme === "dark" &&
+                                "stroke-white",
+                            theme === "light" &&
+                                "stroke-black"
                         )}
                     />
-                    <span>Light</span>
+                    <span>روشن</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() => setTheme("dark")}
                 >
                     <Moon
                         className={cn(
-                            "mr-2 h-4 w-4",
-                            theme ? "dark" : "stroke-white",
-                            "stroke-black"
+                            "mr-2 h-4 w-4 ",
+                            theme === "dark" &&
+                                "stroke-white",
+                            theme === "light" &&
+                                "stroke-black"
                         )}
                     />
-                    <span>Dark</span>
+                    <span>تاریک</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem
                     onClick={() => setTheme("system")}
                 >
                     <Laptop
                         className={cn(
-                            "mr-2 h-4 w-4",
-                            theme ? "dark" : "stroke-white",
-                            "stroke-black"
+                            "mr-2 h-4 w-4 ",
+                            theme === "dark" &&
+                                "stroke-white",
+                            theme === "light" &&
+                                "stroke-black"
                         )}
                     />
-                    <span>System</span>
+                    <span>سیستم</span>
                 </DropdownMenuItem>
             </DropdownMenuContent>
         </DropdownMenu>

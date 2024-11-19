@@ -2,21 +2,22 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTheme } from "next-themes";
 import {
-    FaSquareInstagram,
-    FaSquarePinterest,
-    FaTelegram,
-    FaWhatsapp,
-    FaSquareTwitter,
-    FaFacebook,
-} from "react-icons/fa6";
+    FaInstagramSquare,
+    FaPinterestSquare,
+    FaTelegramPlane,
+    FaWhatsappSquare,
+    FaTwitterSquare,
+    FaFacebookSquare,
+} from "react-icons/fa";
 
 import samane from "@/public/footer/enamad/samane.svg";
 import neshan from "@/public/footer/enamad/neshan.svg";
 
+import type { ReactNode, ElementType } from "react";
+
 interface SocialIconProps {
-    Icon: React.ElementType;
+    Icon: ElementType;
     label: string;
     href: string;
 }
@@ -29,24 +30,32 @@ interface QuickLinkProps {
 interface FooterSectionProps {
     title: string;
     href?: string;
-    children?: React.ReactNode;
+    children?: ReactNode;
 }
 
 const socialIcons: SocialIconProps[] = [
     {
-        Icon: FaSquareInstagram,
+        Icon: FaInstagramSquare,
         label: "Instagram",
         href: "#",
     },
-    { Icon: FaTelegram, label: "Telegram", href: "#" },
-    { Icon: FaWhatsapp, label: "WhatsApp", href: "#" },
+    { Icon: FaTelegramPlane, label: "Telegram", href: "#" },
     {
-        Icon: FaSquarePinterest,
+        Icon: FaWhatsappSquare,
+        label: "WhatsApp",
+        href: "#",
+    },
+    {
+        Icon: FaPinterestSquare,
         label: "Pinterest",
         href: "#",
     },
-    { Icon: FaSquareTwitter, label: "Twitter", href: "#" },
-    { Icon: FaFacebook, label: "Facebook", href: "#" },
+    { Icon: FaTwitterSquare, label: "Twitter", href: "#" },
+    {
+        Icon: FaFacebookSquare,
+        label: "Facebook",
+        href: "#",
+    },
 ];
 
 const quickLinks: QuickLinkProps[] = [
@@ -62,20 +71,10 @@ const quickLinks: QuickLinkProps[] = [
 ];
 
 export default function Footer() {
-    const { theme } = useTheme();
-
     return (
-        <footer
-            className={`${
-                theme === "light" ? "bg-gray-200" : "" // Add a class for the light theme
-            } ${
-                theme === "dark"
-                    ? "dark:bg-muted text-muted-foreground"
-                    : ""
-            } text-primary-foreground`}
-        >
+        <footer className="bg-gray-200 bg-primary dark:bg-muted dark:text-white text-primary-foreground">
             {/* Desktop Footer */}
-            <div className="hidden md:flex justify-center p-10 dark:text-muted-foreground">
+            <div className="hidden md:flex justify-center p-10">
                 <div className="flex gap-x-8 w-full max-w-7xl">
                     <FooterSection
                         title="تماس با ما"
@@ -201,7 +200,7 @@ const SocialIcons: React.FC<{
                 href={href}
                 aria-label={label}
             >
-                <Icon className="size-10" />
+                <Icon size={40} />
             </Link>
         ))}
     </div>
