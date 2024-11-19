@@ -21,11 +21,6 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart";
-import {
     Table,
     TableBody,
     TableCell,
@@ -36,6 +31,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs";
 
 interface RechargeData {
     date: string;
@@ -176,9 +177,9 @@ function Countdown({ expiryDate }: CountdownProps) {
                 (unit, index) => (
                     <div
                         key={unit}
-                        className="bg-primary text-primary-foreground rounded-full p-1"
+                        className="bg-primary text-xs text-primary-foreground rounded-full p-1.5"
                     >
-                        <div className="text-lg font-bold">
+                        <div className="text-xs flex justify-center items-center font-bold">
                             {
                                 [
                                     timeLeft.days,
@@ -188,7 +189,7 @@ function Countdown({ expiryDate }: CountdownProps) {
                                 ][index]
                             }
                         </div>
-                        <div className="text-xs">
+                        <div className="text-[0.5rem] flex justify-center items-center">
                             {unit}
                         </div>
                     </div>
@@ -207,6 +208,10 @@ export default function Component() {
     >(initialTransactionData);
 
     const handleRecharge = () => {
+        if (!phoneNumber || !amount) {
+            alert("لطفا شماره تلفن و مبلغ را وارد کنید");
+            return;
+        }
         const newTransaction: TransactionData = {
             id: transactionData.length + 1,
             date: new Date().toLocaleDateString("fa-IR"),
@@ -224,6 +229,7 @@ export default function Component() {
         setPhoneNumber("");
         setAmount("");
     };
+
     return (
         <div
             dir="rtl"
@@ -241,38 +247,24 @@ export default function Component() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <ChartContainer
-                        config={{
-                            balance: {
-                                label: "موجودی",
-                                color: "hsl(var(--chart-1))",
-                            },
-                        }}
-                        className="h-[300px]"
+                    <ResponsiveContainer
+                        width="100%"
+                        height={300}
                     >
-                        <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                        >
-                            <LineChart data={rechargeData}>
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="date" />
-                                <YAxis />
-                                <ChartTooltip
-                                    content={
-                                        <ChartTooltipContent />
-                                    }
-                                />
-                                <Legend />
-                                <Line
-                                    type="monotone"
-                                    dataKey="balance"
-                                    stroke="var(--color-balance)"
-                                    name="موجودی"
-                                />
-                            </LineChart>
-                        </ResponsiveContainer>
-                    </ChartContainer>
+                        <LineChart data={rechargeData}>
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="date" />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <Line
+                                type="monotone"
+                                dataKey="balance"
+                                stroke="#8884d8"
+                                name="موجودی"
+                            />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </CardContent>
             </Card>
 
@@ -329,7 +321,7 @@ export default function Component() {
                                                 "fa-IR"
                                             )}
                                         </TableCell>
-                                        <TableCell className="text-center">
+                                        <TableCell className="text-center ">
                                             {transaction.expiryDate ? (
                                                 <Countdown
                                                     expiryDate={

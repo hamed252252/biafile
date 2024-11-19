@@ -4,6 +4,7 @@ import "./globals.css";
 import ScrollToTopButton from "./componetns/ScrollToTopButton";
 import SupportButton from "./componetns/SupportButton";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "next-themes";
 const myFont = localFont({
     src: [
         // { , path: "./fonts/IRANSansXV.woff2" },
@@ -80,13 +81,21 @@ export default function RootLayout({
         <html
             lang="fa-ir"
             dir="rtl"
+            suppressHydrationWarning
         >
             <body className={` ${myFont.className}   `}>
-                {/* محتوای صفحه */}
-                {children}
-                <ScrollToTopButton />
-                <SupportButton />
-                <Toaster />
+                <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                >
+                    {/* محتوای صفحه */}
+                    {children}
+                    <ScrollToTopButton />
+                    <SupportButton />
+                    <Toaster />
+                </ThemeProvider>
             </body>
         </html>
     );

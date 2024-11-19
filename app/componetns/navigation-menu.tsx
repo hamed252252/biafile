@@ -40,6 +40,7 @@ import {
     AccordionTrigger,
     AccordionContent,
 } from "@/components/ui/accordion"; // فرض کنید که این کامپوننت‌های آکاردئون وجود دارند یا از کتابخانه شبیه به آن استفاده می‌کنید.
+import { ThemeToggle } from "@/components/ModeToggle";
 const DynamicAccordion = ({
     courseLinks,
 }: {
@@ -176,6 +177,8 @@ export default function NavigationMenuComponents() {
 
                     {/* منوی دسکتاپ */}
                     <NavigationMenu className="hidden md:flex items-center border-none space-x-6 rtl:space-x-reverse bg-transparent shadow-none">
+                        <ThemeToggle />
+
                         <NavigationMenuList>
                             <NavigationMenuItem>
                                 <Link
@@ -389,7 +392,7 @@ export default function NavigationMenuComponents() {
                                     aria-labelledby="options-menu"
                                 >
                                     <Link
-                                        href="/profile"
+                                        href="/dashboard"
                                         className="block px-4 py-2 text-sm hover:bg-muted"
                                         onClick={() =>
                                             setIsOpenAvatar(
@@ -400,7 +403,7 @@ export default function NavigationMenuComponents() {
                                         حساب کاربری
                                     </Link>
                                     <Link
-                                        href="/settings"
+                                        href="/dashboard/settings"
                                         className="block px-4 py-2 text-sm hover:bg-muted"
                                         onClick={() =>
                                             setIsOpenAvatar(

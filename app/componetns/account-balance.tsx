@@ -21,11 +21,6 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import {
-    ChartContainer,
-    ChartTooltip,
-    ChartTooltipContent,
-} from "@/components/ui/chart";
-import {
     Table,
     TableBody,
     TableCell,
@@ -33,8 +28,21 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
+import {
+    Tabs,
+    TabsContent,
+    TabsList,
+    TabsTrigger,
+} from "@/components/ui/tabs";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
-// Sample data for the charts and table
+// Sample data (unchanged from the original)
 const balanceData = [
     { date: "فروردین", balance: 5000 },
     { date: "اردیبهشت", balance: 5500 },
@@ -86,60 +94,112 @@ const incomeVsExpenseData = [
     { month: "شهریور", income: 5000, expense: 4500 },
 ];
 
-export default function AccountBalance() {
-    const [activeTab, setActiveTab] = useState("balance");
+export default function Component() {
+    const [timeRange, setTimeRange] = useState("6m");
 
     return (
         <div
             dir="rtl"
-            className="container mx-auto p-4 space-y-6 font-sans"
+            className="container mx-auto p-4 space-y-6"
         >
             <h1 className="text-3xl font-bold text-center mb-6">
                 اعتبار اصلی شما
             </h1>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>موجودی حساب</CardTitle>
-                    <CardDescription>
-                        روند موجودی حساب در شش ماه گذشته
-                    </CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <ChartContainer
-                        config={{
-                            balance: {
-                                label: "موجودی",
-                                color: "hsl(var(--chart-1))",
-                            },
-                        }}
-                        className="h-[300px]"
-                    >
+            <div className="flex justify-end">
+                <Select
+                    defaultValue={timeRange}
+                    onValueChange={setTimeRange}
+                >
+                    <SelectTrigger className="w-[180px]">
+                        <SelectValue placeholder="انتخاب بازه زمانی" />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="1m">
+                            ۱ ماه گذشته
+                        </SelectItem>
+                        <SelectItem value="3m">
+                            ۳ ماه گذشته
+                        </SelectItem>
+                        <SelectItem value="6m">
+                            ۶ ماه گذشته
+                        </SelectItem>
+                        <SelectItem value="1y">
+                            ۱ سال گذشته
+                        </SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
+
+            <div className="grid gap-6 md:grid-cols-2">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>موجودی حساب</CardTitle>
+                        <CardDescription>
+                            روند موجودی حساب در بازه زمانی
+                            انتخاب شده
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
                         <ResponsiveContainer
                             width="100%"
-                            height="100%"
+                            height={300}
                         >
                             <LineChart data={balanceData}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="date" />
                                 <YAxis />
-                                <ChartTooltip
-                                    content={
-                                        <ChartTooltipContent />
-                                    }
-                                />
+                                <Tooltip />
                                 <Legend />
                                 <Line
                                     type="monotone"
                                     dataKey="balance"
-                                    stroke="var(--color-balance)"
+                                    stroke="#8884d8"
                                     name="موجودی"
                                 />
                             </LineChart>
                         </ResponsiveContainer>
-                    </ChartContainer>
-                </CardContent>
-            </Card>
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>
+                            درآمد در مقابل هزینه
+                        </CardTitle>
+                        <CardDescription>
+                            مقایسه درآمد و هزینه در بازه
+                            زمانی انتخاب شده
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <ResponsiveContainer
+                            width="100%"
+                            height={300}
+                        >
+                            <BarChart
+                                data={incomeVsExpenseData}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="month" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Bar
+                                    dataKey="income"
+                                    fill="#8884d8"
+                                    name="درآمد"
+                                />
+                                <Bar
+                                    dataKey="expense"
+                                    fill="#82ca9d"
+                                    name="هزینه"
+                                />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </CardContent>
+                </Card>
+            </div>
 
             <Card>
                 <CardHeader>
@@ -201,56 +261,33 @@ export default function AccountBalance() {
 
             <Card>
                 <CardHeader>
-                    <CardTitle>
-                        درآمد در مقابل هزینه
-                    </CardTitle>
-                    <CardDescription>
-                        مقایسه درآمد و هزینه در شش ماه گذشته
-                    </CardDescription>
+                    <CardTitle>تحلیل مالی</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <ChartContainer
-                        config={{
-                            income: {
-                                label: "درآمد",
-                                color: "hsl(var(--chart-1))",
-                            },
-                            expense: {
-                                label: "هزینه",
-                                color: "hsl(var(--chart-2))",
-                            },
-                        }}
-                        className="h-[300px]"
-                    >
-                        <ResponsiveContainer
-                            width="100%"
-                            height="100%"
-                        >
-                            <BarChart
-                                data={incomeVsExpenseData}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="month" />
-                                <YAxis />
-                                <ChartTooltip
-                                    content={
-                                        <ChartTooltipContent />
-                                    }
-                                />
-                                <Legend />
-                                <Bar
-                                    dataKey="income"
-                                    fill="var(--color-income)"
-                                    name="درآمد"
-                                />
-                                <Bar
-                                    dataKey="expense"
-                                    fill="var(--color-expense)"
-                                    name="هزینه"
-                                />
-                            </BarChart>
-                        </ResponsiveContainer>
-                    </ChartContainer>
+                    <Tabs defaultValue="income">
+                        <TabsList className="grid w-full grid-cols-2">
+                            <TabsTrigger value="income">
+                                درآمد
+                            </TabsTrigger>
+                            <TabsTrigger value="expense">
+                                هزینه
+                            </TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="income">
+                            <p className="text-sm text-muted-foreground mt-4">
+                                بیشترین منبع درآمد شما در
+                                ماه گذشته: واریز حقوق (۶۰٪
+                                کل درآمد)
+                            </p>
+                        </TabsContent>
+                        <TabsContent value="expense">
+                            <p className="text-sm text-muted-foreground mt-4">
+                                بیشترین هزینه شما در ماه
+                                گذشته: خرید مواد غذایی (۳۰٪
+                                کل هزینه‌ها)
+                            </p>
+                        </TabsContent>
+                    </Tabs>
                 </CardContent>
             </Card>
         </div>
