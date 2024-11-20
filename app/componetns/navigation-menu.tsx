@@ -207,7 +207,7 @@ export default function NavigationMenuComponents() {
                                         {level}
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
-                                        <div className="w-[400px] bg-muted text-primary dark:bg-muted p-4 md:w-[500px] lg:w-[600px]">
+                                        <div className="w-[400px] bg-background text-primary dark:bg-muted p-4 md:w-[500px] lg:w-[600px]">
                                             <Accordion
                                                 type="single"
                                                 collapsible
