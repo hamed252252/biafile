@@ -52,14 +52,14 @@ const DynamicAccordion = ({
     return (
         <Accordion
             type="multiple"
-            className="w-full"
+            className="w-full bg-white"
         >
             {Object.entries(courseLinks).map(
                 ([level, grades]) => (
                     <AccordionItem
                         key={level}
                         value={level}
-                        className=" dark:text-accent-foreground"
+                        className=" bg-white text-foreground dark:text-accent-foreground"
                     >
                         <AccordionTrigger className="flex items-center justify-between font-bold text-lg py-3 px-4 bg-transparent hover:bg-gray-100 dark:hover:bg-primary/70 rounded-lg transition-all">
                             <span>{level}</span>
@@ -80,7 +80,7 @@ const DynamicAccordion = ({
                                                     {grade}
                                                 </span>
                                             </AccordionTrigger>
-                                            <AccordionContent>
+                                            <AccordionContent className="bg-white">
                                                 <div className="flex flex-col ml-4 gap-3 mt-2">
                                                     {links.map(
                                                         ({
@@ -123,7 +123,7 @@ const ListItem = React.forwardRef<
     return (
         <li>
             <NavigationMenuLink
-                className="bg-primary text-accent-foreground"
+                className="bg-primary text-primary-foreground  dark:text-accent-foreground"
                 asChild
             >
                 <a
@@ -207,7 +207,7 @@ export default function NavigationMenuComponents() {
                                         {level}
                                     </NavigationMenuTrigger>
                                     <NavigationMenuContent>
-                                        <div className="w-[400px] dark:bg-muted p-4 md:w-[500px] lg:w-[600px]">
+                                        <div className="w-[400px] bg-muted text-primary dark:bg-muted p-4 md:w-[500px] lg:w-[600px]">
                                             <Accordion
                                                 type="single"
                                                 collapsible
