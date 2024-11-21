@@ -1,4 +1,5 @@
 "use client";
+
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -21,12 +22,37 @@ import {
     Camera,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import {
+    RadioGroup,
+    RadioGroupItem,
+} from "@/components/ui/radio-group";
+import { ScrollArea } from "@/components/ui/scroll-area";
+
+type UserInfo = {
+    name: string;
+    email: string;
+    phone: string;
+};
 
 export default function SettingPage() {
-    const [isEditing, setIsEditing] = useState(false);
+    const [isEditing, setIsEditing] =
+        useState<boolean>(false);
     const [imageUrl, setImageUrl] = useState<string | null>(
         null
     );
+    const [userInfo, setUserInfo] = useState<UserInfo>({
+        name: "نام کاربر",
+        email: "user@example.com",
+        phone: "۰۹۱۲۳۴۵۶۷۸۹",
+    });
+
+    const defaultImages: string[] = [
+        "https://via.placeholder.com/100x100.png?text=Avatar+1",
+        "https://via.placeholder.com/100x100.png?text=Avatar+2",
+        "https://via.placeholder.com/100x100.png?text=Avatar+3",
+        "https://via.placeholder.com/100x100.png?text=Avatar+4",
+        "https://via.placeholder.com/100x100.png?text=Avatar+5",
+    ];
 
     const handleImageUpload = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -40,6 +66,17 @@ export default function SettingPage() {
             reader.readAsDataURL(file);
         }
     };
+
+    const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const { id, value } = event.target;
+        setUserInfo((prevInfo) => ({
+            ...prevInfo,
+            [id]: value,
+        }));
+    };
+
     return (
         <div
             className="container mx-auto p-6"
@@ -116,42 +153,43 @@ export default function SettingPage() {
                                 </motion.button>
                             </div>
                             <div className="space-y-4">
-                                <div className="flex flex-col space-y-1.5">
-                                    <Label htmlFor="name">
-                                        نام
-                                    </Label>
-                                    <Input
-                                        id="name"
-                                        defaultValue="نام کاربر"
-                                        readOnly={
-                                            !isEditing
-                                        }
-                                    />
-                                </div>
-                                <div className="flex flex-col space-y-1.5">
-                                    <Label htmlFor="email">
-                                        ایمیل
-                                    </Label>
-                                    <Input
-                                        id="email"
-                                        defaultValue="user@example.com"
-                                        readOnly={
-                                            !isEditing
-                                        }
-                                    />
-                                </div>
-                                <div className="flex flex-col space-y-1.5">
-                                    <Label htmlFor="phone">
-                                        شماره تلفن
-                                    </Label>
-                                    <Input
-                                        id="phone"
-                                        defaultValue="۰۹۱۲۳۴۵۶۷۸۹"
-                                        readOnly={
-                                            !isEditing
-                                        }
-                                    />
-                                </div>
+                                {(
+                                    Object.keys(
+                                        userInfo
+                                    ) as Array<
+                                        keyof UserInfo
+                                    >
+                                ).map((key) => (
+                                    <div
+                                        key={key}
+                                        className="flex flex-col space-y-1.5"
+                                    >
+                                        <Label
+                                            htmlFor={key}
+                                        >
+                                            {key === "name"
+                                                ? "نام"
+                                                : key ===
+                                                  "email"
+                                                ? "ایمیل"
+                                                : "شماره تلفن"}
+                                        </Label>
+                                        <Input
+                                            id={key}
+                                            value={
+                                                userInfo[
+                                                    key
+                                                ]
+                                            }
+                                            onChange={
+                                                handleInputChange
+                                            }
+                                            readOnly={
+                                                !isEditing
+                                            }
+                                        />
+                                    </div>
+                                ))}
                                 <div className="flex flex-col space-y-1.5">
                                     <Label htmlFor="password">
                                         رمز عبور
@@ -179,19 +217,14 @@ export default function SettingPage() {
                                     </h2>
                                     <div className="flex flex-col items-center space-y-4">
                                         <div className="relative w-32 h-32">
-                                            {imageUrl ? (
-                                                <img
-                                                    src={
-                                                        imageUrl
-                                                    }
-                                                    alt="تصویر پروفایل"
-                                                    className="w-full h-full rounded-full object-cover"
-                                                />
-                                            ) : (
-                                                <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center">
-                                                    <User className="h-16 w-16 text-gray-400" />
-                                                </div>
-                                            )}
+                                            <img
+                                                src={
+                                                    imageUrl ||
+                                                    defaultImages[0]
+                                                }
+                                                alt="تصویر پروفایل"
+                                                className="w-full h-full rounded-full object-cover"
+                                            />
                                             <Label
                                                 htmlFor="picture"
                                                 className="absolute bottom-0 right-0 bg-primary text-primary-foreground rounded-full p-2 cursor-pointer"
@@ -213,7 +246,9 @@ export default function SettingPage() {
                                             تغییر عکس
                                             پروفایل، روی
                                             آیکون دوربین
-                                            کلیک کنید
+                                            کلیک کنید یا از
+                                            تصاویر پیش‌فرض
+                                            زیر انتخاب کنید
                                         </p>
                                         {imageUrl && (
                                             <Button
@@ -227,6 +262,56 @@ export default function SettingPage() {
                                                 حذف عکس
                                             </Button>
                                         )}
+                                        <ScrollArea className="h-[200px] w-full rounded-md border p-4">
+                                            <RadioGroup
+                                                defaultValue={
+                                                    imageUrl ||
+                                                    defaultImages[0]
+                                                }
+                                                onValueChange={(
+                                                    value
+                                                ) =>
+                                                    setImageUrl(
+                                                        value
+                                                    )
+                                                }
+                                            >
+                                                {defaultImages.map(
+                                                    (
+                                                        image,
+                                                        index
+                                                    ) => (
+                                                        <div
+                                                            key={
+                                                                index
+                                                            }
+                                                            className="flex items-center space-x-2 rtl:space-x-reverse"
+                                                        >
+                                                            <RadioGroupItem
+                                                                value={
+                                                                    image
+                                                                }
+                                                                id={`avatar-${index}`}
+                                                            />
+                                                            <Label
+                                                                htmlFor={`avatar-${index}`}
+                                                            >
+                                                                <img
+                                                                    src={
+                                                                        image
+                                                                    }
+                                                                    alt={`Avatar ${
+                                                                        index +
+                                                                        1
+                                                                    }`}
+                                                                    className="w-12 h-12 rounded-full object-cover"
+                                                                />
+                                                            </Label>
+                                                        </div>
+                                                    )
+                                                )}
+                                            </RadioGroup>
+                                        </ScrollArea>
                                     </div>
                                 </CardContent>
                             </Card>
