@@ -17,6 +17,9 @@ module.exports = {
             },
         },
         extend: {
+            transitionTimingFunction: {
+                "custom-ease": "var(--easing)",
+            },
             colors: {
                 colors: {
                     warning: "hsl(var(--warning))",

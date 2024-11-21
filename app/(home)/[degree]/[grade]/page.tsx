@@ -2,16 +2,18 @@ import ClassCard from "@/app/componetns/classCard";
 import { notFound } from "next/navigation";
 
 interface GradePageProps {
-    params: {
+    params: Promise<{
         degree: string;
         grade: string;
-    };
+    }>;
 }
 
-export default function GradePage({
+export default async function GradePage({
     params,
 }: GradePageProps) {
-    if (!params.degree || !params.grade) {
+    const resolvedParams = await params; // Await the params if they are a Promise
+
+    if (!resolvedParams.degree || !resolvedParams.grade) {
         notFound();
     }
 
@@ -49,7 +51,7 @@ export default function GradePage({
                 { name: "هندسه", url: "/geometry" },
                 { name: "مثلثات", url: "/trigonometry" },
             ],
-            href: `/${params.degree}/${params.grade}/math-1`,
+            href: `/${resolvedParams.degree}/${resolvedParams.grade}/math-1`,
         },
         // Add more classes here...
     ];
@@ -58,10 +60,10 @@ export default function GradePage({
         <div className="container mx-auto py-6">
             <div className="space-y-2 text-center mb-8">
                 <h1 className="text-3xl font-bold tracking-tight">
-                    پایه: {params.grade}
+                    پایه: {resolvedParams.grade}
                 </h1>
                 <p className="text-muted-foreground">
-                    رشته: {params.degree}
+                    رشته: {resolvedParams.degree}
                 </p>
             </div>
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

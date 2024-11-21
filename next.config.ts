@@ -1,37 +1,23 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+    reactStrictMode: true,
     images: {
         remotePatterns: [
             {
                 protocol: "https",
                 hostname: "media.licdn.com",
-                pathname: "/**",
+                pathname: "/dms/image/**",
             },
             {
                 protocol: "https",
-                hostname: "tse1.mm.bing.net",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "tse2.mm.bing.net",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "tse3.mm.bing.net",
-                pathname: "/**",
-            },
-            {
-                protocol: "https",
-                hostname: "tse4.mm.bing.net",
-                pathname: "/**",
+                hostname: "tse*.mm.bing.net",
+                pathname: "/th/**",
             },
             {
                 protocol: "https",
                 hostname: "encrypted-tbn0.gstatic.com",
-                pathname: "/**",
+                pathname: "/images/**",
             },
         ],
     },

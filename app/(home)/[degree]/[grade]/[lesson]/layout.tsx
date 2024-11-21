@@ -11,7 +11,7 @@ async function DegreeLayout({
     children,
     params,
 }: LayoutProps) {
-    const resolvedParams = await params; // Await the params
+    const resolvedParams = await params; // Resolve the params Promise
 
     return (
         <div

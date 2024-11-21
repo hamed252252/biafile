@@ -4,8 +4,14 @@ interface Params {
     degree: string;
 }
 
-function Page({ params }: { params: Params }) {
-    return <div>Degree: {params.degree}</div>;
+async function Page({
+    params,
+}: {
+    params: Promise<Params>;
+}) {
+    const resolvedParams = await params; // Await the Promise
+
+    return <div>Degree: {resolvedParams.degree}</div>;
 }
 
 export default Page;
