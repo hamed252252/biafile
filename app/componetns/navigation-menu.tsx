@@ -52,16 +52,16 @@ const DynamicAccordion = ({
     return (
         <Accordion
             type="multiple"
-            className="w-full bg-white"
+            className="w-full text-black"
         >
             {Object.entries(courseLinks).map(
                 ([level, grades]) => (
                     <AccordionItem
                         key={level}
                         value={level}
-                        className=" bg-white text-foreground dark:text-accent-foreground"
+                        className="  text-foreground dark:text-accent-foreground"
                     >
-                        <AccordionTrigger className="flex items-center justify-between font-bold text-lg py-3 px-4 bg-transparent hover:bg-gray-100 dark:hover:bg-primary/70 rounded-lg transition-all">
+                        <AccordionTrigger className="flex items-center justify-between font-bold text-lg py-3 dark:bg-accent px-4  hover:bg-gray-100 dark:hover:bg-primary/70 rounded-lg transition-all">
                             <span>{level}</span>
                         </AccordionTrigger>
                         <AccordionContent className="pl-6 mt-2">
