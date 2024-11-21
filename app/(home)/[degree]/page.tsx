@@ -1,7 +1,11 @@
 import React from "react";
 
-function page() {
-    return <div></div>;
+interface Params {
+    degree: string;
 }
 
-export default page;
+function Page({ params }: { params: Params }) {
+    return <div>Degree: {params.degree}</div>;
+}
+
+export default Page;

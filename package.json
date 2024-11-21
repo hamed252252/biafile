@@ -47,7 +47,7 @@
         "clsx": "^2.1.1",
         "date-fns": "^3.6.0",
         "date-fns-jalali": "4.1.0-0",
-        "framer-motion": "^11.11.13",
+        "framer-motion": "^11.11.17",
         "gray-matter": "^4.0.3",
         "jalaali-js": "^1.2.7",
         "lucide-react": "^0.454.0",

@@ -5,7 +5,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 
-import HeaderOfDashboardPages from "../componetns/HeaderOfDashboardPages";
+import HeaderOfDashboardPages from "../../componetns/HeaderOfDashboardPages";
 
 export default function Layout({
     children,

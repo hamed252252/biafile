@@ -80,8 +80,8 @@ export default function RootLayout({
     return (
         <html
             lang="fa-ir"
-            dir="rtl"
             suppressHydrationWarning
+            dir="rtl"
         >
             <body className={` ${myFont.className}   `}>
                 <ThemeProvider
