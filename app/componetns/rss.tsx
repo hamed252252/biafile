@@ -4,7 +4,7 @@ import React from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Mail } from "lucide-react";
-import { Button } from "@/components/ui/moving-border";
+import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
 const animationProps = {
@@ -46,7 +46,7 @@ function RssComponent() {
                         </div>
                     </div>
 
-                    <Button className="bg-primary border-none h-10 w-full dark:bg-blue-600 dark:hover:bg-blue-700">
+                    <Button className="bg-primary max-w-40 rounded-full border-none h-10 w-full dark:bg-blue-600 dark:hover:bg-blue-700">
                         عضویت
                     </Button>
                 </form>
