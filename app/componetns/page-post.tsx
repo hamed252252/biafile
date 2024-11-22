@@ -417,15 +417,6 @@ export default function PostPage({ post }: PostPageProps) {
             </div>
 
             {/* Mobile Table of Contents */}
-            <div className="lg:hidden">
-                <TableOfContents
-                    headings={headings}
-                    activeHeading={activeHeading}
-                    scrollToSection={scrollToSection}
-                    isMenuOpen={isMenuOpen}
-                    setIsMenuOpen={setIsMenuOpen}
-                />
-            </div>
         </div>
     );
 }
