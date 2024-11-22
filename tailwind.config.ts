@@ -7,25 +7,30 @@ module.exports = {
         "./pages/**/*.{ts,tsx}",
         "./components/**/*.{ts,tsx}",
         "./app/**/*.{ts,tsx}",
+        "./styles/**/*.{css,scss}", // Include styles folder if needed
     ],
     theme: {
         container: {
-            center: "true",
+            center: true,
             padding: "2rem",
             screens: {
                 "2xl": "1400px",
             },
         },
         extend: {
+            transitionDelay: {
+                "custom-delay": "var(--delay)",
+            },
+            transitionDuration: {
+                "custom-duration": "var(--duration)",
+            },
             transitionTimingFunction: {
                 "custom-ease": "var(--easing)",
             },
             colors: {
-                colors: {
-                    warning: "hsl(var(--warning))",
-                    "warning-foreground":
-                        "hsl(var(--warning-foreground))",
-                },
+                warning: "hsl(var(--warning))",
+                "warning-foreground":
+                    "hsl(var(--warning-foreground))",
                 border: "hsl(var(--border))",
                 input: "hsl(var(--input))",
                 ring: "hsl(var(--ring))",
@@ -80,9 +85,7 @@ module.exports = {
             },
             keyframes: {
                 "accordion-down": {
-                    from: {
-                        height: "0",
-                    },
+                    from: { height: "0" },
                     to: {
                         height: "var(--radix-accordion-content-height)",
                     },
@@ -91,9 +94,7 @@ module.exports = {
                     from: {
                         height: "var(--radix-accordion-content-height)",
                     },
-                    to: {
-                        height: "0",
-                    },
+                    to: { height: "0" },
                 },
             },
             animation: {
@@ -105,7 +106,7 @@ module.exports = {
         },
     },
     plugins: [
-        require("@tailwindcss/typography"), // Tailwind Typography Plugin
-        require("tailwindcss-animate"), // Tailwind Animate Plugin
+        require("@tailwindcss/typography"),
+        require("tailwindcss-animate"),
     ],
 };

@@ -1,79 +1,158 @@
-import ClassCard from "@/app/componetns/classCard";
-import { notFound } from "next/navigation";
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card";
+import Link from "next/link";
 
-interface GradePageProps {
+interface EducationalLevel {
+    levelName: string;
+    numberOfClasses: number;
+    levelSlug: string;
+}
+
+const educationalLevels: EducationalLevel[] = [
+    {
+        levelName: "ابتدایی",
+        numberOfClasses: 6,
+        levelSlug: "elementary",
+    },
+    {
+        levelName: "متوسطه اول",
+        numberOfClasses: 3,
+        levelSlug: "middle",
+    },
+    {
+        levelName: "متوسطه دوم",
+        numberOfClasses: 3,
+        levelSlug: "high",
+    },
+];
+
+interface DegreeGradePageProps {
     params: Promise<{
         degree: string;
         grade: string;
     }>;
 }
 
-export default async function GradePage({
+export default async function DegreeGradePage({
     params,
-}: GradePageProps) {
-    const resolvedParams = await params; // Await the params if they are a Promise
+}: DegreeGradePageProps) {
+    const result = await params;
+    const { degree, grade } = result;
 
-    if (!resolvedParams.degree || !resolvedParams.grade) {
-        notFound();
+    const currentDegree = educationalLevels.find(
+        (level) => level.levelSlug === degree
+    );
+
+    if (!currentDegree) {
+        return (
+            <div className="container mx-auto py-10 text-center">
+                <h1 className="text-3xl font-bold mb-6">
+                    مقطع تحصیلی نامعتبر
+                </h1>
+                <p className="text-xl mb-4">
+                    متأسفانه مقطع تحصیلی مورد نظر یافت نشد.
+                </p>
+                <Link
+                    href="/"
+                    className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                >
+                    بازگشت به صفحه اصلی
+                </Link>
+            </div>
+        );
     }
 
-    // This would typically come from your database or API
-    const classes = [
-        {
-            className: "ریاضی ۱",
-            lastUpdatedDate: "2023-06-15",
-            timeAgo: "۲ روز پیش",
-            description: "مفاهیم پایه‌ای ریاضیات",
-            stats: [
-                {
-                    label: "نمونه سوال",
-                    value: 50,
-                    iconName: "sampleQuestion" as const,
-                },
-                {
-                    label: "فایل آموزشی",
-                    value: 10,
-                    iconName: "educationalFile" as const,
-                },
-                {
-                    label: "پرسش و پاسخ",
-                    value: 100,
-                    iconName: "QnA" as const,
-                },
-                {
-                    label: "آزمون آنلاین",
-                    value: 5,
-                    iconName: "onlineTest" as const,
-                },
-            ],
-            lessons: [
-                { name: "جبر", url: "/algebra" },
-                { name: "هندسه", url: "/geometry" },
-                { name: "مثلثات", url: "/trigonometry" },
-            ],
-            href: `/${resolvedParams.degree}/${resolvedParams.grade}/math-1`,
-        },
-        // Add more classes here...
+    const gradeNumber = parseInt(grade, 10);
+    if (
+        isNaN(gradeNumber) ||
+        gradeNumber < 1 ||
+        gradeNumber > currentDegree.numberOfClasses
+    ) {
+        return (
+            <div className="container mx-auto py-10 text-center">
+                <h1 className="text-3xl font-bold mb-6">
+                    پایه تحصیلی نامعتبر
+                </h1>
+                <p className="text-xl mb-4">
+                    متأسفانه پایه تحصیلی مورد نظر یافت نشد.
+                </p>
+                <Link
+                    href={`/${degree}`}
+                    className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90"
+                >
+                    بازگشت به مقطع {currentDegree.levelName}
+                </Link>
+            </div>
+        );
+    }
+
+    const gradeName = getGradeName(gradeNumber);
+
+    const subjects = [
+        "ریاضیات",
+        "علوم",
+        "فارسی",
+        "مطالعات اجتماعی",
+        "هنر",
+        "تربیت بدنی",
     ];
 
     return (
-        <div className="container mx-auto py-6">
-            <div className="space-y-2 text-center mb-8">
-                <h1 className="text-3xl font-bold tracking-tight">
-                    پایه: {resolvedParams.grade}
-                </h1>
-                <p className="text-muted-foreground">
-                    رشته: {resolvedParams.degree}
-                </p>
-            </div>
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {classes.map((classInfo, index) => (
-                    <ClassCard
-                        key={index}
-                        {...classInfo}
-                    />
+        <div className="container mx-auto py-10">
+            <h1 className="text-3xl font-bold mb-6 text-right">
+                {currentDegree.levelName} - پایه {gradeName}
+            </h1>
+            <div className="grid gap-6 md:grid-cols-3">
+                {subjects.map((subject) => (
+                    <Card key={subject}>
+                        <CardHeader>
+                            <CardTitle className="text-right">
+                                {subject}
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            <p className="text-muted-foreground mb-4 text-right">
+                                محتوای درس {subject} برای
+                                پایه {gradeName}{" "}
+                                {currentDegree.levelName}
+                            </p>
+                            <Link
+                                href={`/${degree}/${grade}/${encodeURIComponent(
+                                    subject
+                                )}`}
+                                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 w-full"
+                            >
+                                مشاهده درس
+                            </Link>
+                        </CardContent>
+                    </Card>
                 ))}
             </div>
         </div>
+    );
+}
+
+function getGradeName(gradeNumber: number): string {
+    const gradeNames = [
+        "اول",
+        "دوم",
+        "سوم",
+        "چهارم",
+        "پنجم",
+        "ششم",
+        "هفتم",
+        "هشتم",
+        "نهم",
+        "دهم",
+        "یازدهم",
+        "دوازدهم",
+    ];
+    return (
+        gradeNames[gradeNumber - 1] ||
+        gradeNumber.toString()
     );
 }
