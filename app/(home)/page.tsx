@@ -139,7 +139,7 @@ const Home: React.FC = () => {
                         key={level.levelName}
                         className="my-8"
                     >
-                        <h2 className="text-2xl font-bold text-gray-800 mb-6 px-4">
+                        <h2 className="text-2xl font-bold text-gray-800 dark:text-accent-foreground mb-6 px-4">
                             {level.levelName}
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
