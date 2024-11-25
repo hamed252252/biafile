@@ -1,10 +1,12 @@
+import Image from "next/image";
+import Link from "next/link";
 import {
     Card,
     CardContent,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 
 interface EducationalLevel {
     levelName: string;
@@ -27,6 +29,65 @@ const educationalLevels: EducationalLevel[] = [
         levelName: "متوسطه دوم",
         numberOfClasses: 3,
         levelSlug: "high",
+    },
+];
+
+interface Subject {
+    name: string;
+    icon: string;
+    topics: string[];
+}
+
+const subjects: Subject[] = [
+    {
+        name: "ریاضیات",
+        icon: "📐",
+        topics: [
+            "اعداد و محاسبات",
+            "هندسه",
+            "جبر",
+            "آمار و احتمال",
+        ],
+    },
+    {
+        name: "علوم",
+        icon: "🔬",
+        topics: [
+            "فیزیک",
+            "شیمی",
+            "زیست‌شناسی",
+            "زمین‌شناسی",
+        ],
+    },
+    {
+        name: "فارسی",
+        icon: "📚",
+        topics: [
+            "دستور زبان",
+            "ادبیات",
+            "نگارش",
+            "روان‌خوانی",
+        ],
+    },
+    {
+        name: "مطالعات اجتماعی",
+        icon: "🌍",
+        topics: ["تاریخ", "جغرافیا", "مدنی", "اقتصاد"],
+    },
+    {
+        name: "هنر",
+        icon: "🎨",
+        topics: ["نقاشی", "خوشنویسی", "کاردستی", "موسیقی"],
+    },
+    {
+        name: "تربیت بدنی",
+        icon: "⚽",
+        topics: [
+            "ورزش‌های توپی",
+            "ژیمناستیک",
+            "دو و میدانی",
+            "شنا",
+        ],
     },
 ];
 
@@ -92,39 +153,66 @@ export default async function DegreeGradePage({
 
     const gradeName = getGradeName(gradeNumber);
 
-    const subjects = [
-        "ریاضیات",
-        "علوم",
-        "فارسی",
-        "مطالعات اجتماعی",
-        "هنر",
-        "تربیت بدنی",
-    ];
-
     return (
         <div className="container mx-auto py-10">
-            <h1 className="text-3xl font-bold mb-6 text-right">
+            <h1 className="text-4xl font-bold mb-8 text-right">
                 {currentDegree.levelName} - پایه {gradeName}
             </h1>
-            <div className="grid gap-6 md:grid-cols-3">
+            <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {subjects.map((subject) => (
-                    <Card key={subject}>
-                        <CardHeader>
-                            <CardTitle className="text-right">
-                                {subject}
+                    <Card
+                        key={subject.name}
+                        className="overflow-hidden hover:shadow-lg transition-shadow duration-300"
+                    >
+                        <CardHeader className="pb-0">
+                            <CardTitle className="text-right flex items-center justify-between">
+                                <span>{subject.name}</span>
+                                <span className="text-2xl">
+                                    {subject.icon}
+                                </span>
                             </CardTitle>
                         </CardHeader>
                         <CardContent>
-                            <p className="text-muted-foreground mb-4 text-right">
-                                محتوای درس {subject} برای
-                                پایه {gradeName}{" "}
-                                {currentDegree.levelName}
-                            </p>
+                            <div className="relative h-40 mb-6">
+                                <Image
+                                    src={`/placeholder.svg?height=160&width=320&text=${encodeURIComponent(
+                                        subject.name
+                                    )}`}
+                                    alt={subject.name}
+                                    layout="fill"
+                                    objectFit="cover"
+                                    className="rounded-md"
+                                />
+                            </div>
+                            <div className="space-y-4 mb-6">
+                                <h3 className="text-xl font-semibold text-right">
+                                    محتوای درس{" "}
+                                    {subject.name}
+                                </h3>
+                                <h4 className="text-lg font-medium text-right text-gray-700">
+                                    پایه {gradeName}{" "}
+                                    {
+                                        currentDegree.levelName
+                                    }
+                                </h4>
+                                <div className="flex flex-wrap gap-2 justify-end">
+                                    {subject.topics.map(
+                                        (topic, index) => (
+                                            <Badge
+                                                key={index}
+                                                variant="secondary"
+                                            >
+                                                {topic}
+                                            </Badge>
+                                        )
+                                    )}
+                                </div>
+                            </div>
                             <Link
                                 href={`/${degree}/${grade}/${encodeURIComponent(
-                                    subject
+                                    subject.name
                                 )}`}
-                                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 w-full"
+                                className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:bg-primary/90 w-full transition-colors"
                             >
                                 مشاهده درس
                             </Link>
