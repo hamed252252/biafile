@@ -1,9 +1,7 @@
-// components/Home.tsx
 import React from "react";
 import HeroSection from "../componetns/hero-section";
 import ClassCard from "../componetns/classCard";
-import { Rss } from "lucide-react";
-import RssComponet from "../componetns/rss";
+import RssComponent from "../componetns/rss";
 import UsefulLinks from "../componetns/usefull-links";
 
 // Define interfaces
@@ -21,23 +19,24 @@ type IconName =
 interface Stat {
     label: string;
     value: number;
-    iconName: IconName; // Use the IconName type here
+    iconName: IconName;
 }
 
 interface ClassData {
     className: string;
-    lastUpdatedDate: string; // ISO date string
+    lastUpdatedDate: string;
     timeAgo: string;
     description?: string;
     stats: Stat[];
     lessons: LessonLink[];
-    href: string; // New property for the class link
+    href: string;
+    image: string; // New property for the class image
 }
 
 interface EducationalLevel {
     levelName: string;
     numberOfClasses: number;
-    levelSlug: string; // New property for URL slugs
+    levelSlug: string;
 }
 
 // Educational levels data
@@ -90,7 +89,6 @@ const generateMockData = (): ClassData[] => {
                 },
             ];
 
-            // Create lesson links
             const lessonLinks: LessonLink[] = lessons.map(
                 (lesson) => ({
                     name: lesson,
@@ -100,10 +98,12 @@ const generateMockData = (): ClassData[] => {
                 })
             );
 
-            // Construct the href for the ClassCard
             const href = `/${encodeURIComponent(
                 level.levelSlug
             )}/${i}`;
+
+            // Generate a mock image URL
+            const image = `/images/${level.levelSlug}-${i}.jpg`;
 
             mockDataList.push({
                 className,
@@ -112,7 +112,8 @@ const generateMockData = (): ClassData[] => {
                 description: `توضیحات مربوط به ${className}`,
                 stats,
                 lessons: lessonLinks,
-                href, // Add the href to the class data
+                href,
+                image, // Add the image URL to the class data
             });
         }
     });
@@ -124,7 +125,7 @@ const mockDataList = generateMockData();
 
 const Home: React.FC = () => {
     return (
-        <div>
+        <div className="bg-background text-foreground">
             <HeroSection />
             {educationalLevels.map((level) => {
                 const classesForLevel = mockDataList.filter(
@@ -139,7 +140,7 @@ const Home: React.FC = () => {
                         key={level.levelName}
                         className="my-8"
                     >
-                        <h2 className="text-2xl font-bold text-gray-800 dark:text-accent-foreground mb-6 px-4">
+                        <h2 className="text-2xl font-bold mb-6 px-4">
                             {level.levelName}
                         </h2>
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
@@ -163,7 +164,8 @@ const Home: React.FC = () => {
                                         lessons={
                                             data.lessons
                                         }
-                                        href={data.href} // Pass the href to ClassCard
+                                        href={data.href}
+                                        image={data.image} // Pass the image URL to ClassCard
                                     />
                                 )
                             )}
@@ -171,7 +173,7 @@ const Home: React.FC = () => {
                     </section>
                 );
             })}
-            <RssComponet />
+            <RssComponent />
             <UsefulLinks />
         </div>
     );

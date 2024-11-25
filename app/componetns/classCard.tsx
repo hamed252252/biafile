@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { MdOutlineVideoFile } from "react-icons/md";
 import { LuTestTube } from "react-icons/lu";
@@ -46,6 +47,7 @@ interface ClassCardProps {
     stats: Stat[];
     lessons: LessonLink[];
     href: string;
+    image: string; // New required image property
 }
 
 const MotionCard = motion(Card);
@@ -73,6 +75,7 @@ export default function ClassCard({
     stats,
     lessons,
     href,
+    image,
 }: ClassCardProps) {
     return (
         <MotionCard
@@ -82,8 +85,18 @@ export default function ClassCard({
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.4 }}
         >
-            <CardHeader className="relative p-4 bg-muted rounded-t-lg text-center">
-                <CardTitle className="text-lg font-semibold flex justify-center text-center">
+            <div className="relative w-full h-48">
+                <Image
+                    src={image}
+                    alt={`${className} cover`}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-t-lg"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
+            </div>
+            <CardHeader className="relative p-4 -mt-20 text-center z-10">
+                <CardTitle className="text-2xl font-semibold flex justify-center text-center text-white">
                     <Link
                         href={href}
                         className="hover:text-primary transition-colors duration-200"
@@ -91,7 +104,7 @@ export default function ClassCard({
                         {localizeNumber(className)}
                     </Link>
                 </CardTitle>
-                <CardDescription className="mt-1 text-sm">
+                <CardDescription className="mt-1 text-sm text-gray-200">
                     {description
                         ? localizeNumber(description)
                         : ""}

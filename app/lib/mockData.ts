@@ -1,3 +1,5 @@
+import { Subject } from "../type/edcation";
+
 export interface Post {
     id: number;
     slug: string;
@@ -279,4 +281,66 @@ export function getPosts() {
 
 export function getPostBySlug(slug: string) {
     return posts.find((post) => post.slug === slug);
+}
+export interface EducationalLevel {
+    levelName: string;
+    numberOfClasses: number;
+    levelSlug: string;
+}
+
+export const educationalLevels: EducationalLevel[] = [
+    {
+        levelName: "ابتدایی",
+        numberOfClasses: 6,
+        levelSlug: "elementary",
+    },
+    {
+        levelName: "متوسطه اول",
+        numberOfClasses: 3,
+        levelSlug: "middle",
+    },
+    {
+        levelName: "متوسطه دوم",
+        numberOfClasses: 3,
+        levelSlug: "high",
+    },
+];
+
+export async function getEducationalLevels(): Promise<
+    EducationalLevel[]
+> {
+    // In a real application, this would fetch data from an API or database
+    return [
+        {
+            levelName: "ابتدایی",
+            numberOfClasses: 6,
+            levelSlug: "elementary",
+        },
+        {
+            levelName: "متوسطه اول",
+            numberOfClasses: 3,
+            levelSlug: "middle",
+        },
+        {
+            levelName: "متوسطه دوم",
+            numberOfClasses: 3,
+            levelSlug: "high",
+        },
+    ];
+}
+
+export async function getSubjects(): Promise<Subject[]> {
+    // In a real application, this would fetch data from an API or database
+    return [
+        { name: "ریاضی", icon: "🧮", color: "#FFD700" },
+        { name: "علوم", icon: "🔬", color: "#4CAF50" },
+        { name: "فارسی", icon: "📚", color: "#2196F3" },
+        { name: "تاریخ", icon: "🏛️", color: "#FF5722" },
+        { name: "جغرافیا", icon: "🌍", color: "#795548" },
+        {
+            name: "زبان انگلیسی",
+            icon: "🌐",
+            color: "#9C27B0",
+        },
+    ];
 }
