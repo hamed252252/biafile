@@ -1,6 +1,5 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
 import Image from "next/image";
 import {
     Star,
@@ -9,7 +8,6 @@ import {
     BookOpen,
     Users,
     Clock,
-    ChevronLeft,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -23,14 +21,24 @@ import {
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 
-export default function WorksheetDetail() {
-    const [previewImage] = useState(
-        "/placeholder.svg?height=600&width=400"
-    );
+type WorksheetDetailProps = {
+    params: Promise<{
+        id: string;
+    }>;
+};
+
+export default async function WorksheetDetail({
+    params,
+}: WorksheetDetailProps) {
+    const previewImage =
+        "/placeholder.svg?height=600&width=400";
     const router = useRouter();
+    const res = await params;
+    const { id } = res;
+
     return (
         <div
-            className="min-h-screen  bg-background "
+            className="min-h-screen bg-background"
             dir="rtl"
         >
             <div className="container mx-auto px-4 py-6">
@@ -47,25 +55,29 @@ export default function WorksheetDetail() {
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbItem
+                            <BreadcrumbLink
                                 className="hover:text-primary/75 hover:cursor-pointer"
-                                onClick={() =>
-                                    window.history.go(-2)
-                                }
+                                href="#"
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    window.history.go(-2);
+                                }}
                             >
                                 کاربرگ‌ها
-                            </BreadcrumbItem>
+                            </BreadcrumbLink>
                         </BreadcrumbItem>
                         <BreadcrumbSeparator />
                         <BreadcrumbItem>
-                            <BreadcrumbItem
+                            <BreadcrumbLink
                                 className="hover:text-primary/75 hover:cursor-pointer"
-                                onClick={() =>
-                                    router.back()
-                                }
+                                href="#"
+                                onClick={(event) => {
+                                    event.preventDefault();
+                                    router.back();
+                                }}
                             >
                                 فارسی
-                            </BreadcrumbItem>
+                            </BreadcrumbLink>
                         </BreadcrumbItem>
                     </BreadcrumbList>
                 </Breadcrumb>

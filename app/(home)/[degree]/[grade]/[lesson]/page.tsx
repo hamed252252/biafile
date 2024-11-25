@@ -75,17 +75,18 @@ const lessons: Lesson[] = [
 ];
 
 interface LessonPageProps {
-    params: {
+    params: Promise<{
         degree: string;
         grade: string;
         lesson: string;
-    };
+    }>;
 }
 
-export default function LessonPage({
+export default async function LessonPage({
     params,
 }: LessonPageProps) {
-    const { degree, grade, lesson } = params;
+    const res = await params;
+    const { degree, grade, lesson } = res;
 
     const currentDegree = educationalLevels.find(
         (level) => level.levelSlug === degree
