@@ -84,7 +84,10 @@ export function CategoryMenu() {
             category.subResultCategorys.length === 0
         ) {
             return (
-                <MenubarItem key={category.id}>
+                <MenubarItem
+                    className=""
+                    key={category.id}
+                >
                     <Link
                         href={`/category/${category.id}`}
                         className="w-full block"
@@ -97,10 +100,10 @@ export function CategoryMenu() {
 
         return (
             <MenubarSub key={category.id}>
-                <MenubarSubTrigger>
+                <MenubarSubTrigger className="">
                     {category.title}
                 </MenubarSubTrigger>
-                <MenubarSubContent className="bg-blue-100 dark:bg-primary-foreground">
+                <MenubarSubContent className="bg-blue-100 dark:bg-primary-foreground/80 text-primary dark:text-primary">
                     {category.subResultCategorys.map(
                         renderDesktopCategory
                     )}
@@ -165,7 +168,7 @@ export function CategoryMenu() {
                                 {category.title}
                                 <ChevronDown className="ml-1 h-4 w-4" />
                             </MenubarTrigger>
-                            <MenubarContent className="bg-blue-100 dark:bg-primary-foreground text-primary dark:text-primary-foreground">
+                            <MenubarContent className="bg-blue-100 dark:bg-primary-foreground/80 text-primary dark:text-primary">
                                 {category.subResultCategorys.map(
                                     renderDesktopCategory
                                 )}
