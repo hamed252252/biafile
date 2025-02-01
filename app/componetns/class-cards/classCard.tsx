@@ -29,25 +29,25 @@ const icons = {
 type IconName = keyof typeof icons;
 
 interface LessonLink {
-    name: string;
-    url: string;
+    name?: string;
+    url?: string;
 }
 
 interface Stat {
-    label: string;
-    value: number;
-    iconName: IconName;
+    label?: string;
+    value?: number;
+    iconName?: IconName;
 }
 
 interface ClassCardProps {
-    className: string;
-    lastUpdatedDate: string;
-    timeAgo: string;
-    description?: string;
-    stats: Stat[];
-    lessons: LessonLink[];
-    href: string;
-    image: string; // New required image property
+    className?: string;
+    lastUpdatedDate?: string;
+    timeAgo?: string;
+    description?: string | null;
+    stats?: Readonly<Stat[]>;
+    lessons?: LessonLink[];
+    href?: string;
+    image?: string | null;
 }
 
 const MotionCard = motion(Card);
@@ -85,23 +85,33 @@ export default function ClassCard({
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.4 }}
         >
+            {/* Image Section */}
             <div className="relative w-full h-48">
                 <Image
-                    src={image}
+                    src={
+                        image ??
+                        "/path/to/fallback-image.jpg"
+                    }
                     alt={`${className} cover`}
                     layout="fill"
                     objectFit="cover"
                     className="rounded-t-lg"
+                    priority
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
             </div>
+
+            {/* Header Section */}
             <CardHeader className="relative p-4 -mt-20 text-center z-10">
                 <CardTitle className="text-2xl font-semibold flex justify-center text-center text-white">
                     <Link
-                        href={href}
+                        href={href ?? "/default-url"}
                         className="hover:text-primary transition-colors duration-200"
                     >
-                        {localizeNumber(className)}
+                        {localizeNumber(
+                            className ??
+                                "Default Class Name"
+                        )}
                     </Link>
                 </CardTitle>
                 <CardDescription className="mt-1 text-sm text-gray-200">
@@ -110,6 +120,8 @@ export default function ClassCard({
                         : ""}
                 </CardDescription>
             </CardHeader>
+
+            {/* Stats Section */}
             <CardContent className="p-4">
                 <div className="text-sm mb-4 flex items-center">
                     <svg
@@ -130,10 +142,10 @@ export default function ClassCard({
                     <span className="ml-1">
                         آخرین بروزرسانی:
                     </span>
-                    {localizeNumber(timeAgo)}
+                    {/* {localizeNumber(timeAgo)} */}
                 </div>
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                    {stats.map((stat, index) => {
+                    {stats?.map((stat, index) => {
                         const IconComponent =
                             icons[stat.iconName];
                         return (
@@ -162,8 +174,10 @@ export default function ClassCard({
                         );
                     })}
                 </div>
+
+                {/* Lessons Section */}
                 <div className="flex flex-wrap gap-2">
-                    {lessons.map((lesson, index) => (
+                    {lessons?.map((lesson, index) => (
                         <MotionBadge
                             key={index}
                             variant="secondary"
@@ -171,7 +185,10 @@ export default function ClassCard({
                             whileTap={{ scale: 0.95 }}
                         >
                             <Link
-                                href={lesson.url}
+                                href={
+                                    lesson.url ??
+                                    "/default-url"
+                                }
                                 className="block px-2 py-1"
                             >
                                 {lesson.name}
@@ -180,6 +197,8 @@ export default function ClassCard({
                     ))}
                 </div>
             </CardContent>
+
+            {/* Footer Section */}
             <CardFooter className="p-4 bg-muted rounded-b-lg">
                 <Button
                     variant="secondary"
@@ -187,8 +206,9 @@ export default function ClassCard({
                     asChild
                 >
                     <Link
-                        href={href}
+                        href={href ?? "/default-url"}
                         className="flex items-center justify-center dark:bg-primary dark:text-muted"
+                        aria-label={`View details about ${className}`}
                     >
                         دیدن جزپیات
                         <motion.svg
