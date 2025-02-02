@@ -202,7 +202,7 @@ async function NestedCardClasses() {
                                         }
                                         href={
                                             subitem.title
-                                                ? `${subitem.title}`
+                                                ? `${subitem.title}/${item.title}`
                                                 : "/"
                                         } // No need to call `.toString()` if it's a string already
                                         lessons={subitem.subResultCategorys.map(
