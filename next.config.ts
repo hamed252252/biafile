@@ -19,6 +19,16 @@ const nextConfig: NextConfig = {
                 hostname: "encrypted-tbn0.gstatic.com",
                 pathname: "/images/**",
             },
+            {
+                protocol: "https",
+                hostname: "adminsite.biafile.ir",
+                pathname: "**/**",
+            },
+            {
+                protocol: "http",
+                hostname: "adminsite.biafile.ir",
+                pathname: "**/**",
+            },
         ],
     },
 };

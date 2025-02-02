@@ -1,5 +1,9 @@
 import React from "react";
 import ClassCard from "./classCard";
+import { FaRegQuestionCircle } from "react-icons/fa";
+import { MdOutlineVideoFile } from "react-icons/md";
+import { TbPencilQuestion } from "react-icons/tb";
+import { LuTestTube } from "react-icons/lu";
 
 // Define interfaces
 interface LessonLink {
@@ -37,23 +41,7 @@ interface EducationalLevel {
 }
 
 // Educational levels data
-const educationalLevels: EducationalLevel[] = [
-    {
-        levelName: "ابتدایی",
-        numberOfClasses: 6,
-        levelSlug: "elementary",
-    },
-    {
-        levelName: "متوسطه اول",
-        numberOfClasses: 3,
-        levelSlug: "middle",
-    },
-    {
-        levelName: "متوسطه دوم",
-        numberOfClasses: 3,
-        levelSlug: "high",
-    },
-];
+
 interface SubResultCategory {
     id: number;
     title: string;
@@ -108,93 +96,61 @@ interface ApiResponse {
     resultJsonLables: string | null;
     countAllRecordTable: number;
 }
-
-// Generate mock data for each class
-const generateMockData = (): ClassData[] => {
-    const lessons = ["علوم", "ریاضیات", "تاریخ", "زبان"];
-    const mockDataList: ClassData[] = [];
-
-    educationalLevels.forEach((level) => {
-        for (let i = 1; i <= level.numberOfClasses; i++) {
-            const className = `کلاس ${i} ${level.levelName}`;
-            const hoursAgo = Math.floor(Math.random() * 24);
-            const timeAgo = `${hoursAgo} ساعت قبل`;
-            const lastUpdatedDate = new Date(
-                Date.now() - hoursAgo * 3600000
-            ).toISOString();
-
-            const stats: Stat[] = [
-                {
-                    label: "نمونه سوال",
-                    value:
-                        Math.floor(Math.random() * 1000) +
-                        500,
-                    iconName: "sampleQuestion",
-                },
-                {
-                    label: "فایل آموزشی",
-                    value:
-                        Math.floor(Math.random() * 1000) +
-                        500,
-                    iconName: "educationalFile",
-                },
-            ];
-
-            const lessonLinks: LessonLink[] = lessons.map(
-                (lesson) => ({
-                    name: lesson,
-                    url: `/${encodeURIComponent(
-                        level.levelSlug
-                    )}/${i}/${encodeURIComponent(lesson)}`,
-                })
-            );
-
-            const href = `/${encodeURIComponent(
-                level.levelSlug
-            )}/${i}`;
-
-            // Generate a mock image URL
-            const image = `/images/${level.levelSlug}-${i}.jpg`;
-
-            mockDataList.push({
-                className,
-                lastUpdatedDate,
-                timeAgo,
-                description: `توضیحات مربوط به ${className}`,
-                stats,
-                lessons: lessonLinks,
-                href,
-                image, // Add the image URL to the class data
-            });
-        }
-    });
-
-    return mockDataList;
+const icons = {
+    sampleQuestion: FaRegQuestionCircle,
+    educationalFile: MdOutlineVideoFile,
+    QnA: TbPencilQuestion,
+    onlineTest: LuTestTube,
 };
 
-const mockDataList = generateMockData();
+// Generate mock data for each class
+
 const api = "https://api.biafile.ir/Api/Categorys/Public";
 async function NestedCardClasses() {
     const classData: ApiResponse = await fetch(api).then(
         (result) => result.json()
     );
-    const lessons = null;
-    console.log(classData.entities);
-    console.log("gg");
+    const mockStats: Stat[] = [
+        {
+            label: "نمونه سوالات",
+            value: 20,
+            iconName: "sampleQuestion",
+        },
+        {
+            label: "فایل های آموزشی",
+            value: 15,
+            iconName: "educationalFile",
+        },
+    ];
+
     https: return (
         <>
             <div>
                 {classData.entities.map((item) => (
                     <div
-                        className="py-2 my-2"
+                        className="py-2 my-6"
                         key={item.id}
                     >
                         <h2>{item.title}</h2>{" "}
                         {/* Render the item.title inside an element */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-2 px-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
                             {item.subResultCategorys.map(
                                 (subitem) => (
                                     <ClassCard
+                                        stats={mockStats.map(
+                                            (
+                                                state: Stat
+                                            ) => ({
+                                                label: state.label,
+                                                iconName:
+                                                    state.iconName,
+                                                value: state.value,
+                                            })
+                                        )}
+                                        timeAgo={"3 دقیقه"}
+                                        className={
+                                            subitem.title
+                                        }
                                         key={subitem.id}
                                         description={
                                             subitem.description ||
@@ -221,59 +177,6 @@ async function NestedCardClasses() {
                     </div>
                 ))}
             </div>
-
-            {/* <div>
-                {educationalLevels.map((level) => {
-                    const classesForLevel =
-                        mockDataList.filter((data) =>
-                            data.className.includes(
-                                level.levelName
-                            )
-                        );
-
-                    return (
-                        <section
-                            key={level.levelName}
-                            className="my-8"
-                        >
-                            <h2 className="text-2xl font-bold mb-6 px-4">
-                                {level.levelName}
-                            </h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 px-4">
-                                {classesForLevel.map(
-                                    (data, index) => (
-                                        <ClassCard
-                                            key={index}
-                                            className={
-                                                data.className
-                                            }
-                                            lastUpdatedDate={
-                                                data.lastUpdatedDate
-                                            }
-                                            timeAgo={
-                                                data.timeAgo
-                                            }
-                                            description={
-                                                data.description
-                                            }
-                                            stats={
-                                                data.stats
-                                            }
-                                            lessons={
-                                                data.lessons
-                                            }
-                                            href={data.href}
-                                            image={
-                                                data.image
-                                            } // Pass the image URL to ClassCard
-                                        />
-                                    )
-                                )}
-                            </div>
-                        </section>
-                    );
-                })}
-            </div> */}
         </>
     );
 }

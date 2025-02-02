@@ -1,7 +1,6 @@
 "use client";
 
-import React from "react";
-import Image from "next/image";
+import { useEffect, useState } from "react";
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { MdOutlineVideoFile } from "react-icons/md";
 import { LuTestTube } from "react-icons/lu";
@@ -28,12 +27,12 @@ const icons = {
 
 type IconName = keyof typeof icons;
 
-interface LessonLink {
+export interface LessonLink {
     name?: string;
     url?: string;
 }
 
-interface Stat {
+export interface Stat {
     label?: string;
     value?: number;
     iconName?: IconName;
@@ -42,7 +41,7 @@ interface Stat {
 interface ClassCardProps {
     className?: string;
     lastUpdatedDate?: string;
-    timeAgo?: string;
+    timeAgo?: string | number;
     description?: string | null;
     stats?: Readonly<Stat[]>;
     lessons?: LessonLink[];
@@ -77,43 +76,42 @@ export default function ClassCard({
     href,
     image,
 }: ClassCardProps) {
+    const [color, setColor] = useState("");
+
+    useEffect(() => {
+        const randomColor = `rgb(${Math.floor(
+            Math.random() * 256
+        )}, ${Math.floor(
+            Math.random() * 256
+        )}, ${Math.floor(Math.random() * 256)})`;
+        setColor(randomColor);
+    }, []);
+
     return (
         <MotionCard
-            className="relative overflow-hidden transition-all duration-300 rounded-lg bg-card text-card-foreground shadow-lg hover:shadow-xl border border-border"
+            className="relative overflow-hidden transition-all duration-300 rounded-lg bg-card text-card-foreground shadow-lg hover:shadow-xl border border-border h-[500px] flex flex-col"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.4 }}
         >
-            {/* Image Section */}
-            <div className="relative w-full h-48">
-                <Image
-                    src={
-                        image ??
-                        "/path/to/fallback-image.jpg"
-                    }
-                    alt={`${className} cover`}
-                    layout="fill"
-                    objectFit="cover"
-                    className="rounded-t-lg"
-                    priority
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
-            </div>
-
-            {/* Header Section */}
-            <CardHeader className="relative p-4 -mt-20 text-center z-10">
-                <CardTitle className="text-2xl font-semibold flex justify-center text-center text-white">
-                    <Link
-                        href={href ?? "/default-url"}
-                        className="hover:text-primary transition-colors duration-200"
+            <CardHeader className="p-4 text-center">
+                <CardTitle className="text-2xl font-semibold">
+                    <Badge
+                        style={{
+                            backgroundColor: color,
+                        }}
+                        className="rounded-full text-black p-2"
                     >
-                        {localizeNumber(
-                            className ??
-                                "Default Class Name"
-                        )}
-                    </Link>
+                        <Link
+                            href={href ?? "/default-url"}
+                            className="hover:text-primary transition-colors duration-200"
+                        >
+                            {className}
+                        </Link>
+                    </Badge>
                 </CardTitle>
+
                 <CardDescription className="mt-1 text-sm text-gray-200">
                     {description
                         ? localizeNumber(description)
@@ -121,8 +119,7 @@ export default function ClassCard({
                 </CardDescription>
             </CardHeader>
 
-            {/* Stats Section */}
-            <CardContent className="p-4">
+            <CardContent className="p-4 flex-grow overflow-auto">
                 <div className="text-sm mb-4 flex items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -142,15 +139,15 @@ export default function ClassCard({
                     <span className="ml-1">
                         آخرین بروزرسانی:
                     </span>
-                    {/* {localizeNumber(timeAgo)} */}
+                    {localizeNumber(timeAgo)}
                 </div>
-                <div className="grid grid-cols-2 gap-4 mb-6">
+                <div className="grid md:grid-cols-2 gap-2 my-2">
                     {stats?.map((stat, index) => {
                         const IconComponent =
-                            icons[stat.iconName];
+                            icons[stat.iconName]; // Debugging
                         return (
                             <motion.div
-                                key={index}
+                                key={stat.iconName}
                                 className="flex items-center space-x-2 text-sm p-2 rounded-lg bg-muted hover:text-primary"
                                 whileHover={{ scale: 1.05 }}
                                 transition={{
@@ -158,16 +155,20 @@ export default function ClassCard({
                                     stiffness: 300,
                                 }}
                             >
-                                <IconComponent
-                                    className="h-5 w-5"
-                                    aria-hidden="true"
-                                />
+                                {IconComponent ? (
+                                    <IconComponent
+                                        className="h-5 w-5"
+                                        aria-hidden="true"
+                                    />
+                                ) : (
+                                    <span>
+                                        Icon not found
+                                    </span>
+                                )}
                                 <span>
                                     {stat.label}:{" "}
                                     <strong>
-                                        {localizeNumber(
-                                            stat.value
-                                        )}
+                                        {stat.value}
                                     </strong>
                                 </span>
                             </motion.div>
@@ -175,7 +176,6 @@ export default function ClassCard({
                     })}
                 </div>
 
-                {/* Lessons Section */}
                 <div className="flex flex-wrap gap-2">
                     {lessons?.map((lesson, index) => (
                         <MotionBadge
@@ -198,8 +198,7 @@ export default function ClassCard({
                 </div>
             </CardContent>
 
-            {/* Footer Section */}
-            <CardFooter className="p-4 bg-muted rounded-b-lg">
+            <CardFooter className="p-4 bg-muted mt-auto">
                 <Button
                     variant="secondary"
                     className="w-full group flex justify-center bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground transition-all"
@@ -213,7 +212,7 @@ export default function ClassCard({
                         دیدن جزپیات
                         <motion.svg
                             xmlns="http://www.w3.org/2000/svg"
-                            className="h-4 w-4 ml-2 transition-transform duration-300 group-hover:translate-x-1"
+                            className="h-4 w-4 mr-2 transition-transform duration-300 group-hover:translate-x-1"
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
