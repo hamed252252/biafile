@@ -78,7 +78,13 @@ export function CategoryMenu() {
             );
     }, []);
 
-    const renderDesktopCategory = (category: Category) => {
+    const renderDesktopCategory = (
+        category: Category,
+        parentPath: string = ""
+    ) => {
+        // Construct the current path
+        const currentPath = `${parentPath}/${category.title}`;
+
         if (
             !category.subResultCategorys ||
             category.subResultCategorys.length === 0
@@ -89,7 +95,7 @@ export function CategoryMenu() {
                     key={category.id}
                 >
                     <Link
-                        href={`/category/${category.id}`}
+                        href={currentPath} // Use the constructed path
                         className="w-full block"
                     >
                         {category.title}
@@ -105,14 +111,24 @@ export function CategoryMenu() {
                 </MenubarSubTrigger>
                 <MenubarSubContent className="bg-blue-100 dark:bg-primary-foreground/80 text-primary dark:text-primary">
                     {category.subResultCategorys.map(
-                        renderDesktopCategory
+                        (subCategory) =>
+                            renderDesktopCategory(
+                                subCategory,
+                                currentPath
+                            ) // Pass the current path to subcategories
                     )}
                 </MenubarSubContent>
             </MenubarSub>
         );
     };
 
-    const renderMobileCategory = (category: Category) => {
+    const renderMobileCategory = (
+        category: Category,
+        parentPath: string = ""
+    ) => {
+        // Construct the current path
+        const currentPath = `${parentPath}/${category.title}`;
+
         if (
             !category.subResultCategorys ||
             category.subResultCategorys.length === 0
@@ -120,7 +136,7 @@ export function CategoryMenu() {
             return (
                 <Link
                     key={category.id}
-                    href={`/category/${category.id}`}
+                    href={currentPath} // Use the constructed path
                     className="block py-2 px-4"
                 >
                     {category.title}
@@ -138,7 +154,11 @@ export function CategoryMenu() {
                 </AccordionTrigger>
                 <AccordionContent>
                     {category.subResultCategorys.map(
-                        renderMobileCategory
+                        (subCategory) =>
+                            renderMobileCategory(
+                                subCategory,
+                                currentPath
+                            ) // Pass the current path to subcategories
                     )}
                 </AccordionContent>
             </AccordionItem>
@@ -153,7 +173,7 @@ export function CategoryMenu() {
                     category.subResultCategorys.length ===
                         0 ? (
                         <Link
-                            href={`/category/${category.id}`}
+                            href={`/${category.title}`}
                             passHref
                         >
                             <MenubarTrigger asChild>
@@ -170,7 +190,11 @@ export function CategoryMenu() {
                             </MenubarTrigger>
                             <MenubarContent className="bg-blue-100 dark:bg-primary-foreground/80 text-primary dark:text-primary">
                                 {category.subResultCategorys.map(
-                                    renderDesktopCategory
+                                    (subCategory) =>
+                                        renderDesktopCategory(
+                                            subCategory,
+                                            `/${category.title}`
+                                        ) // Start with parent path
                                 )}
                             </MenubarContent>
                         </>
@@ -215,7 +239,11 @@ export function CategoryMenu() {
                             className="w-full"
                         >
                             {categories.map(
-                                renderMobileCategory
+                                (category) =>
+                                    renderMobileCategory(
+                                        category,
+                                        ""
+                                    ) // Start with empty parent path
                             )}
                         </Accordion>
                     </ScrollArea>
