@@ -165,9 +165,9 @@ async function NestedCardClasses() {
                                             (lesson) => ({
                                                 name: lesson.title, // Use lesson.title for the name
                                                 url:
-                                                    lesson.title +
+                                                    subitem.title +
                                                     "/" +
-                                                    subitem.title, // Use lesson.title for the url or modify this as needed
+                                                    lesson.title, // Use lesson.title for the url or modify this as needed
                                             })
                                         )}
                                     />
