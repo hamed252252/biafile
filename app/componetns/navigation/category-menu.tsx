@@ -28,33 +28,31 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Input } from "@/components/ui/input";
 import { ThemeToggle } from "@/components/ModeToggle";
-
-type Category = {
-    id: number;
-    title: string;
-    subResultCategorys?: Category[];
-};
+import {
+    ApiResponseCategorysCategorys,
+    Entity,
+} from "../class-cards/nested-cards";
 
 export function CategoryMenu() {
     const [categories, setCategories] = React.useState<
-        Category[]
+        Entity[]
     >([]);
     const [isMobile, setIsMobile] = React.useState(false);
 
     React.useEffect(() => {
         async function fetchCategories() {
             try {
-                const response = await fetch(
-                    "https://api.biafile.ir/Api/Categorys/Public"
-                );
-                const data = await response.json();
+                const response: ApiResponseCategorysCategorys =
+                    await fetch(
+                        "https://api.biafile.ir/Api/Categorys/Public"
+                    ).then((result) => result.json());
 
-                if (data.status === "success") {
-                    setCategories(data.entities);
+                if (response.status === "success") {
+                    setCategories(response.entities);
                 } else {
                     console.error(
                         "Failed to fetch categories:",
-                        data.message
+                        response.message
                     );
                 }
             } catch (error) {
@@ -79,11 +77,11 @@ export function CategoryMenu() {
     }, []);
 
     const renderDesktopCategory = (
-        category: Category,
+        category: Entity,
         parentPath: string = ""
     ) => {
         // Construct the current path
-        const currentPath = `${parentPath}/${category.title}`;
+        const currentPath = `${parentPath}/${category.uniqCode}`;
 
         if (
             !category.subResultCategorys ||
@@ -123,11 +121,11 @@ export function CategoryMenu() {
     };
 
     const renderMobileCategory = (
-        category: Category,
+        category: Entity,
         parentPath: string = ""
     ) => {
         // Construct the current path
-        const currentPath = `${parentPath}/${category.title}`;
+        const currentPath = `${parentPath}/${category.uniqCode}`;
 
         if (
             !category.subResultCategorys ||
@@ -173,7 +171,7 @@ export function CategoryMenu() {
                     category.subResultCategorys.length ===
                         0 ? (
                         <Link
-                            href={`/${category.title}`}
+                            href={`/${category.uniqCode}`}
                             passHref
                         >
                             <MenubarTrigger asChild>
@@ -193,7 +191,7 @@ export function CategoryMenu() {
                                     (subCategory) =>
                                         renderDesktopCategory(
                                             subCategory,
-                                            `/${category.title}`
+                                            `/${category.uniqCode}`
                                         ) // Start with parent path
                                 )}
                             </MenubarContent>

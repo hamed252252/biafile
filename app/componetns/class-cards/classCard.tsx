@@ -45,6 +45,7 @@ interface ClassCardProps {
     description?: string | null;
     stats?: Readonly<Stat[]>;
     lessons?: LessonLink[];
+    LinkForSeeMore?: string;
     href?: string;
     image?: string | null;
 }
@@ -73,6 +74,7 @@ export default function ClassCard({
     description,
     stats,
     lessons,
+    LinkForSeeMore,
     href,
     image,
 }: ClassCardProps) {
@@ -89,14 +91,15 @@ export default function ClassCard({
 
     return (
         <MotionCard
-            className="relative overflow-hidden transition-all duration-300 rounded-lg bg-card text-card-foreground shadow-lg hover:shadow-xl border border-border h-[500px] flex flex-col"
+            className="relative overflow-hidden  transition-all duration-300 rounded-lg bg-card text-card-foreground shadow-lg hover:shadow-xl border border-border h-[500px] flex flex-col"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.4 }}
         >
-            <CardHeader className="p-4 text-center">
-                <CardTitle className="text-2xl font-semibold">
+            <CardHeader className="p-4 text-center relative">
+                <div className="absolute inset-x-1 z-10 top-0 h-32 bg-sky-50 dark:bg-muted/50  rounded-b-[60%]" />
+                <CardTitle className="text-2xl font-semibold z-20">
                     <Badge
                         style={{
                             backgroundColor: color,
@@ -112,14 +115,14 @@ export default function ClassCard({
                     </Badge>
                 </CardTitle>
 
-                <CardDescription className="mt-1 text-sm text-gray-200">
+                <CardDescription className="mt-1 text-sm text-gray-200 z-20">
                     {description
                         ? localizeNumber(description)
                         : ""}
                 </CardDescription>
             </CardHeader>
 
-            <CardContent className="p-4 flex-grow overflow-auto">
+            <CardContent className="p-4 flex-grow overflow-auto z-20">
                 <div className="text-sm mb-4 flex items-center">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -198,15 +201,17 @@ export default function ClassCard({
                 </div>
             </CardContent>
 
-            <CardFooter className="p-4 bg-muted mt-auto">
+            <CardFooter className="p-4  mt-auto border-none shadow-none">
                 <Button
-                    variant="secondary"
-                    className="w-full group flex justify-center bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground transition-all"
+                    variant="outline"
+                    className="w-full group flex justify-center border-none shadow-none  hover:text-primary transition-all"
                     asChild
                 >
                     <Link
-                        href={href ?? "/default-url"}
-                        className="flex items-center justify-center dark:bg-primary dark:text-muted"
+                        href={
+                            LinkForSeeMore ?? "/default-url"
+                        }
+                        className="flex items-center justify-center dark:bg-primary-foreground  dark:text-primary"
                         aria-label={`View details about ${className}`}
                     >
                         دیدن جزپیات

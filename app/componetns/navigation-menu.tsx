@@ -43,8 +43,8 @@ import { ThemeToggle } from "@/components/ModeToggle";
 
 export default function NavigationMenuComponents() {
     return (
-        <nav className="bg-primary dark:bg-muted dark:text-muted-foreground text-primary-foreground rtl font-sans">
-            <div className="container mx-auto px-4">
+        <nav className="bg-primary/85 border-b-1 shadow-md  drop-shadow-md  shadow-slate-500 dark:bg-muted dark:text-muted-foreground text-primary-foreground rtl font-sans ">
+            <div className="container mx-auto px-4 ">
                 <div className="flex items-center justify-between h-16">
                     <div className="">
                         <Link href="/">
@@ -55,7 +55,7 @@ export default function NavigationMenuComponents() {
                                     height={45}
                                     src={logoImage}
                                 />
-                                <span className="text-xl font-bold">
+                                <span className="text-xl font-bold ">
                                     بیافایل
                                 </span>
                             </div>

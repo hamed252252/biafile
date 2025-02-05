@@ -4,6 +4,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { MdOutlineVideoFile } from "react-icons/md";
 import { TbPencilQuestion } from "react-icons/tb";
 import { LuTestTube } from "react-icons/lu";
+import Link from "next/link";
 
 // Define interfaces
 interface LessonLink {
@@ -23,26 +24,7 @@ interface Stat {
     iconName: IconName;
 }
 
-interface ClassData {
-    className: string;
-    lastUpdatedDate: string;
-    timeAgo: string;
-    description?: string;
-    stats: Stat[];
-    lessons: LessonLink[];
-    href: string;
-    image: string; // New property for the class image
-}
-
-interface EducationalLevel {
-    levelName: string;
-    numberOfClasses: number;
-    levelSlug: string;
-}
-
-// Educational levels data
-
-interface SubResultCategory {
+export interface SubResultCategory {
     id: number;
     title: string;
     description: string | null;
@@ -62,7 +44,7 @@ interface SubResultCategory {
     resultJsonLables: string | null;
 }
 
-interface Entity {
+export interface Entity {
     id: number;
     title: string;
     description: string;
@@ -82,7 +64,7 @@ interface Entity {
     resultJsonLables: string | null;
 }
 
-interface ApiResponse {
+export interface ApiResponseCategorysCategorys {
     status: string;
     statusCode: number;
     message: string;
@@ -107,9 +89,8 @@ const icons = {
 
 const api = "https://api.biafile.ir/Api/Categorys/Public";
 async function NestedCardClasses() {
-    const classData: ApiResponse = await fetch(api).then(
-        (result) => result.json()
-    );
+    const classData: ApiResponseCategorysCategorys =
+        await fetch(api).then((result) => result.json());
     const mockStats: Stat[] = [
         {
             label: "نمونه سوالات",
@@ -131,9 +112,13 @@ async function NestedCardClasses() {
                         className="py-2 my-6"
                         key={item.id}
                     >
-                        <h2>{item.title}</h2>{" "}
+                        <h2 className="font-bold ">
+                            <Link href={`${item.uniqCode}`}>
+                                {item.title}
+                            </Link>
+                        </h2>{" "}
                         {/* Render the item.title inside an element */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 px-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 px-4">
                             {item.subResultCategorys.map(
                                 (subitem) => (
                                     <ClassCard
@@ -156,18 +141,21 @@ async function NestedCardClasses() {
                                             subitem.description ||
                                             null
                                         }
+                                        LinkForSeeMore={`${item.uniqCode}/${subitem.uniqCode}}`}
                                         href={
                                             subitem.title
-                                                ? `${item.title}/${subitem.title}`
+                                                ? `${item.uniqCode}/${subitem.uniqCode}`
                                                 : "/"
                                         } // No need to call `.toString()` if it's a string already
                                         lessons={subitem.subResultCategorys.map(
                                             (lesson) => ({
                                                 name: lesson.title, // Use lesson.title for the name
                                                 url:
-                                                    subitem.title +
+                                                    item.uniqCode +
                                                     "/" +
-                                                    lesson.title, // Use lesson.title for the url or modify this as needed
+                                                    subitem.uniqCode +
+                                                    "/" +
+                                                    lesson.uniqCode, // Use lesson.title for the url or modify this as needed
                                             })
                                         )}
                                     />
