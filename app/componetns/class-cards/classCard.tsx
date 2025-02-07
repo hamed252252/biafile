@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { cn } from "@/lib/utils";
 
 const icons = {
     sampleQuestion: FaRegQuestionCircle,
@@ -98,17 +99,19 @@ export default function ClassCard({
             transition={{ duration: 0.4 }}
         >
             <CardHeader className="p-4 text-center relative">
-                <div className="absolute inset-x-1 z-10 top-0 h-32 bg-sky-50 dark:bg-muted/50  rounded-b-[60%]" />
-                <CardTitle className="text-2xl font-semibold z-20">
+                <div className="absolute inset-x-0 z-10 top-0  h-32 bg-sky-50 dark:bg-muted  rounded-b-[25%]" />
+                <CardTitle className=" text-2xl  font-semibold z-20">
                     <Badge
                         style={{
                             backgroundColor: color,
                         }}
-                        className="rounded-full text-black p-2"
+                        className="  text-black p-2"
                     >
                         <Link
                             href={href ?? "/default-url"}
-                            className="hover:text-primary transition-colors duration-200"
+                            className={cn(
+                                "hover:text-primary  transition-colors  duration-200"
+                            )}
                         >
                             {className}
                         </Link>
@@ -122,29 +125,31 @@ export default function ClassCard({
                 </CardDescription>
             </CardHeader>
 
-            <CardContent className="p-4 flex-grow overflow-auto z-20">
-                <div className="text-sm mb-4 flex items-center">
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-4 w-4 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                    </svg>
-                    <span className="ml-1">
-                        آخرین بروزرسانی:
-                    </span>
-                    {localizeNumber(timeAgo)}
+            <CardContent className="p-4 mt-2 flex-grow overflow-auto z-20 ">
+                <div className="absolute top-20 ">
+                    <div className="text-sm mb-4  flex items-center text-accent-foreground">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-4 w-4 mx-2"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            aria-hidden="true"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                            />
+                        </svg>
+                        <span className="ml-1  ">
+                            آخرین بروزرسانی:
+                        </span>
+                        {localizeNumber(timeAgo)}
+                    </div>
                 </div>
-                <div className="grid md:grid-cols-2 gap-2 my-2">
+                <div className="grid md:grid-cols-2 gap-2 my-2 mt-10">
                     {stats?.map((stat, index) => {
                         const IconComponent =
                             icons[stat.iconName]; // Debugging
@@ -160,7 +165,7 @@ export default function ClassCard({
                             >
                                 {IconComponent ? (
                                     <IconComponent
-                                        className="h-5 w-5"
+                                        className="h-5 w-5 mx-2"
                                         aria-hidden="true"
                                     />
                                 ) : (

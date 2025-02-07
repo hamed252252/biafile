@@ -221,7 +221,7 @@ export function CategoryMenu() {
                         </span>
                     </Button>
                 </SheetTrigger>
-                <SheetContent side="left">
+                <SheetContent side="right">
                     <form className="relative my-5">
                         <Input
                             type="search"

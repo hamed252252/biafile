@@ -19,6 +19,7 @@ export default function HeroSection() {
                     <path
                         d="M0 0H1440V600C1440 600 1082.5 800 720 800C357.5 800 0 600 0 600V0Z"
                         fill="#F3F0FF"
+                        className="dark:fill-muted"
                     />
                 </svg>
             </div>

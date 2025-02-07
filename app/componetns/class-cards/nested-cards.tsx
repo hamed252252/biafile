@@ -112,11 +112,11 @@ async function NestedCardClasses() {
                         className="py-2 my-6"
                         key={item.id}
                     >
-                        <h2 className="font-bold ">
+                        <h2 className="font-bold mr-4">
                             <Link href={`${item.uniqCode}`}>
                                 {item.title}
                             </Link>
-                        </h2>{" "}
+                        </h2>
                         {/* Render the item.title inside an element */}
                         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 px-4">
                             {item.subResultCategorys.map(
