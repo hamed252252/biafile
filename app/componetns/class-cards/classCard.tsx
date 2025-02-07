@@ -118,10 +118,16 @@ export default function ClassCard({
                     </Badge>
                 </CardTitle>
 
-                <CardDescription className="mt-1 text-sm text-gray-200 z-20">
-                    {description
-                        ? localizeNumber(description)
-                        : ""}
+                <CardDescription className="mt-1 text-sm text-gray-600 z-20">
+                    {description ? (
+                        <div
+                            dangerouslySetInnerHTML={{
+                                __html: description + "",
+                            }}
+                        ></div>
+                    ) : (
+                        ""
+                    )}
                 </CardDescription>
             </CardHeader>
 
