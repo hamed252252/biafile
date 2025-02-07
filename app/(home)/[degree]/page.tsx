@@ -68,8 +68,6 @@ export default async function DegreeGradePage({
                                 url:
                                     degree +
                                     "/" +
-                                    item.uniqCode +
-                                    "/" +
                                     lesson.uniqCode, // Use lesson.title for the url or modify this as needed
                             })
                         )}
