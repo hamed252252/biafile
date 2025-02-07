@@ -1,96 +1,91 @@
-import { Suspense } from "react";
 import { notFound } from "next/navigation";
-import {
-    getEducationalLevels,
-    getSubjects,
-} from "@/app/lib/mockData";
-import SubjectGrid from "@/app/componetns/SubjectGrid";
+import { ApiResponseCategorysCategorys } from "@/app/componetns/class-cards/nested-cards";
+import ClassCard, {
+    Stat,
+} from "@/app/componetns/class-cards/classCard";
 
 export const dynamicParams = true;
 
 interface PageProps {
-    params: Promise<{
+    params: {
         degree: string;
-        grade: string;
-    }>;
-}
-
-export async function generateStaticParams() {
-    const levels = await getEducationalLevels();
-
-    return levels.flatMap((level) =>
-        Array.from(
-            { length: level.numberOfClasses },
-            (_, i) => ({
-                degree: level.levelSlug,
-                grade: (i + 1).toString(),
-            })
-        )
-    );
+    };
 }
 
 export default async function DegreeGradePage({
     params,
 }: PageProps) {
-    const res = await params;
-    const { degree, grade } = res;
-    const levels = await getEducationalLevels();
-    const subjects = await getSubjects();
+    const { degree } = params;
 
-    const currentDegree = levels.find(
-        (level) => level.levelSlug === degree
+    // Fetch class data
+    const classData: ApiResponseCategorysCategorys =
+        await fetch(
+            `https://api.biafile.ir/Api/Categorys/Public`
+        ).then((res) => res.json());
+
+    // Mock stats
+    const mockStats: Stat[] = [
+        {
+            label: "نمونه سوالات",
+            value: 20,
+            iconName: "sampleQuestion",
+        },
+        {
+            label: "فایل های آموزشی",
+            value: 15,
+            iconName: "educationalFile",
+        },
+    ];
+
+    // Filter data by uniqCode
+    const filteredData = classData.entities.filter(
+        (item) => item.uniqCode === degree
     );
-    if (!currentDegree) notFound();
 
-    const gradeNumber = parseInt(grade, 10);
-    if (
-        isNaN(gradeNumber) ||
-        gradeNumber < 1 ||
-        gradeNumber > currentDegree.numberOfClasses
-    )
+    if (filteredData.length === 0) {
         notFound();
+    }
 
-    const gradeName = getGradeName(gradeNumber);
+    const item = filteredData[0]; // Since uniqCode is unique, there should be only one match
 
     return (
         <div className="container mx-auto py-10">
             <h1 className="text-4xl font-bold mb-8 text-right">
-                {currentDegree.levelName} - پایه {gradeName}
+                {item.title || "عنوان یافت نشد"}
             </h1>
-            <Suspense
-                fallback={<div>در حال بارگذاری...</div>}
-            >
-                <SubjectGrid
-                    subjects={subjects}
-                    degree={degree}
-                    grade={grade}
-                    gradeName={gradeName}
-                    currentDegreeName={
-                        currentDegree.levelName
-                    }
-                />
-            </Suspense>
+            <div className="grid grid-cols-1 gap-4">
+                {filteredData.map((item) => (
+                    <ClassCard
+                        key={item.uniqCode}
+                        LinkForSeeMore={`/${degree}/${item.uniqCode}`}
+                        className={item.title}
+                        description={
+                            item.description ||
+                            "توضیحات موجود نیست"
+                        }
+                        href={`/${degree}/${item.uniqCode}`}
+                        lessons={item.subResultCategorys.map(
+                            (lesson) => ({
+                                name: lesson.title, // Use lesson.title for the name
+                                url:
+                                    degree +
+                                    "/" +
+                                    item.uniqCode +
+                                    "/" +
+                                    lesson.uniqCode, // Use lesson.title for the url or modify this as needed
+                            })
+                        )}
+                        stats={mockStats.map(
+                            (state: Stat) => ({
+                                label: state.label,
+                                iconName: state.iconName,
+                                value: state.value,
+                            })
+                        )}
+                        timeAgo={"3 دقیقه"}
+                    />
+                ))}
+            </div>
         </div>
-    );
-}
-
-function getGradeName(gradeNumber: number): string {
-    const gradeNames = [
-        "اول",
-        "دوم",
-        "سوم",
-        "چهارم",
-        "پنجم",
-        "ششم",
-        "هفتم",
-        "هشتم",
-        "نهم",
-        "دهم",
-        "یازدهم",
-        "دوازدهم",
-    ];
-    return (
-        gradeNames[gradeNumber - 1] ||
-        gradeNumber.toString()
     );
 }
