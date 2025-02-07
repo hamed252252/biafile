@@ -152,13 +152,18 @@ export default function ClassCard({
                         <span className="ml-1  ">
                             آخرین بروزرسانی:
                         </span>
-                        {localizeNumber(timeAgo)}
+                        {timeAgo !== undefined &&
+                            localizeNumber(timeAgo)}
                     </div>
                 </div>
                 <div className="grid md:grid-cols-2 gap-2 my-2 mt-10">
                     {stats?.map((stat, index) => {
                         const IconComponent =
-                            icons[stat.iconName]; // Debugging
+                            stat.iconName &&
+                            icons[stat.iconName]
+                                ? icons[stat.iconName]
+                                : FaRegQuestionCircle;
+
                         return (
                             <motion.div
                                 key={stat.iconName}

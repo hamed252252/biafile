@@ -111,7 +111,13 @@ export function CategoryMenu() {
                     {category.subResultCategorys.map(
                         (subCategory) =>
                             renderDesktopCategory(
-                                subCategory,
+                                {
+                                    ...subCategory,
+                                    description:
+                                        subCategory.description ||
+                                        "No description available",
+                                },
+
                                 currentPath
                             ) // Pass the current path to subcategories
                     )}

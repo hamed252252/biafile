@@ -47,12 +47,12 @@ export interface SubResultCategory {
 export interface Entity {
     id: number;
     title: string;
-    description: string;
+    description: string | null;
     parentID: number | null;
     priority: number;
     visible: boolean;
     breadcrumbTitle: string;
-    jsonPicture: string;
+    jsonPicture: string | null;
     countLessonHeading: number;
     subResultCategorys: SubResultCategory[];
     registerDate: string | null;

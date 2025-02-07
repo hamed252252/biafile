@@ -7,15 +7,13 @@ import ClassCard, {
 export const dynamicParams = true;
 
 interface PageProps {
-    params: {
-        degree: string;
-    };
+    params: Promise<{ degree: string }>;
 }
 
 export default async function DegreeGradePage({
     params,
 }: PageProps) {
-    const { degree } = params;
+    const { degree } = await params;
 
     // Fetch class data
     const classData: ApiResponseCategorysCategorys =
