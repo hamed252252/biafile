@@ -43,8 +43,8 @@ export default async function DegreeGradePage({
     if (filteredData.length === 0) {
         notFound();
     }
-
     const item = filteredData[0]; // Since uniqCode is unique, there should be only one match
+    console.log(item.id);
 
     return (
         <div className="container mx-auto py-10">
@@ -55,7 +55,7 @@ export default async function DegreeGradePage({
                 {filteredData.map((item) => (
                     <ClassCard
                         key={item.uniqCode}
-                        LinkForSeeMore={`/${degree}/${item.uniqCode}`}
+                        LinkForSeeMore={`/${degree}/${item.uniqCode} `}
                         className={item.title}
                         description={
                             item.description ||

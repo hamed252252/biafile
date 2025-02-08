@@ -41,7 +41,7 @@ function page() {
                         <div className="flex items-center gap-4 w-full md:w-1/2">
                             <RiContactsBookFill className="w-12 h-12 text-[#1B71F2]" />
                             <div>
-                                <h2 className="font-semibold text-lg">
+                                <h2 className="font-semibold text-lg dark:text-muted">
                                     مکالمه ی تلفنی
                                 </h2>
                                 <p className="text-gray-600">
@@ -54,7 +54,7 @@ function page() {
                         <div className="flex items-center gap-4 w-full md:w-1/2">
                             <HiOutlineMail className="w-12 h-12 text-[#1B71F2]" />
                             <div>
-                                <h2 className="font-semibold text-lg">
+                                <h2 className="font-semibold text-lg dark:text-muted">
                                     مکاتبه ی ایمیلی
                                 </h2>
                                 <Link

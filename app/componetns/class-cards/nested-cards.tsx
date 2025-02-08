@@ -141,7 +141,7 @@ async function NestedCardClasses() {
                                             subitem.description ||
                                             null
                                         }
-                                        LinkForSeeMore={`${item.uniqCode}/${subitem.uniqCode}}`}
+                                        LinkForSeeMore={`${item.uniqCode}}`}
                                         href={
                                             subitem.title
                                                 ? `${item.uniqCode}/${subitem.uniqCode}`

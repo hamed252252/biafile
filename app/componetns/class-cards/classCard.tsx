@@ -149,11 +149,13 @@ export default function ClassCard({
                                 d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                             />
                         </svg>
-                        <span className="ml-1  ">
+                        <span className="ml-1 text-foreground font-semibold ">
                             آخرین بروزرسانی:
                         </span>
-                        {timeAgo !== undefined &&
-                            localizeNumber(timeAgo)}
+                        <span className="font-bold text-sm ">
+                            {timeAgo !== undefined &&
+                                localizeNumber(timeAgo)}
+                        </span>
                     </div>
                 </div>
                 <div className="grid md:grid-cols-2 gap-2 my-2 mt-10">
@@ -167,8 +169,8 @@ export default function ClassCard({
                         return (
                             <motion.div
                                 key={stat.iconName}
-                                className="flex items-center space-x-2 text-sm p-2 rounded-lg bg-muted hover:text-primary"
-                                whileHover={{ scale: 1.05 }}
+                                className="flex items-center space-x-2 text-sm p-2  rounded-lg bg-muted hover:text-primary"
+                                whileHover={{ scale: 1.02 }}
                                 transition={{
                                     type: "spring",
                                     stiffness: 300,
@@ -201,7 +203,7 @@ export default function ClassCard({
                             key={index}
                             variant="secondary"
                             className="hover:bg-primary/20 hover:text-primary transition-all duration-300 ease-in-out transform hover:scale-105"
-                            whileTap={{ scale: 0.95 }}
+                            whileTap={{ scale: 1.1 }}
                         >
                             <Link
                                 href={

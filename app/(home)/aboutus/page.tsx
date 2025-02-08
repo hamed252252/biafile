@@ -240,8 +240,8 @@ export default function AboutUs() {
                                 whileTap={{ scale: 0.95 }}
                             >
                                 <Card className="group hover:shadow-lg transition-shadow duration-300">
-                                    <CardContent className="p-6 flex flex-col items-center">
-                                        <div className="relative overflow-hidden rounded-full mb-4">
+                                    <CardContent className="p-6 flex flex-col items-center ">
+                                        <div className="relative overflow-hidden rounded-full mb-4 ">
                                             <Image
                                                 src={
                                                     BlueEyes
@@ -338,13 +338,13 @@ export default function AboutUs() {
                         delay: 0.6,
                     }}
                 >
-                    <h2 className="text-3xl font-bold text-center mb-8 text-blue-800">
+                    <h2 className="text-3xl font-bold text-center mb-8 text-blue-800 dark:text-muted">
                         سوالات متداول
                     </h2>
                     <Accordion
                         type="single"
                         collapsible
-                        className="mb-12"
+                        className="mb-12 dark:text-muted"
                     >
                         <AccordionItem value="item-1">
                             <AccordionTrigger>

@@ -205,6 +205,33 @@ export function CategoryMenu() {
                     )}
                 </MenubarMenu>
             ))}
+
+            {/* Static Menu Items */}
+            <MenubarMenu>
+                <MenubarTrigger>بیشتر</MenubarTrigger>
+                <MenubarContent className="bg-blue-100 dark:bg-primary-foreground/80 text-primary dark:text-primary">
+                    <MenubarItem>
+                        <Link
+                            href="/aboutus"
+                            passHref
+                        >
+                            <div className="cursor-pointer">
+                                درباره ی ما
+                            </div>
+                        </Link>
+                    </MenubarItem>
+                    <MenubarItem>
+                        <Link
+                            href="/contactus"
+                            passHref
+                        >
+                            <div className="cursor-pointer">
+                                تماس با ما
+                            </div>
+                        </Link>
+                    </MenubarItem>
+                </MenubarContent>
+            </MenubarMenu>
         </Menubar>
     );
 
@@ -236,6 +263,30 @@ export function CategoryMenu() {
                         />
                         <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4" />
                     </form>
+                    <div className="text-end flex  flex-col  gap-y-2 ">
+                        <div>
+                            <Link
+                                className="hover:text-primary ease-out transition-colors duration-300"
+                                href="/aboutus"
+                                passHref
+                            >
+                                <div className="cursor-pointer">
+                                    درباره ی ما
+                                </div>
+                            </Link>
+                        </div>
+                        <div>
+                            <Link
+                                className="hover:text-primary ease-out transition-colors duration-300"
+                                href="/contactus"
+                                passHref
+                            >
+                                <div className="cursor-pointer">
+                                    تماس با ما
+                                </div>
+                            </Link>
+                        </div>
+                    </div>
 
                     <ScrollArea className="h-[calc(100vh-4rem)] pb-10">
                         <Accordion
