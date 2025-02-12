@@ -169,7 +169,7 @@ export default function ClassCard({
                         return (
                             <motion.div
                                 key={stat.iconName}
-                                className="flex items-center space-x-2 text-sm p-2  rounded-lg bg-muted hover:text-primary"
+                                className="flex items-center space-x-2 text-sm p-2 w-full justify-center rounded-lg bg-muted hover:text-primary"
                                 whileHover={{ scale: 1.02 }}
                                 transition={{
                                     type: "spring",

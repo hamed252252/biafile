@@ -10,7 +10,7 @@ interface PageProps {
     params: Promise<{ degree: string }>;
 }
 
-export default async function DegreeGradePage({
+export default async function DegreePage({
     params,
 }: PageProps) {
     const { degree } = await params;
@@ -43,42 +43,36 @@ export default async function DegreeGradePage({
     if (filteredData.length === 0) {
         notFound();
     }
+
     const item = filteredData[0]; // Since uniqCode is unique, there should be only one match
-    console.log(item.id);
 
     return (
-        <div className="container mx-auto py-10">
+        <div className=" mx-auto py-10">
             <h1 className="text-4xl font-bold mb-8 text-right">
                 {item.title || "عنوان یافت نشد"}
             </h1>
-            <div className="grid grid-cols-1 gap-4">
-                {filteredData.map((item) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 px-4">
+                {item.subResultCategorys.map((subitem) => (
                     <ClassCard
-                        key={item.uniqCode}
-                        LinkForSeeMore={`/${degree}/${item.uniqCode} `}
-                        className={item.title}
-                        description={
-                            item.description ||
-                            "توضیحات موجود نیست"
-                        }
-                        href={`/${degree}/${item.uniqCode}`}
-                        lessons={item.subResultCategorys.map(
-                            (lesson) => ({
-                                name: lesson.title, // Use lesson.title for the name
-                                url:
-                                    degree +
-                                    "/" +
-                                    lesson.uniqCode, // Use lesson.title for the url or modify this as needed
-                            })
-                        )}
-                        stats={mockStats.map(
-                            (state: Stat) => ({
-                                label: state.label,
-                                iconName: state.iconName,
-                                value: state.value,
-                            })
-                        )}
+                        stats={mockStats}
                         timeAgo={"3 دقیقه"}
+                        className={subitem.title}
+                        key={subitem.id}
+                        description={
+                            subitem.description || null
+                        }
+                        LinkForSeeMore={`${item.uniqCode}/${subitem.uniqCode}`}
+                        href={
+                            subitem.title
+                                ? `${item.uniqCode}/${subitem.uniqCode}`
+                                : "/"
+                        }
+                        lessons={subitem.subResultCategorys.map(
+                            (lesson) => ({
+                                name: lesson.title,
+                                url: `${item.uniqCode}/${subitem.uniqCode}/${lesson.uniqCode}`,
+                            })
+                        )}
                     />
                 ))}
             </div>
