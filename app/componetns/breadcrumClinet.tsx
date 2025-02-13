@@ -1,6 +1,3 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -8,10 +5,24 @@ import {
     BreadcrumbList,
     BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import Link from "next/link";
 
-export function BreadcrumbClient() {
-    const router = useRouter();
-
+type LessonBreadcrumbClientProps = {
+    degreeId: string;
+    degreeTitle: string;
+    gradeId: string;
+    GradeTitle: string;
+    subjectId: string;
+    subjectTitle: string;
+};
+export function BreadcrumbClient({
+    degreeId,
+    degreeTitle,
+    gradeId,
+    GradeTitle,
+    subjectId,
+    subjectTitle,
+}: LessonBreadcrumbClientProps) {
     return (
         <Breadcrumb className="mb-6">
             <BreadcrumbList>
@@ -25,29 +36,33 @@ export function BreadcrumbClient() {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                    <BreadcrumbLink
-                        className="hover:text-primary/75 hover:cursor-pointer"
-                        href="#"
-                        onClick={(event) => {
-                            event.preventDefault();
-                            window.history.go(-2);
-                        }}
+                    <Link
+                        replace
+                        prefetch={false}
+                        href={`/${degreeId}`}
                     >
-                        کاربرگ‌ها
-                    </BreadcrumbLink>
+                        {degreeTitle}
+                    </Link>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                    <BreadcrumbLink
-                        className="hover:text-primary/75 hover:cursor-pointer"
-                        href="#"
-                        onClick={(event) => {
-                            event.preventDefault();
-                            router.back();
-                        }}
+                    <Link
+                        replace
+                        prefetch={false}
+                        href={`/${degreeId}/${gradeId}`}
                     >
-                        فارسی
-                    </BreadcrumbLink>
+                        {GradeTitle}
+                    </Link>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                    <Link
+                        replace
+                        prefetch={false}
+                        href={`/${degreeId}/${gradeId}/${subjectId}`}
+                    >
+                        {subjectTitle}
+                    </Link>
                 </BreadcrumbItem>
             </BreadcrumbList>
         </Breadcrumb>

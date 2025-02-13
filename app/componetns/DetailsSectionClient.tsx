@@ -8,8 +8,13 @@ import {
     BookOpen,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { LessonHeadingEntity } from "../type/edcation";
 
-export default function DetailsSectionClient() {
+export default function DetailsSectionClient({
+    Lesson,
+}: {
+    Lesson: LessonHeadingEntity | undefined;
+}) {
     const [rating] = useState(5); // Assuming a fixed rating for demonstration
 
     return (
@@ -17,7 +22,9 @@ export default function DetailsSectionClient() {
             <div>
                 <div className="flex items-center justify-between mb-4">
                     <h1 className="text-2xl font-bold">
-                        کاربرگ جامع نشانه س
+                        {/* Use dynamic title from Lesson prop */}
+                        {Lesson?.title ||
+                            "کاربرگ جامع نشانه س"}
                     </h1>
                     <div className="flex gap-1">
                         {[...Array(rating)].map((_, i) => (
@@ -38,26 +45,16 @@ export default function DetailsSectionClient() {
                 </div>
             </div>
 
-            <div className="space-y-4">
-                <h2 className="text-lg font-semibold">
-                    اهداف آموزشی:
-                </h2>
-                <ul className="list-disc list-inside space-y-2 text-muted-foreground">
-                    <li>
-                        آموزش و تشخیص نشانه های کلمات، تمرکز
-                        بر تشخیص و اضافه کردن نشانه س به
-                        کلمات
-                    </li>
-                    <li>بازی با ترکیب ها</li>
-                    <li>آموزش رنگ کردن نشانه ها</li>
-                    <li>
-                        تقویت حافظه و تشخیص کلمات، تکمیل
-                        جداول مشابه و سودوکو برای تقویت
-                        حافظه و یادگیری
-                    </li>
-                    <li>بازی برای روانخوانی</li>
-                </ul>
-            </div>
+            {/* Separate dangerous content section */}
+            {Lesson?.longDescription && (
+                <div
+                    className="space-y-4"
+                    suppressHydrationWarning
+                    dangerouslySetInnerHTML={{
+                        __html: Lesson.longDescription,
+                    }}
+                />
+            )}
 
             <div className="space-y-4">
                 <div className="flex flex-col sm:flex-row gap-4">
@@ -98,8 +95,10 @@ export default function DetailsSectionClient() {
 
             <div className="bg-muted/50 p-4 rounded-lg">
                 <p className="text-sm text-muted-foreground">
-                    طراح: عباس رمضان زاده • تالیف و پست
-                    آذینه
+                    طراح:{" "}
+                    <span className="font-bold">
+                        {Lesson?.designer}
+                    </span>
                 </p>
             </div>
         </div>
