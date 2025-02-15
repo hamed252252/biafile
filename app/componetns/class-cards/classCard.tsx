@@ -98,7 +98,7 @@ export default function ClassCard({
             whileHover={{ scale: 1.02 }}
             transition={{ duration: 0.4 }}
         >
-            <CardHeader className="p-4 text-center relative">
+            <CardHeader className="p-4 text-center relative ">
                 <div className="absolute inset-x-0 z-10 top-0  h-32 bg-sky-50 dark:bg-muted  rounded-b-[25%]" />
                 <CardTitle className=" text-2xl  font-semibold z-20">
                     <Badge
@@ -131,7 +131,7 @@ export default function ClassCard({
                 </CardDescription>
             </CardHeader>
 
-            <CardContent className="p-4 mt-2 flex-grow overflow-auto z-20 ">
+            <CardContent className="p-4 mt-2 flex-grow overflow-auto z-10 ">
                 <div className="absolute top-20 ">
                     <div className="text-sm mb-4  flex items-center text-accent-foreground">
                         <svg

@@ -76,7 +76,7 @@ export default async function WorksheetDetail({
             className="min-h-screen bg-background"
             dir="rtl"
         >
-            <div className="container mx-auto px-4 py-6">
+            <div className="container mx-auto px-4 mt-4">
                 {/* Breadcrumb */}
                 <BreadcrumbClient
                     degreeId={filteredData.uniqCode}
