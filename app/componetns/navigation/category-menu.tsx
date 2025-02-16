@@ -32,6 +32,7 @@ import {
     ApiResponseCategorysCategorys,
     Entity,
 } from "../class-cards/nested-cards";
+import { MenuItem } from "@/components/ui/navbar-menu";
 
 export function CategoryMenu() {
     const [categories, setCategories] = React.useState<
@@ -230,6 +231,17 @@ export function CategoryMenu() {
                             </div>
                         </Link>
                     </MenubarItem>
+                    <MenubarItem>
+                        <Link
+                            className="hover:text-primary ease-out transition-colors duration-300"
+                            href="/blog"
+                            passHref
+                        >
+                            <div className="cursor-pointer">
+                                مجله
+                            </div>
+                        </Link>
+                    </MenubarItem>
                 </MenubarContent>
             </MenubarMenu>
         </Menubar>
@@ -283,6 +295,17 @@ export function CategoryMenu() {
                             >
                                 <div className="cursor-pointer">
                                     تماس با ما
+                                </div>
+                            </Link>
+                        </div>
+                        <div>
+                            <Link
+                                className="hover:text-primary ease-out transition-colors duration-300"
+                                href="/blog"
+                                passHref
+                            >
+                                <div className="cursor-pointer">
+                                    مجله
                                 </div>
                             </Link>
                         </div>

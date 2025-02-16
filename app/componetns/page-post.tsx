@@ -20,7 +20,7 @@ interface Post {
     title: string;
     author: string;
     date: string;
-    readingTime: number;
+    readingTime?: number;
     coverImage: string;
     content: string;
     excerpt: string;

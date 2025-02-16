@@ -1,159 +1,136 @@
-import Link from "next/link";
-import Image from "next/image";
-import { getPosts } from "@/app/lib/mockData";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Clock, Calendar } from "lucide-react";
-export default function Home() {
-    const posts = getPosts();
-    const featuredPost = posts[0];
-    const otherPosts = posts.slice(1);
+import { FeaturedPost } from "@/app/componetns/blog/featured-post";
+import { PostCard } from "@/app/componetns/blog/post-card";
+
+// Interfaces
+export interface ResultJsonLabel {
+    id: string;
+    text: string;
+}
+
+export interface JsonPicture {
+    Title: string;
+    PathFileName: string;
+}
+
+interface EntityPost {
+    id: number;
+    categoryPostID: number;
+    title: string;
+    shortDescription: string;
+    longDescription: string;
+    jsonPictures: string; // Stringified JSON array of JsonPicture
+    jsonFiles: string | null;
+    jsonVideos: string | null;
+    visible: boolean;
+    imageUIrl: string | null;
+    registerDate: string;
+    editDate: string;
+    uniqCode: string | null;
+    registerTime: string;
+    editTime: string;
+    jsonLableTexts: string | null;
+    resultJsonLables: ResultJsonLabel[] | null;
+}
+
+export interface ApiResponsePost {
+    status: string;
+    statusCode: number;
+    message: string;
+    entities: EntityPost[];
+    countAllRecordTable: number;
+}
+
+export interface Post {
+    slug: string;
+    author?: string;
+    title: string;
+    excerpt: string;
+    coverImage: string;
+    tags: string[];
+    date: string;
+    readingTime: string;
+}
+
+// Home Component
+const Home = async (): Promise<JSX.Element> => {
+    let postData: ApiResponsePost;
+
+    try {
+        const response = await fetch(
+            "https://api.biafile.ir/Api/Posts/AllForPublicPage"
+        );
+        if (!response.ok) {
+            throw new Error("Failed to fetch posts");
+        }
+        postData = await response.json();
+    } catch (error) {
+        console.error("Error fetching posts:", error);
+        return (
+            <div>
+                <p>
+                    خطا در دریافت پست‌ها. لطفاً دوباره تلاش
+                    کنید.
+                </p>
+            </div>
+        );
+    }
+
+    const postEntity = postData.entities;
+    if (!postEntity || postEntity.length === 0) {
+        return (
+            <div>
+                <p>هیچ پستی موجود نیست.</p>
+            </div>
+        );
+    }
+
+    const mappedPosts = postEntity.map(mapEntityPostToPost);
+    const featuredPost = mappedPosts[0];
+    const otherPosts = mappedPosts.slice(1);
 
     return (
-        <div className="space-y-12 py-8">
+        <div className="space-y-12 py-8 container">
             <section>
                 <h2 className="text-3xl font-bold mb-6">
                     پست ویژه
                 </h2>
-                <Card className="overflow-hidden">
-                    <div className="relative h-64 md:h-80">
-                        <Image
-                            src={featuredPost.coverImage}
-                            alt={featuredPost.title}
-                            fill
-                            className="object-cover"
-                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                            placeholder="blur"
-                            blurDataURL="/fallback-image.jpg"
-                        />
-                    </div>
-                    <CardHeader>
-                        <CardTitle className="text-2xl">
-                            <Link
-                                href={`/blog/${featuredPost.slug}`}
-                                className="hover:underline"
-                            >
-                                {featuredPost.title}
-                            </Link>
-                        </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                        <p className="text-muted-foreground mb-4">
-                            {featuredPost.excerpt}
-                        </p>
-                        <div className="flex flex-wrap gap-2 mb-4">
-                            {featuredPost.tags.map(
-                                (tag) => (
-                                    <Badge
-                                        key={tag}
-                                        variant="secondary"
-                                    >
-                                        {tag}
-                                    </Badge>
-                                )
-                            )}
-                        </div>
-                        <div className="flex items-center text-sm text-muted-foreground space-x-4">
-                            <span className="flex items-center">
-                                <Calendar className="mr-1 h-4 w-4" />
-                                {featuredPost.date}
-                            </span>
-                            <span className="flex items-center">
-                                <Clock className="mr-1 h-4 w-4" />
-                                {featuredPost.readingTime}{" "}
-                                min read
-                            </span>
-                        </div>
-                    </CardContent>
-                    <CardFooter>
-                        <Button asChild>
-                            <Link
-                                href={`/blog/${featuredPost.slug}`}
-                            >
-                                ادامه مطلب
-                            </Link>
-                        </Button>
-                    </CardFooter>
-                </Card>
+                <FeaturedPost post={featuredPost} />
             </section>
 
             <section>
                 <h2 className="text-3xl font-bold mb-6">
-                    آخرین پست ها
+                    آخرین پست‌ها
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {otherPosts.map((post) => (
-                        <Card
+                    {otherPosts.map((post: Post) => (
+                        <PostCard
                             key={post.slug}
-                            className="flex flex-col"
-                        >
-                            <div className="relative h-48">
-                                <Image
-                                    src={post.coverImage}
-                                    alt={post.title}
-                                    fill
-                                    className="object-cover rounded-t-lg"
-                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                    placeholder="blur"
-                                    blurDataURL="/fallback-image.jpg"
-                                />
-                            </div>
-                            <CardHeader>
-                                <CardTitle className="text-xl">
-                                    <Link
-                                        href={`/blog/${post.slug}`}
-                                        className="hover:underline"
-                                    >
-                                        {post.title}
-                                    </Link>
-                                </CardTitle>
-                            </CardHeader>
-                            <CardContent className="flex-grow">
-                                <p className="text-muted-foreground mb-4 line-clamp-2">
-                                    {post.excerpt}
-                                </p>
-                                <div className="flex flex-wrap gap-2 mb-4">
-                                    {post.tags.map(
-                                        (tag) => (
-                                            <Badge
-                                                key={tag}
-                                                variant="outline"
-                                            >
-                                                {tag}
-                                            </Badge>
-                                        )
-                                    )}
-                                </div>
-                            </CardContent>
-                            <CardFooter className="flex items-center justify-between text-sm text-muted-foreground">
-                                <span className="flex items-center">
-                                    <Calendar className="mr-1 h-4 w-4" />
-                                    {post.date}
-                                </span>
-                                <span className="flex items-center">
-                                    <Clock className="mr-1 h-4 w-4" />
-                                    {post.readingTime} min
-                                    read
-                                </span>
-                                <Button asChild>
-                                    <Link
-                                        href={`/blog/${post.slug}`}
-                                    >
-                                        ادامه مطلب
-                                    </Link>
-                                </Button>
-                            </CardFooter>
-                        </Card>
+                            post={post}
+                        />
                     ))}
                 </div>
             </section>
         </div>
     );
-}
+};
+
+// Explicit export for Next.js page
+export default Home;
+
+// Define mapEntityPostToPost function
+const mapEntityPostToPost = (entity: EntityPost): Post => {
+    return {
+        slug: entity.uniqCode || `${entity.id}`, // assuming `uniqCode` is your slug
+        author: entity.registerDate, // You can adjust this based on your requirements
+        title: entity.title,
+        excerpt: entity.shortDescription,
+        coverImage:
+            entity.imageUIrl &&
+            entity.imageUIrl.trim() !== ""
+                ? entity.imageUIrl
+                : "/default-image.jpg", // مقدار پیش‌فرض برای تصویر
+        tags: [], // Add logic to map tags if needed
+        date: entity.registerDate,
+        readingTime: "5 min", // You can calculate or fetch reading time if necessary
+    };
+};

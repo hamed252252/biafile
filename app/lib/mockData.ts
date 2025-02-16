@@ -1,3 +1,4 @@
+import { Entity } from "../componetns/class-cards/nested-cards";
 import { Subject } from "../type/edcation";
 
 export interface Post {
@@ -9,7 +10,7 @@ export interface Post {
     excerpt: string;
     content: string;
     coverImage: string;
-    readingTime: number;
+    readingTime: string;
     tags: string[];
 }
 
@@ -164,7 +165,7 @@ export const posts: Post[] = [
         `,
         coverImage:
             "https://tse2.mm.bing.net/th?id=OIP.mV_iCcEdN8qgDdINNOhNYQHaEK&pid=Api",
-        readingTime: 5,
+        readingTime: "5",
         tags: ["Next.js", "React", "توسعه وب"],
     },
     {
@@ -190,7 +191,7 @@ export const posts: Post[] = [
         `,
         coverImage:
             "https://media.licdn.com/dms/image/D4D12AQFJWfUQaQ1qPg/article-cover_image-shrink_600_2000/0/1675674296261?e=2147483647&v=beta&t=zcfSqc5__VRvgFu6e6Ll8vL4xNP_PYnbQYG4YpL9ysE",
-        readingTime: 7,
+        readingTime: "7",
         tags: ["React", "هوک‌ها", "JavaScript"],
     },
     {
@@ -216,7 +217,7 @@ export const posts: Post[] = [
         `,
         coverImage:
             "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcToyxGpecilojAhBulAhaWwPnX9cGDon-qbGg&s",
-        readingTime: 6,
+        readingTime: "6",
         tags: ["GraphQL", "API", "توسعه وب"],
     },
     {
@@ -242,7 +243,7 @@ export const posts: Post[] = [
         `,
         coverImage:
             "https://tse2.mm.bing.net/th?id=OIP.mV_iCcEdN8qgDdINNOhNYQHaEK&pid=Api",
-        readingTime: 8,
+        readingTime: "8",
         tags: ["CSS", "طراحی وب", "Layout"],
     },
     {
@@ -267,7 +268,7 @@ export const posts: Post[] = [
         `,
         coverImage:
             "https://tse2.mm.bing.net/th?id=OIP.mV_iCcEdN8qgDdINNOhNYQHaEK&pid=Api",
-        readingTime: 7,
+        readingTime: "7",
         tags: [
             "TypeScript",
             "JavaScript",
@@ -275,10 +276,42 @@ export const posts: Post[] = [
         ],
     },
 ];
-export function getPosts() {
-    return posts;
+export interface LabelPost {
+    id: string;
+    text: string;
 }
 
+export interface EntityPost {
+    id: number;
+    title: string;
+    shortDescription: string;
+    longDescription: string;
+    jsonPictures: string | null;
+    registerDate: string;
+    registerTime: string;
+    resultJsonLables: LabelPost[];
+}
+export const getPosts =
+    async (): Promise<EntityPost | null> => {
+        try {
+            const response = await fetch(
+                "https://api.biafile.ir/Api/Posts/AllForPublicPagea"
+            );
+
+            // Log the raw response for debugging
+            const rawResponse = await response.text();
+            console.log("Raw API Response:", rawResponse);
+
+            // Attempt to parse the response as JSON
+            const data = JSON.parse(rawResponse);
+
+            // Return the first entity from the response
+            return data.entities[0];
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            return null;
+        }
+    };
 export function getPostBySlug(slug: string) {
     return posts.find((post) => post.slug === slug);
 }
