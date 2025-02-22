@@ -52,7 +52,10 @@ function SubjectCard({
                         <Badge key={index}>{tag}</Badge>
                     ))}
                 </div>
-                <p className="text-muted-foreground mb-4">
+                <p
+                    suppressHydrationWarning
+                    className="text-muted-foreground mb-4"
+                >
                     توضیحات:{" "}
                     <div
                         suppressHydrationWarning

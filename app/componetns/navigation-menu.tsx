@@ -74,9 +74,11 @@ export default function NavigationMenuComponents() {
                             />
                             <Search className="absolute left-2 top-1/2 transform -translate-y-1/2 h-4 w-4 text-primary" />
                         </form>
-                        <Button variant="ghost">
-                            <User className="h-5 w-5" />
-                        </Button>
+                        <Link href={"/dashboard"}>
+                            <Button variant="ghost">
+                                <User className="h-5 w-5" />
+                            </Button>
+                        </Link>
                         <ThemeToggle />
                     </div>
                 </div>

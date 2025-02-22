@@ -62,7 +62,6 @@ const quickLinks: QuickLinkProps[] = [
     { href: "/", label: "خانه" },
     { href: "/aboutus", label: "درباره ما" },
     { href: "/blog", label: "وبلاگ" },
-    { href: "/faq", label: "سوالات متداول" },
     {
         href: "/privacy-policy",
         label: "سیاست حفظ حریم خصوصی",

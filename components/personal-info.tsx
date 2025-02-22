@@ -257,7 +257,7 @@ export default function PersonalInfo() {
                                 <SelectTrigger>
                                     <SelectValue placeholder="انتخاب نقش" />
                                 </SelectTrigger>
-                                <SelectContent>
+                                <SelectContent className="z-20 bg-primary-foreground/95 ">
                                     <SelectItem value="student">
                                         دانشجو
                                     </SelectItem>

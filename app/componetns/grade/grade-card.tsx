@@ -52,7 +52,7 @@ const GradeCard: React.FC<GradeCardProps> = ({
             className="container mx-auto p-4 rtl"
         >
             <Card className="mb-8 shadow-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <CardHeader className="bg-gradient-to-l from-primary to-primary-foreground text-white p-8">
+                <CardHeader className="bg-gradient-to-l from-primary to-primary/75 text-white p-8">
                     <CardTitle className="text-3xl font-bold mb-4">
                         {gradeData.title}
                     </CardTitle>
@@ -194,8 +194,12 @@ const LessonCard: React.FC<LessonCardProps> = ({
                     {lesson.title}
                 </CardTitle>
             </CardHeader>
-            <CardContent className="flex-grow">
+            <CardContent
+                suppressHydrationWarning
+                className="flex-grow"
+            >
                 <div
+                    suppressContentEditableWarning
                     className="text-gray-600 dark:text-gray-400 text-sm line-clamp-3"
                     dangerouslySetInnerHTML={{
                         __html: lesson.shortDescription,

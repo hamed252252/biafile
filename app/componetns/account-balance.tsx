@@ -108,6 +108,7 @@ export default function Component() {
 
             <div className="flex justify-end">
                 <Select
+                    dir="rtl"
                     defaultValue={timeRange}
                     onValueChange={setTimeRange}
                 >
@@ -259,12 +260,15 @@ export default function Component() {
                 </CardContent>
             </Card>
 
-            <Card>
+            <Card dir="rtl">
                 <CardHeader>
                     <CardTitle>تحلیل مالی</CardTitle>
                 </CardHeader>
                 <CardContent>
-                    <Tabs defaultValue="income">
+                    <Tabs
+                        dir="rtl"
+                        defaultValue="income"
+                    >
                         <TabsList className="grid w-full grid-cols-2">
                             <TabsTrigger value="income">
                                 درآمد
