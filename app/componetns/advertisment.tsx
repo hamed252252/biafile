@@ -18,7 +18,7 @@ export default function StickyAdvertisement() {
                     transition={{ duration: 0.5 }}
                     className="
             fixed
-            bottom-5 right-5
+            top-5 left-5
             z-50
             w-72
             bg-white/70 dark:bg-gray-800/70
