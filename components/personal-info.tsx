@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import DatePicker from "react-multi-date-picker";
-import persian from "react-date-object/calendars/persian";
-import persian_fa from "react-date-object/locales/persian_fa";
+import { motion, AnimatePresence } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
     Card,
@@ -12,33 +12,22 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
     Select,
-    SelectContent,
-    SelectItem,
     SelectTrigger,
     SelectValue,
+    SelectContent,
+    SelectItem,
 } from "@/components/ui/select";
-import { Popover } from "@radix-ui/react-popover";
+import { Edit3, Save } from "lucide-react";
+import DatePicker from "react-multi-date-picker";
+import persian from "react-date-object/calendars/persian";
+import persian_fa from "react-date-object/locales/persian_fa";
 import { CalendarIcon } from "lucide-react";
 
-interface PersonalInfoData {
-    firstName: string;
-    lastName: string;
-    nationalId: string;
-    birthDate: Date | null;
-    role: string;
-    email: string;
-    phone: string;
-}
-
-export default function PersonalInfo() {
+export default function PersonalInfoForm() {
     const [isEditing, setIsEditing] = useState(false);
-
-    // داده‌های نمونه
-    const mockData: PersonalInfoData = {
+    const [personalInfo, setPersonalInfo] = useState({
         firstName: "علی",
         lastName: "محمدی",
         nationalId: "0123456789",
@@ -46,13 +35,7 @@ export default function PersonalInfo() {
         role: "student",
         email: "ali.mohammadi@example.com",
         phone: "09123456789",
-    };
-
-    const [personalInfo, setPersonalInfo] =
-        useState<PersonalInfoData>(mockData);
-    const [errors, setErrors] = useState<
-        Partial<PersonalInfoData>
-    >({});
+    });
 
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement>
@@ -62,118 +45,108 @@ export default function PersonalInfo() {
             ...prev,
             [id]: value,
         }));
-        setErrors((prev) => ({ ...prev, [id]: "" }));
-    };
-
-    const handleSelectChange = (value: string) => {
-        setPersonalInfo((prev) => ({
-            ...prev,
-            role: value,
-        }));
-    };
-
-    const validateForm = (): boolean => {
-        const newErrors: Partial<PersonalInfoData> = {};
-        if (!personalInfo.firstName.trim())
-            newErrors.firstName = "نام اجباری است";
-        if (!personalInfo.lastName.trim())
-            newErrors.lastName = "نام خانوادگی اجباری است";
-        if (
-            personalInfo.email &&
-            !/\S+@\S+\.\S+/.test(personalInfo.email)
-        )
-            newErrors.email = "ایمیل نامعتبر است";
-        if (
-            personalInfo.phone &&
-            !/^09\d{9}$/.test(personalInfo.phone)
-        )
-            newErrors.phone = "شماره تلفن نامعتبر است";
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
-    };
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        if (validateForm()) {
-            setIsEditing(false);
-            console.log("Updated info:", personalInfo);
-        }
     };
 
     return (
         <div
             dir="rtl"
-            className="min-h-screen bg-background flex items-center justify-center p-4"
+            className="min-h-screen bg-background flex items-center justify-center p-6"
         >
-            <Card className="w-full text-cente max-w-2xl">
-                <CardHeader className="flex flex-row text-center items-center justify-between">
-                    <CardTitle className="text-2xl font-bold">
-                        اطلاعات شخصی
-                    </CardTitle>
-                    <Button
-                        variant="outline"
-                        onClick={() =>
-                            setIsEditing(!isEditing)
-                        }
-                    >
-                        {isEditing ? "لغو" : "ویرایش"}
-                    </Button>
-                </CardHeader>
-                <form onSubmit={handleSubmit}>
-                    <CardContent className="space-y-4">
-                        {/* نام */}
-                        <div className="space-y-2">
-                            <Label htmlFor="firstName">
-                                نام
-                            </Label>
-                            <Input
-                                id="firstName"
-                                value={
-                                    personalInfo.firstName
-                                }
-                                onChange={handleInputChange}
-                                disabled={!isEditing}
-                            />
-                            {errors.firstName && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.firstName}
-                                </p>
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-3xl"
+            >
+                <Card className="bg-white dark:bg-gray-900 shadow-lg border border-gray-200 dark:border-gray-800 rounded-3xl p-4">
+                    <CardHeader className="flex justify-between items-center pb-4 border-b">
+                        <CardTitle className="text-lg font-bold">
+                            اطلاعات شخصی
+                        </CardTitle>
+                        <motion.button
+                            onClick={() =>
+                                setIsEditing(
+                                    (prev) => !prev
+                                )
+                            }
+                            whileTap={{ scale: 0.9 }}
+                            whileHover={{ scale: 1.05 }}
+                            className="flex items-center gap-2 text-primary hover:text-white bg-gray-100 dark:bg-gray-800 px-4 py-2 rounded-lg transition-all"
+                        >
+                            {isEditing ? (
+                                <Save size={18} />
+                            ) : (
+                                <Edit3 size={18} />
                             )}
-                        </div>
-                        {/* نام خانوادگی */}
-                        <div className="space-y-2">
-                            <Label htmlFor="lastName">
-                                نام خانوادگی
-                            </Label>
-                            <Input
-                                id="lastName"
-                                value={
-                                    personalInfo.lastName
-                                }
-                                onChange={handleInputChange}
-                                disabled={!isEditing}
-                            />
-                            {errors.lastName && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.lastName}
-                                </p>
-                            )}
-                        </div>
-                        {/* کد ملی */}
-                        <div className="space-y-2">
-                            <Label htmlFor="nationalId">
-                                کد ملی
-                            </Label>
-                            <Input
-                                id="nationalId"
-                                value={
-                                    personalInfo.nationalId
-                                }
-                                onChange={handleInputChange}
-                                disabled={!isEditing}
-                            />
-                        </div>
-                        {/* تاریخ تولد */}
+                            {isEditing ? "ذخیره" : "ویرایش"}
+                        </motion.button>
+                    </CardHeader>
+
+                    <CardContent className="space-y-6 mt-4">
+                        {[
+                            {
+                                id: "firstName",
+                                label: "نام",
+                                value: personalInfo.firstName,
+                            },
+                            {
+                                id: "lastName",
+                                label: "نام خانوادگی",
+                                value: personalInfo.lastName,
+                            },
+                            {
+                                id: "nationalId",
+                                label: "کد ملی",
+                                value: personalInfo.nationalId,
+                            },
+                            {
+                                id: "email",
+                                label: "ایمیل (اختیاری)",
+                                value: personalInfo.email,
+                            },
+                            {
+                                id: "phone",
+                                label: "شماره تلفن (اختیاری)",
+                                value: personalInfo.phone,
+                            },
+                        ].map((field) => (
+                            <div
+                                key={field.id}
+                                className="relative w-full"
+                            >
+                                <Label
+                                    htmlFor={field.id}
+                                    className="text-sm font-medium"
+                                >
+                                    {field.label}
+                                </Label>
+                                <Input
+                                    id={field.id}
+                                    value={field.value}
+                                    onChange={
+                                        handleInputChange
+                                    }
+                                    disabled={!isEditing}
+                                    className={`
+                    w-full
+                    mt-1
+                    bg-transparent
+                    border-none
+                    border-b-2
+                    rounded-none
+                    focus:ring-0
+                    focus:border-primary
+                    ${
+                        isEditing
+                            ? "border-gray-400 dark:border-gray-600"
+                            : "border-gray-200 dark:border-gray-700"
+                    }
+                  `}
+                                />
+                            </div>
+                        ))}
+
+                        {/* ✅ بدون دست زدن به DatePicker همونی که کار میکرد */}
                         <div className="space-y-2">
                             <Label htmlFor="birthDate">
                                 تاریخ تولد (اختیاری)
@@ -199,13 +172,16 @@ export default function PersonalInfo() {
                                     locale={persian_fa}
                                     calendarPosition="bottom-right"
                                     disabled={!isEditing}
-                                    inputClass={`w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
-                                        !personalInfo.birthDate &&
-                                        "text-gray-500"
+                                    inputClass={`w-full border border-gray-300 rounded-md px-3  py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                                        !personalInfo.birthDate
+                                            ? "text-gray-500 "
+                                            : ""
                                     } ${
-                                        !isEditing &&
-                                        "bg-gray-100 cursor-not-allowed"
-                                    }`}
+                                        !isEditing
+                                            ? "bg-gray-100 cursor-not-allowed "
+                                            : ""
+                                    } 
+                                 `}
                                     containerClassName="w-full"
                                     placeholder="انتخاب تاریخ"
                                     render={(
@@ -220,14 +196,20 @@ export default function PersonalInfo() {
                                             disabled={
                                                 !isEditing
                                             }
-                                            className="w-full text-right flex items-center justify-between border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+                                            className="w-full text-right flex items-center justify-between border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-800 transition-all"
                                         >
                                             <span
-                                                className={`${
-                                                    !personalInfo.birthDate
-                                                        ? "text-gray-500"
+                                                className={`
+                                                    
+                                                  ${
+                                                      !personalInfo.birthDate
+                                                          ? "text-gray-500 "
+                                                          : ""
+                                                  } ${
+                                                    !isEditing
+                                                        ? " cursor-not-allowed text-gray-500"
                                                         : ""
-                                                }`}
+                                                } `}
                                             >
                                                 {personalInfo.birthDate
                                                     ? personalInfo.birthDate.toLocaleDateString(
@@ -235,29 +217,35 @@ export default function PersonalInfo() {
                                                       )
                                                     : "انتخاب تاریخ"}
                                             </span>
-                                            <CalendarIcon className="h-5 w-5 text-gray-400" />
+                                            <CalendarIcon className="h-5 w-5 text-muted-foreground" />
                                         </button>
                                     )}
                                 />
                             </div>
                         </div>
+
                         {/* نقش */}
                         <div className="space-y-2">
-                            <Label htmlFor="role">
-                                نقش
-                            </Label>
+                            <Label>نقش</Label>
                             <Select
-                                dir="rtl"
-                                onValueChange={
-                                    handleSelectChange
-                                }
                                 value={personalInfo.role}
                                 disabled={!isEditing}
+                                onValueChange={(value) =>
+                                    setPersonalInfo(
+                                        (prev) => ({
+                                            ...prev,
+                                            role: value,
+                                        })
+                                    )
+                                }
                             >
-                                <SelectTrigger>
+                                <SelectTrigger
+                                    dir="rtl"
+                                    className="w-full border-none border-b-2 rounded-none focus:ring-0 focus:border-primary"
+                                >
                                     <SelectValue placeholder="انتخاب نقش" />
                                 </SelectTrigger>
-                                <SelectContent className="z-20 bg-primary-foreground/95 ">
+                                <SelectContent>
                                     <SelectItem value="student">
                                         دانشجو
                                     </SelectItem>
@@ -270,53 +258,33 @@ export default function PersonalInfo() {
                                 </SelectContent>
                             </Select>
                         </div>
-                        {/* ایمیل */}
-                        <div className="space-y-2">
-                            <Label htmlFor="email">
-                                ایمیل (اختیاری)
-                            </Label>
-                            <Input
-                                id="email"
-                                value={personalInfo.email}
-                                onChange={handleInputChange}
-                                disabled={!isEditing}
-                            />
-                            {errors.email && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.email}
-                                </p>
-                            )}
-                        </div>
-                        {/* شماره تلفن */}
-                        <div className="space-y-2">
-                            <Label htmlFor="phone">
-                                شماره تلفن (اختیاری)
-                            </Label>
-                            <Input
-                                id="phone"
-                                value={personalInfo.phone}
-                                onChange={handleInputChange}
-                                disabled={!isEditing}
-                            />
-                            {errors.phone && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.phone}
-                                </p>
-                            )}
-                        </div>
                     </CardContent>
-                    <CardFooter>
+
+                    {/* دکمه ذخیره */}
+                    <AnimatePresence>
                         {isEditing && (
-                            <Button
-                                type="submit"
-                                className="w-full"
+                            <motion.div
+                                initial={{
+                                    opacity: 0,
+                                    y: 20,
+                                }}
+                                animate={{
+                                    opacity: 1,
+                                    y: 0,
+                                }}
+                                exit={{ opacity: 0, y: 20 }}
+                                className="mt-4"
                             >
-                                ذخیره تغییرات
-                            </Button>
+                                <CardFooter>
+                                    <Button className="w-full py-3 rounded-xl shadow-md bg-primary hover:bg-primary/90 text-white">
+                                        ذخیره تغییرات
+                                    </Button>
+                                </CardFooter>
+                            </motion.div>
                         )}
-                    </CardFooter>
-                </form>
-            </Card>
+                    </AnimatePresence>
+                </Card>
+            </motion.div>
         </div>
     );
 }

@@ -110,7 +110,7 @@ export default function ClassCard({
                         <Link
                             href={href ?? "/default-url"}
                             className={cn(
-                                "hover:text-primary  transition-colors  duration-200"
+                                "hover:text-primary  text-xl transition-colors  duration-200"
                             )}
                         >
                             {className}
