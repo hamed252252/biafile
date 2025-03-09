@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import NavigationMenuComponents from "../componetns/navigation-menu";
 import "../globals.css";
 import Footer from "../componetns/footer";
+import Advertisement from "../componetns/advertisment";
 
 const myFont = localFont({
     src: [
@@ -81,6 +82,7 @@ export default function RootLayout({
         <main
             className={` ${myFont.className}  antialiased`}
         >
+            <Advertisement />
             <NavigationMenuComponents />
 
             {children}

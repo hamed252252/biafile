@@ -247,13 +247,13 @@ export default function PersonalInfoForm() {
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="student">
-                                        دانشجو
+                                        دانش آموز /والدین
                                     </SelectItem>
                                     <SelectItem value="teacher">
-                                        استاد
+                                        معلم / دبیر
                                     </SelectItem>
                                     <SelectItem value="admin">
-                                        مدیر
+                                        مدیر /معاون
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
