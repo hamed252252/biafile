@@ -1,101 +1,95 @@
 import Image from "next/image";
-import {
-    Star,
-    Download,
-    Share2,
-    BookOpen,
-    Users,
-    Clock,
-} from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
+import { fetchDataLessonsClassData } from "../../page";
+import { LessonHeadingEntity } from "@/app/type/edcation";
 import { BreadcrumbClient } from "@/app/componetns/breadcrumClinet";
 import DetailsSectionClient from "@/app/componetns/DetailsSectionClient";
-import { fetchDataLessonsClassData } from "../../page";
 
-type WorksheetDetailProps = {
-    params: Promise<{
-        degree: string;
-        grade: string;
-        subject: string;
-        Lesson: string;
-    }>;
+type RouteParams = {
+    degree: string;
+    grade: string;
+    subject: string;
+    Lesson: string;
 };
+
+/** اینترفیس ساده برای درخت دسته‌بندی‌ها */
+interface CategoryEntity {
+    id: number;
+    title: string;
+    uniqCode: string;
+    subResultCategorys: CategoryEntity[];
+    // می‌توانید فیلدهای دیگری هم اضافه کنید اگر لازم دارید
+}
 
 export default async function WorksheetDetail({
     params,
-}: WorksheetDetailProps) {
-    const { degree, grade, subject, Lesson } = await params;
-    const previewImage =
-        "/placeholder.svg?height=600&width=400";
-    const res = await params;
+}: {
+    params: Promise<RouteParams>; // Next.js 15+
+}) {
+    // 1) پارامترهای URL را await می‌کنیم
+    const {
+        degree,
+        grade,
+        subject,
+        Lesson: lessonId,
+    } = await params;
+
+    // 2) داده‌ها را می‌خوانیم
     const { lessons, classData } =
         await fetchDataLessonsClassData();
 
-    const filteredData = classData.entities.find(
-        (item) => item.uniqCode === degree
-    );
-    if (!filteredData) {
-        console.error(
-            `Degree with uniqCode ${degree} not found.`
-        );
-        return null;
-    }
+    // 3) آرایه‌ها را تایپ می‌کنیم
+    const categories =
+        classData.entities as CategoryEntity[];
+    const lessonList =
+        lessons.entities as LessonHeadingEntity[];
 
-    const gradeData = filteredData.subResultCategorys.find(
-        (item) => item.uniqCode === grade
+    // 4) مسیر‌یابی درختی بدون any
+    const degreeData = categories.find(
+        (cat) => cat.uniqCode === degree
     );
-    if (!gradeData) {
-        console.error(
-            `Grade with uniqCode ${grade} not found.`
-        );
-        return null;
-    }
+    if (!degreeData) return null;
+
+    const gradeData = degreeData.subResultCategorys.find(
+        (gr) => gr.uniqCode === grade
+    );
+    if (!gradeData) return null;
 
     const subjectData = gradeData.subResultCategorys.find(
-        (item) => item.uniqCode === subject
+        (su) => su.uniqCode === subject
     );
-    if (!subjectData) {
-        console.error(
-            `Subject with uniqCode ${subject} not found.`
-        );
-        return null;
-    }
+    if (!subjectData) return null;
 
-    const filteredLessons = lessons.entities.filter(
-        (item) => item.categoryID === subjectData.id
-    );
-    const LessonById = lessons.entities.find(
-        (item) => item.id.toString() === Lesson
+    // 5) پیدا کردن درس
+    const lessonById = lessonList.find(
+        (l) => l.id.toString() === lessonId
     );
 
+    // 6) رندر UI
     return (
         <div
             className="min-h-screen bg-background"
             dir="rtl"
         >
             <div className="container mx-auto px-4 mt-4">
-                {/* Breadcrumb */}
                 <BreadcrumbClient
-                    degreeId={filteredData.uniqCode}
-                    degreeTitle={filteredData.title}
+                    degreeId={degreeData.uniqCode}
+                    degreeTitle={degreeData.title}
                     gradeId={gradeData.uniqCode}
                     GradeTitle={gradeData.title}
                     subjectId={subjectData.uniqCode}
                     subjectTitle={subjectData.title}
                 />
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 ">
-                    {/* Preview Section */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    {/* پیش‌نمایش */}
                     <div className="space-y-4">
                         <Card className="overflow-hidden">
                             <CardContent className="p-0">
                                 <div className="relative aspect-[3/4] w-full">
                                     <Image
-                                        src={previewImage}
-                                        alt="پیش‌نمایش کاربرگ"
+                                        src="/placeholder.svg"
+                                        alt="Worksheet preview"
                                         fill
                                         className="object-cover"
                                     />
@@ -103,15 +97,15 @@ export default async function WorksheetDetail({
                             </CardContent>
                         </Card>
                         <p className="text-sm text-muted-foreground text-center">
-                            پیش‌نمایش صفحه اول فایل • تعداد
+                            پیش‌نمایش صفحهٔ اول فایل • تعداد
                             صفحات: ۴
                         </p>
                     </div>
 
-                    {/* Details Section */}
+                    {/* جزئیات */}
                     <div className="space-y-6">
                         <DetailsSectionClient
-                            Lesson={LessonById}
+                            Lesson={lessonById}
                         />
                     </div>
                 </div>

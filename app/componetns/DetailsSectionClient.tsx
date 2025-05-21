@@ -13,7 +13,10 @@ import { LessonHeadingEntity } from "../type/edcation";
 export default function DetailsSectionClient({
     Lesson,
 }: {
-    Lesson: LessonHeadingEntity | undefined;
+    Lesson:
+        | LessonHeadingEntity
+        | undefined
+        | LessonHeadingEntity;
 }) {
     const [rating] = useState(5); // Assuming a fixed rating for demonstration
 

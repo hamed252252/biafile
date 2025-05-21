@@ -1,58 +1,83 @@
-import React from "react";
-import { fetchDataLessonsClassData } from "../page";
+// app/(home)/[degree]/[grade]/[subject]/page.tsx
 import SubjectCard from "@/app/componetns/subject/subject-card";
+import { fetchDataLessonsClassData } from "../page";
+import type {
+    ApiResponseLessonHeading,
+    LessonHeadingEntity,
+} from "@/app/type/edcation";
 
-interface SubjectPageProps {
-    params: Promise<{
-        degree: string;
-        grade: string;
-        subject: string;
-    }>;
+type RouteParams = {
+    degree: string;
+    grade: string;
+    subject: string;
+};
+
+/**
+ * اینترفیس ساده برای داده‌های کلاس‌ها
+ * مطابق خروجی واقعی API در nested-cards.tsx
+ */
+interface CategoryEntity {
+    id: number;
+    title: string;
+    uniqCode: string;
+    subResultCategorys: CategoryEntity[];
 }
 
-const SubjectPage: React.FC<SubjectPageProps> = async ({
+/**
+ * چون از ApiResponseCategorysCategorys مستقیم import نکردیم،
+ * مشخص می‌کنیم که classData فقط همین فیلد entities را دارد.
+ */
+interface LocalClassData {
+    entities: CategoryEntity[];
+}
+
+export default async function SubjectPage({
     params,
-}) => {
+}: {
+    params: Promise<RouteParams>;
+}) {
+    // — 1) پارامترهای URL را await می‌کنیم —
     const { degree, grade, subject } = await params;
+
+    // — 2) صدا زدن API —
     const { lessons, classData } =
-        await fetchDataLessonsClassData();
+        (await fetchDataLessonsClassData()) as {
+            lessons: ApiResponseLessonHeading;
+            classData: LocalClassData;
+        };
 
-    const filteredData = classData.entities.find(
-        (item) => item.uniqCode === degree
-    );
-    if (!filteredData) {
-        console.error(
-            `Degree with uniqCode ${degree} not found.`
-        );
-        return null;
-    }
+    // — 3) آرایه‌ها را تایپ می‌کنیم —
+    const categories: CategoryEntity[] = classData.entities;
+    const lessonList: LessonHeadingEntity[] =
+        lessons.entities;
 
-    const gradeData = filteredData.subResultCategorys.find(
-        (item) => item.uniqCode === grade
+    // — 4) پیمایش درخت دسته‌بندی‌ها —
+    const degreeData = categories.find(
+        (cat) => cat.uniqCode === degree
     );
-    if (!gradeData) {
-        console.error(
-            `Grade with uniqCode ${grade} not found.`
-        );
-        return null;
-    }
+    if (!degreeData) return null;
+
+    const gradeData = degreeData.subResultCategorys.find(
+        (gr) => gr.uniqCode === grade
+    );
+    if (!gradeData) return null;
 
     const subjectData = gradeData.subResultCategorys.find(
-        (item) => item.uniqCode === subject
+        (su) => su.uniqCode === subject
     );
-    if (!subjectData) {
-        console.error(
-            `Subject with uniqCode ${subject} not found.`
-        );
-        return null;
-    }
+    if (!subjectData) return null;
 
-    const filteredLessons = lessons.entities.filter(
-        (item) => item.categoryID === subjectData.id
+    // — 5) فیلتر کردن درس‌ها برای این موضوع —
+    const filteredLessons = lessonList.filter(
+        (lesson) => lesson.categoryID === subjectData.id
     );
 
+    // — 6) رندر نهایی —
     return (
-        <div className="p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div
+            className="p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+            dir="rtl"
+        >
             {filteredLessons.map((item) => (
                 <SubjectCard
                     key={item.id}
@@ -61,7 +86,7 @@ const SubjectPage: React.FC<SubjectPageProps> = async ({
                         item.resultLessonHeadingStatus.title
                     }
                     tags={item.resultJsonLables.map(
-                        (label) => label.text
+                        (lbl) => lbl.text
                     )}
                     description={item.shortDescription}
                     designerAvatar="https://github.com/shadcn.png"
@@ -73,18 +98,24 @@ const SubjectPage: React.FC<SubjectPageProps> = async ({
             ))}
         </div>
     );
-};
+}
 
-export default SubjectPage;
-export async function generateStaticParams() {
-    const { classData } = await fetchDataLessonsClassData();
+export async function generateStaticParams(): Promise<
+    RouteParams[]
+> {
+    // باز هم همین structure لوکال برای classData
+    const { classData } =
+        (await fetchDataLessonsClassData()) as {
+            lessons: ApiResponseLessonHeading;
+            classData: LocalClassData;
+        };
 
-    return classData.entities.flatMap((degree) =>
-        degree.subResultCategorys?.flatMap((grade) =>
-            grade.subResultCategorys?.map((subject) => ({
-                degree: degree.uniqCode,
-                grade: grade.uniqCode,
-                subject: subject.uniqCode,
+    return classData.entities.flatMap((deg) =>
+        deg.subResultCategorys.flatMap((gr) =>
+            gr.subResultCategorys.map((su) => ({
+                degree: deg.uniqCode,
+                grade: gr.uniqCode,
+                subject: su.uniqCode,
             }))
         )
     );

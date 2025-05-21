@@ -1,80 +1,99 @@
+// app/(home)/[degree]/page.tsx
+
 import { notFound } from "next/navigation";
-import { ApiResponseCategorysCategorys } from "@/app/componetns/class-cards/nested-cards";
 import ClassCard, {
     Stat,
+    LessonLink,
 } from "@/app/componetns/class-cards/classCard";
 
 export const dynamicParams = true;
 
-interface PageProps {
+type PageProps = {
     params: Promise<{ degree: string }>;
+};
+
+interface CategoryEntity {
+    id: number;
+    title: string;
+    description: string | null;
+    uniqCode: string;
+    subResultCategorys: CategoryEntity[];
+}
+
+interface LocalClassData {
+    entities: CategoryEntity[];
 }
 
 export default async function DegreePage({
     params,
 }: PageProps) {
+    // 1) پارامتر URL را await می‌کنیم
     const { degree } = await params;
 
-    // Fetch class data
-    const classData: ApiResponseCategorysCategorys =
-        await fetch(
-            `https://api.biafile.ir/Api/Categorys/Public`
-        ).then((res) => res.json());
+    // 2) فراخوانی API و استخراج فیلد entities
+    const raw = await fetch(
+        "https://api.biafile.ir/Api/Categorys/Public"
+    ).then((r) => r.json());
+    const classData: LocalClassData = {
+        entities: raw.entities,
+    };
 
-    // Mock stats
+    // 3) پیدا کردن دادهٔ مربوط به degree
+    const degreeData = classData.entities.find(
+        (c) => c.uniqCode === degree
+    );
+    if (!degreeData) return notFound();
+
+    // 4) آمار نمونه برای هر کارت
     const mockStats: Stat[] = [
         {
-            label: "نمونه سوالات",
+            label: "نمونه سؤال",
             value: 20,
             iconName: "sampleQuestion",
         },
         {
-            label: "فایل های آموزشی",
+            label: "فایل آموزشی",
             value: 15,
             iconName: "educationalFile",
         },
     ];
 
-    // Filter data by uniqCode
-    const filteredData = classData.entities.filter(
-        (item) => item.uniqCode === degree
-    );
-
-    if (filteredData.length === 0) {
-        notFound();
-    }
-
-    const item = filteredData[0]; // Since uniqCode is unique, there should be only one match
-
+    // 5) رندر زیرشاخه‌ها با کارت
     return (
-        <div className=" mx-auto py-10">
+        <div
+            className="mx-auto py-10"
+            dir="rtl"
+        >
             <h1 className="text-4xl font-bold mb-8 text-right">
-                {item.title || "عنوان یافت نشد"}
+                {degreeData.title}
             </h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mt-4 px-4">
-                {item.subResultCategorys.map((subitem) => (
-                    <ClassCard
-                        stats={mockStats}
-                        timeAgo={"3 دقیقه"}
-                        className={subitem.title}
-                        key={subitem.id}
-                        description={
-                            subitem.description || null
-                        }
-                        LinkForSeeMore={`${item.uniqCode}/${subitem.uniqCode}`}
-                        href={
-                            subitem.title
-                                ? `${item.uniqCode}/${subitem.uniqCode}`
-                                : "/"
-                        }
-                        lessons={subitem.subResultCategorys.map(
-                            (lesson) => ({
-                                name: lesson.title,
-                                url: `${item.uniqCode}/${subitem.uniqCode}/${lesson.uniqCode}`,
-                            })
-                        )}
-                    />
-                ))}
+                {degreeData.subResultCategorys.map(
+                    (subitem) => {
+                        // درس‌های هر زیرشاخه
+                        const lessons: LessonLink[] =
+                            subitem.subResultCategorys.map(
+                                (lesson) => ({
+                                    name: lesson.title,
+                                    url: `/${degree}/${subitem.uniqCode}/${lesson.uniqCode}`,
+                                })
+                            );
+
+                        return (
+                            <ClassCard
+                                key={subitem.id}
+                                className={subitem.title}
+                                description={
+                                    subitem.description
+                                }
+                                stats={mockStats}
+                                lastUpdate="۳ دقیقه"
+                                linkForSeeMore={`/${degree}/${subitem.uniqCode}`}
+                                lessons={lessons}
+                            />
+                        );
+                    }
+                )}
             </div>
         </div>
     );

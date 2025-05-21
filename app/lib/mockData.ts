@@ -1,4 +1,3 @@
-import { Entity } from "../componetns/class-cards/nested-cards";
 import { Subject } from "../type/edcation";
 
 export interface Post {

@@ -1,80 +1,99 @@
-import { ApiResponseCategorysCategorys } from "@/app/componetns/class-cards/nested-cards";
-import GradeCard from "@/app/componetns/grade/grade-card";
-import { ApiResponseLessonHeading } from "@/app/type/edcation";
-import { notFound } from "next/navigation";
-import React from "react";
+// app/(home)/[degree]/[grade]/page.tsx
 
-interface PageProps {
-    params: {
-        degree: string;
-        grade: string;
-    };
+import GradeCard from "@/app/componetns/grade/grade-card";
+import type {
+    ApiResponseLessonHeading,
+    LessonHeadingEntity,
+} from "@/app/type/edcation";
+import { notFound } from "next/navigation";
+
+type RouteParams = {
+    degree: string;
+    grade: string;
+};
+
+/** اینترفیس برای آیتم‌های classData.entities مطابق آنچه GradeCard لازم دارد */
+interface CategoryEntity {
+    id: number;
+    title: string;
+    description: string | null;
+    uniqCode: string;
+    subResultCategorys: CategoryEntity[];
 }
 
-export async function fetchDataLessonsClassData() {
-    const [lessonsResponse, classDataResponse] =
-        await Promise.all([
-            fetch(
-                "https://api.biafile.ir/Api/LessonHeadings/AllForPublicPage"
-            ),
-            fetch(
-                "https://api.biafile.ir/Api/Categorys/Public"
-            ),
-        ]);
+/** چون فقط همین فیلد entities برایمان مهم است */
+interface LocalClassData {
+    entities: CategoryEntity[];
+}
 
-    if (!lessonsResponse.ok || !classDataResponse.ok) {
+export async function fetchDataLessonsClassData(): Promise<{
+    lessons: ApiResponseLessonHeading;
+    classData: LocalClassData;
+}> {
+    const [lessonsRes, classDataRes] = await Promise.all([
+        fetch(
+            "https://api.biafile.ir/Api/LessonHeadings/AllForPublicPage"
+        ),
+        fetch(
+            "https://api.biafile.ir/Api/Categorys/Public"
+        ),
+    ]);
+    if (!lessonsRes.ok || !classDataRes.ok) {
         throw new Error("Failed to fetch data");
     }
-
     const lessons: ApiResponseLessonHeading =
-        await lessonsResponse.json();
-    const classData: ApiResponseCategorysCategorys =
-        await classDataResponse.json();
-
+        await lessonsRes.json();
+    const rawClass = await classDataRes.json();
+    const classData: LocalClassData = {
+        entities: rawClass.entities, // فقط entities رو می‌گیریم
+    };
     return { lessons, classData };
 }
 
-export async function generateStaticParams() {
-    const { classData, lessons } =
-        await fetchDataLessonsClassData();
-
-    return classData.entities.flatMap((item) =>
-        item.subResultCategorys.map((subitem) => ({
-            degree: item.uniqCode,
-            grade: subitem.uniqCode,
+export async function generateStaticParams(): Promise<
+    RouteParams[]
+> {
+    const { classData } = await fetchDataLessonsClassData();
+    return classData.entities.flatMap((deg) =>
+        deg.subResultCategorys.map((gr) => ({
+            degree: deg.uniqCode,
+            grade: gr.uniqCode,
         }))
     );
 }
 
+interface PageProps {
+    params: Promise<RouteParams>;
+}
+
 const GradePage = async ({ params }: PageProps) => {
     const { degree, grade } = await params;
-
     const { lessons, classData } =
         await fetchDataLessonsClassData();
 
-    const filteredData = classData.entities.find(
-        (item) => item.uniqCode === degree
+    // 1) پیدا کردن degree
+    const categories: CategoryEntity[] = classData.entities;
+    const degreeData = categories.find(
+        (cat) => cat.uniqCode === degree
     );
+    if (!degreeData) return notFound();
 
-    if (!filteredData) {
-        return notFound();
-    }
-
-    const gradeData = filteredData.subResultCategorys.find(
-        (subitem) => subitem.uniqCode === grade
+    // 2) پیدا کردن grade
+    const gradeData = degreeData.subResultCategorys.find(
+        (sub) => sub.uniqCode === grade
     );
+    if (!gradeData) return notFound();
 
-    if (!gradeData) {
-        return notFound();
-    }
+    // 3) لیست درس‌ها
+    const lessonEntities: LessonHeadingEntity[] =
+        lessons.entities;
 
-    const LessonEntitys = lessons.entities;
     return (
         <GradeCard
             gradeSlug={grade}
             degree={degree}
             gradeData={gradeData}
-            lessons={LessonEntitys}
+            lessons={lessonEntities}
         />
     );
 };
