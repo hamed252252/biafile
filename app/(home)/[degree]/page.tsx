@@ -1,10 +1,8 @@
 // app/(home)/[degree]/page.tsx
 
+import ClassCard from "@/app/componetns/class-cards/classCard";
+import { LessonLink, Stat } from "@/app/type/api-types";
 import { notFound } from "next/navigation";
-import ClassCard, {
-    Stat,
-    LessonLink,
-} from "@/app/componetns/class-cards/classCard";
 
 export const dynamicParams = true;
 
