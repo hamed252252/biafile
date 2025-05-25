@@ -22,7 +22,7 @@ export default function NavigationMenu() {
     const [darkMode, setDarkMode] = useState(false);
 
     const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
+        setDarkMode((prev) => !prev);
         document.documentElement.classList.toggle("dark");
     };
 
@@ -53,7 +53,7 @@ export default function NavigationMenu() {
                 </motion.div>
 
                 {/* Desktop Menu */}
-                <div className="hidden md:flex items-center space-x-6">
+                <div className="hidden md:flex items-center space-x-6 rtl:space-x-reverse">
                     <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -101,63 +101,77 @@ export default function NavigationMenu() {
                 </div>
 
                 {/* Mobile Toggle */}
-                <motion.button
-                    onClick={() =>
-                        setMobileOpen(!mobileOpen)
-                    }
-                    className="md:hidden p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
-                    initial={{ opacity: 0, x: 50 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    {mobileOpen ? (
-                        <X className="text-gray-800 dark:text-gray-200" />
-                    ) : (
-                        <Menu className="text-gray-800 dark:text-gray-200" />
-                    )}
-                </motion.button>
+                <CategoryMenu />
             </div>
 
-            {/* Mobile Menu */}
+            {/* Mobile Drawer */}
             <AnimatePresence>
                 {mobileOpen && (
-                    <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{
-                            height: "auto",
-                            opacity: 1,
-                        }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.3 }}
-                        className="md:hidden bg-white dark:bg-gray-900 overflow-hidden"
-                    >
-                        <div className="px-6 py-4 space-y-4">
-                            <CategoryMenu />
-                            <div className="relative">
-                                <Input
-                                    type="search"
-                                    placeholder="جستجو..."
-                                    className="pl-10 pr-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 w-full"
-                                />
-                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400" />
+                    <>
+                        {/* Overlay */}
+                        <motion.div
+                            className="fixed inset-0 bg-black/40 z-40"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() =>
+                                setMobileOpen(false)
+                            }
+                        />
+
+                        <motion.div
+                            className="fixed top-0 right-0 w-3/4 max-w-sm h-full bg-white dark:bg-gray-900 shadow-lg z-50 flex flex-col"
+                            initial={{ x: "100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "100%" }}
+                            transition={{
+                                type: "tween",
+                                duration: 0.3,
+                            }}
+                        >
+                            <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+                                <span className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                                    منو
+                                </span>
+                                <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    onClick={() =>
+                                        setMobileOpen(false)
+                                    }
+                                >
+                                    <X className="w-6 h-6 text-gray-700 dark:text-gray-200" />
+                                </Button>
                             </div>
-                            <Button
-                                className="w-full"
-                                variant="outline"
-                            >
-                                ورود / ثبت‌نام
-                            </Button>
-                            <Button
-                                className="w-full"
-                                onClick={toggleDarkMode}
-                                variant="ghost"
-                            >
-                                {darkMode
-                                    ? "حالت روز"
-                                    : "حالت شب"}
-                            </Button>
-                        </div>
-                    </motion.div>
+
+                            <div className="overflow-auto p-4 space-y-4">
+                                <CategoryMenu />
+                                <div className="relative">
+                                    <Input
+                                        type="search"
+                                        placeholder="جستجو..."
+                                        className="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800"
+                                    />
+                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400" />
+                                </div>
+                                <Button
+                                    className="w-full"
+                                    variant="outline"
+                                >
+                                    ورود / ثبت‌نام
+                                </Button>
+                                <Button
+                                    className="w-full"
+                                    variant="ghost"
+                                    onClick={toggleDarkMode}
+                                >
+                                    {darkMode
+                                        ? "حالت روز"
+                                        : "حالت شب"}
+                                </Button>
+                            </div>
+                        </motion.div>
+                    </>
                 )}
             </AnimatePresence>
         </nav>

@@ -2,12 +2,16 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
     Menu as MenuIcon,
     X as CloseIcon,
     ChevronDown,
+    Search,
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/moving-border";
 
 interface CategoryEntity {
     id: number;
@@ -34,7 +38,7 @@ export default function CategoryMenu() {
     }, []);
 
     return (
-        <nav className="relative z-50  dark:bg-gray-900 ">
+        <nav className="relative z-50 dark:bg-gray-900">
             <div className="container mx-auto flex items-center justify-between px-4 py-3">
                 {/* منوی دسکتاپ */}
                 <div className="hidden md:flex items-center space-x-8 rtl:space-x-reverse">
@@ -69,7 +73,6 @@ export default function CategoryMenu() {
                                     </motion.span>
                                 )}
                             </button>
-
                             <AnimatePresence>
                                 {openIndex === idx &&
                                     cat.subResultCategorys
@@ -202,7 +205,7 @@ export default function CategoryMenu() {
             <AnimatePresence>
                 {mobileOpen && (
                     <>
-                        {/* بک‌گراند نیمه‌شفاف */}
+                        {/* Overlay */}
                         <motion.div
                             className="fixed inset-0 bg-black bg-opacity-50 z-40"
                             initial={{ opacity: 0 }}
@@ -213,7 +216,7 @@ export default function CategoryMenu() {
                             }
                         />
 
-                        {/* پنل */}
+                        {/* Panel */}
                         <motion.div
                             className="fixed top-0 right-0 w-3/4 max-w-xs h-full bg-white dark:bg-gray-900 z-50 shadow-lg p-4 flex flex-col"
                             initial={{ x: "100%" }}
@@ -237,22 +240,18 @@ export default function CategoryMenu() {
                                 </button>
                             </div>
 
-                            <motion.div
-                                initial="collapsed"
-                                animate="open"
-                                variants={{
-                                    open: {
-                                        height: "auto",
-                                    },
-                                    collapsed: {
-                                        height: 0,
-                                    },
-                                }}
-                                transition={{
-                                    duration: 0.3,
-                                }}
-                                className="overflow-auto flex-1"
-                            >
+                            {/* جستجو */}
+                            <div className="relative mb-4">
+                                <Input
+                                    type="search"
+                                    placeholder="جستجو..."
+                                    className="w-full pl-10 pr-4 py-2 rounded-lg bg-gray-100 dark:bg-gray-800"
+                                />
+                                <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 dark:text-gray-400" />
+                            </div>
+
+                            {/* لیست دسته‌ها */}
+                            <div className="overflow-auto flex-1 space-y-2">
                                 {categories.map((cat) => (
                                     <details
                                         key={cat.id}
@@ -282,25 +281,27 @@ export default function CategoryMenu() {
                                 ))}
 
                                 {/* آیتم‌های ثابت بیشتر */}
-                                <Link
-                                    href="/aboutus"
-                                    className="block py-2 px-2 hover:text-blue-600 transition"
-                                >
-                                    درباره ما
-                                </Link>
-                                <Link
-                                    href="/contactus"
-                                    className="block py-2 px-2 hover:text-blue-600 transition"
-                                >
-                                    تماس با ما
-                                </Link>
-                                <Link
-                                    href="/blog"
-                                    className="block py-2 px-2 hover:text-blue-600 transition"
-                                >
-                                    مجله
-                                </Link>
-                            </motion.div>
+                                <div className="mt-4 space-y-2">
+                                    <Link
+                                        href="/aboutus"
+                                        className="block py-2 px-2 hover:text-blue-600 transition"
+                                    >
+                                        درباره ما
+                                    </Link>
+                                    <Link
+                                        href="/contactus"
+                                        className="block py-2 px-2 hover:text-blue-600 transition"
+                                    >
+                                        تماس با ما
+                                    </Link>
+                                    <Link
+                                        href="/blog"
+                                        className="block py-2 px-2 hover:text-blue-600 transition"
+                                    >
+                                        مجله
+                                    </Link>
+                                </div>
+                            </div>
                         </motion.div>
                     </>
                 )}
