@@ -58,8 +58,7 @@ const quickLinks: QuickLinkProps[] = [
     { href: "/", label: "خانه" },
     { href: "/aboutus", label: "درباره ما" },
     { href: "/blog", label: "وبلاگ" },
-    { href: "/privacy-policy", label: "حریم خصوصی" },
-    { href: "/terms", label: "قوانین سایت" },
+    { href: "/contactus", label: "تماس با ما" },
 ];
 
 export default function Footer() {

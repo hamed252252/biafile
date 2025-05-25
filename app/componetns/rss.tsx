@@ -654,7 +654,7 @@ export default function NewsletterForm() {
                                                             htmlFor="email"
                                                             className="text-gray-700 dark:text-gray-200 text-sm font-medium flex items-center"
                                                         >
-                                                            <Mail className="h-4 w-4 ml-2" />{" "}
+                                                            {/* <Mail className="h-4 w-4 ml-2" />{" "} */}
                                                             آدرس
                                                             ایمیل
                                                         </Label>

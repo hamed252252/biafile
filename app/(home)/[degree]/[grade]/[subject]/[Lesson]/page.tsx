@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { fetchDataLessonsClassData } from "../../page";
 import { LessonHeadingEntity } from "@/app/type/edcation";
 import { BreadcrumbClient } from "@/app/componetns/breadcrumClinet";
 import DetailsSectionClient from "@/app/componetns/DetailsSectionClient";
+import { fetchDataLessonsClassData } from "@/app/lib/fetchdataLessonsClassData";
 
 type RouteParams = {
     degree: string;

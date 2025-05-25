@@ -1,6 +1,6 @@
 // app/(home)/[degree]/[grade]/[subject]/page.tsx
 import SubjectCard from "@/app/componetns/subject/subject-card";
-import { fetchDataLessonsClassData } from "../page";
+import { fetchDataLessonsClassData } from "@/app/lib/fetchdataLessonsClassData";
 import type {
     ApiResponseLessonHeading,
     LessonHeadingEntity,

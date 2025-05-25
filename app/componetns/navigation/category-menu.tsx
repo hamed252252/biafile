@@ -2,32 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Menu, Search } from "lucide-react";
 import {
-    Menubar,
-    MenubarMenu,
-    MenubarTrigger,
-    MenubarContent,
-    MenubarItem,
-    MenubarSub,
-    MenubarSubTrigger,
-    MenubarSubContent,
-} from "@/components/ui/menubar";
-import {
-    Sheet,
-    SheetContent,
-    SheetTrigger,
-} from "@/components/ui/sheet";
-import { Button } from "@/components/ui/button";
-import {
-    Accordion,
-    AccordionItem,
-    AccordionTrigger,
-    AccordionContent,
-} from "@/components/ui/accordion";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Input } from "@/components/ui/input";
-import { ThemeToggle } from "@/components/ModeToggle";
+    Menu as MenuIcon,
+    X as CloseIcon,
+    ChevronDown,
+} from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface CategoryEntity {
     id: number;
@@ -36,218 +16,295 @@ interface CategoryEntity {
     subResultCategorys: CategoryEntity[];
 }
 
-export function CategoryMenu() {
+export default function CategoryMenu() {
     const [categories, setCategories] = useState<
         CategoryEntity[]
     >([]);
-    const [isMobile, setIsMobile] = useState(false);
+    const [openIndex, setOpenIndex] = useState<
+        number | null
+    >(null);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
+    // گرفتن دسته‌بندی‌ها از API
     useEffect(() => {
-        async function fetchCategories() {
-            try {
-                const raw = await fetch(
-                    "https://api.biafile.ir/Api/Categorys/Public"
-                ).then((r) => r.json());
-                setCategories(raw.entities);
-            } catch (error) {
-                console.error(
-                    "Error fetching categories:",
-                    error
-                );
-            }
-        }
-        fetchCategories();
-
-        const checkMobile = () =>
-            setIsMobile(window.innerWidth < 768);
-        checkMobile();
-        window.addEventListener("resize", checkMobile);
-        return () =>
-            window.removeEventListener(
-                "resize",
-                checkMobile
-            );
+        fetch("https://api.biafile.ir/Api/Categorys/Public")
+            .then((r) => r.json())
+            .then((data) => setCategories(data.entities))
+            .catch(console.error);
     }, []);
 
-    const renderDesktopCategory = (
-        cat: CategoryEntity,
-        parentPath = ""
-    ) => {
-        const path = `${parentPath}/${cat.uniqCode}`;
-        if (!cat.subResultCategorys.length) {
-            return (
-                <MenubarItem key={cat.id}>
-                    <Link href={path}>{cat.title}</Link>
-                </MenubarItem>
-            );
-        }
-        return (
-            <MenubarSub key={cat.id}>
-                <MenubarSubTrigger>
-                    {cat.title}
-                </MenubarSubTrigger>
-                <MenubarSubContent className="bg-blue-100 dark:bg-primary-foreground/80 text-primary dark:text-primary">
-                    {cat.subResultCategorys.map((sub) =>
-                        renderDesktopCategory(sub, path)
-                    )}
-                </MenubarSubContent>
-            </MenubarSub>
-        );
-    };
-
-    const renderMobileCategory = (
-        cat: CategoryEntity,
-        parentPath = ""
-    ) => {
-        const path = `${parentPath}/${cat.uniqCode}`;
-        if (!cat.subResultCategorys.length) {
-            return (
-                <Link
-                    key={cat.id}
-                    href={path}
-                    className="block py-2 px-4"
-                >
-                    {cat.title}
-                </Link>
-            );
-        }
-        return (
-            <AccordionItem
-                key={cat.id}
-                value={cat.id.toString()}
-            >
-                <AccordionTrigger>
-                    {cat.title}
-                </AccordionTrigger>
-                <AccordionContent>
-                    {cat.subResultCategorys.map((sub) =>
-                        renderMobileCategory(sub, path)
-                    )}
-                </AccordionContent>
-            </AccordionItem>
-        );
-    };
-
-    const DesktopMenu = () => (
-        <Menubar className="bg-transparent shadow-none border-none">
-            {categories.map((cat) => (
-                <MenubarMenu key={cat.id}>
-                    {!cat.subResultCategorys.length ? (
-                        <Link
-                            href={`/${cat.uniqCode}`}
-                            passHref
+    return (
+        <nav className="relative z-50  dark:bg-gray-900 ">
+            <div className="container mx-auto flex items-center justify-between px-4 py-3">
+                {/* منوی دسکتاپ */}
+                <div className="hidden md:flex items-center space-x-8 rtl:space-x-reverse">
+                    {categories.map((cat, idx) => (
+                        <div
+                            key={cat.id}
+                            className="relative"
+                            onMouseEnter={() =>
+                                setOpenIndex(idx)
+                            }
+                            onMouseLeave={() =>
+                                setOpenIndex(null)
+                            }
                         >
-                            <MenubarTrigger asChild>
-                                <div className="cursor-pointer">
-                                    {cat.title}
-                                </div>
-                            </MenubarTrigger>
-                        </Link>
-                    ) : (
-                        <>
-                            <MenubarTrigger>
-                                {cat.title}{" "}
-                                <ChevronDown className="inline-block ml-1 w-4 h-4" />
-                            </MenubarTrigger>
-                            <MenubarContent className="bg-blue-100 dark:bg-primary-foreground/80 text-primary dark:text-primary">
-                                {cat.subResultCategorys.map(
-                                    (sub) =>
-                                        renderDesktopCategory(
-                                            sub,
-                                            `/${cat.uniqCode}`
-                                        )
+                            <button className="flex items-center space-x-1 rtl:space-x-reverse text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">
+                                <span>{cat.title}</span>
+                                {cat.subResultCategorys
+                                    .length > 0 && (
+                                    <motion.span
+                                        animate={{
+                                            rotate:
+                                                openIndex ===
+                                                idx
+                                                    ? 180
+                                                    : 0,
+                                        }}
+                                        transition={{
+                                            duration: 0.2,
+                                        }}
+                                    >
+                                        <ChevronDown className="w-4 h-4" />
+                                    </motion.span>
                                 )}
-                            </MenubarContent>
-                        </>
-                    )}
-                </MenubarMenu>
-            ))}
+                            </button>
 
-            <MenubarMenu>
-                <MenubarTrigger>بیشتر</MenubarTrigger>
-                <MenubarContent className="bg-blue-100 dark:bg-primary-foreground/80 text-primary dark:text-primary">
-                    <MenubarItem>
-                        <Link href="/aboutus">
-                            درباره‌ی ما
-                        </Link>
-                    </MenubarItem>
-                    <MenubarItem>
-                        <Link href="/contactus">
-                            تماس با ما
-                        </Link>
-                    </MenubarItem>
-                    <MenubarItem>
-                        <Link href="/blog">مجله</Link>
-                    </MenubarItem>
-                </MenubarContent>
-            </MenubarMenu>
-        </Menubar>
-    );
+                            <AnimatePresence>
+                                {openIndex === idx &&
+                                    cat.subResultCategorys
+                                        .length > 0 && (
+                                        <motion.div
+                                            initial={{
+                                                opacity: 0,
+                                                y: 10,
+                                            }}
+                                            animate={{
+                                                opacity: 1,
+                                                y: 0,
+                                            }}
+                                            exit={{
+                                                opacity: 0,
+                                                y: 10,
+                                            }}
+                                            transition={{
+                                                duration: 0.2,
+                                            }}
+                                            className="absolute top-full left-0 mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg overflow-hidden"
+                                        >
+                                            {cat.subResultCategorys.map(
+                                                (sub) => (
+                                                    <Link
+                                                        key={
+                                                            sub.id
+                                                        }
+                                                        href={`/${cat.uniqCode}/${sub.uniqCode}`}
+                                                        className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                                                    >
+                                                        {
+                                                            sub.title
+                                                        }
+                                                    </Link>
+                                                )
+                                            )}
+                                        </motion.div>
+                                    )}
+                            </AnimatePresence>
+                        </div>
+                    ))}
 
-    const MobileMenu = () => (
-        <>
-            <div className="mx-4">
-                <ThemeToggle />
-            </div>
-            <Sheet>
-                <SheetTrigger asChild>
-                    <Button
-                        variant="outline"
-                        size="icon"
-                        className="bg-primary/70 dark:bg-primary-foreground/75"
+                    {/* لینک‌های بیشتر */}
+                    <div
+                        className="relative"
+                        onMouseEnter={() =>
+                            setOpenIndex(categories.length)
+                        }
+                        onMouseLeave={() =>
+                            setOpenIndex(null)
+                        }
                     >
-                        <Menu className="w-4 h-4" />
-                        <span className="sr-only">
-                            Toggle menu
-                        </span>
-                    </Button>
-                </SheetTrigger>
-                <SheetContent side="right">
-                    <form className="relative my-5">
-                        <Input
-                            type="search"
-                            placeholder="جستجو..."
-                            className="pl-8 pr-2 py-1 rounded-full"
-                        />
-                        <Search className="absolute left-2 top-1/2 -translate-y-1/2 w-4 h-4" />
-                    </form>
-                    <div className="text-end flex flex-col gap-y-2 px-4">
-                        <Link
-                            href="/aboutus"
-                            className="py-2 block hover:text-primary"
-                        >
-                            درباره‌ی ما
-                        </Link>
-                        <Link
-                            href="/contactus"
-                            className="py-2 block hover:text-primary"
-                        >
-                            تماس با ما
-                        </Link>
-                        <Link
-                            href="/blog"
-                            className="py-2 block hover:text-primary"
-                        >
-                            مجله
-                        </Link>
-                    </div>
-                    <ScrollArea className="h-[calc(100vh-4rem)] pb-10">
-                        <Accordion
-                            type="multiple"
-                            className="w-full"
-                        >
-                            {categories.map((cat) =>
-                                renderMobileCategory(
-                                    cat,
-                                    ""
-                                )
+                        <button className="flex items-center space-x-1 rtl:space-x-reverse text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">
+                            <span>بیشتر</span>
+                            <motion.span
+                                animate={{
+                                    rotate:
+                                        openIndex ===
+                                        categories.length
+                                            ? 180
+                                            : 0,
+                                }}
+                                transition={{
+                                    duration: 0.2,
+                                }}
+                            >
+                                <ChevronDown className="w-4 h-4" />
+                            </motion.span>
+                        </button>
+                        <AnimatePresence>
+                            {openIndex ===
+                                categories.length && (
+                                <motion.div
+                                    initial={{
+                                        opacity: 0,
+                                        y: 10,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        y: 0,
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        y: 10,
+                                    }}
+                                    transition={{
+                                        duration: 0.2,
+                                    }}
+                                    className="absolute top-full left-0 mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg overflow-hidden"
+                                >
+                                    {[
+                                        {
+                                            href: "/aboutus",
+                                            label: "درباره ما",
+                                        },
+                                        {
+                                            href: "/contactus",
+                                            label: "تماس با ما",
+                                        },
+                                        {
+                                            href: "/blog",
+                                            label: "مجله",
+                                        },
+                                    ].map((item) => (
+                                        <Link
+                                            key={item.href}
+                                            href={item.href}
+                                            className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                                        >
+                                            {item.label}
+                                        </Link>
+                                    ))}
+                                </motion.div>
                             )}
-                        </Accordion>
-                    </ScrollArea>
-                </SheetContent>
-            </Sheet>
-        </>
-    );
+                        </AnimatePresence>
+                    </div>
+                </div>
 
-    return isMobile ? <MobileMenu /> : <DesktopMenu />;
+                {/* دکمه منوی موبایل */}
+                <button
+                    className="md:hidden text-gray-700 dark:text-gray-200"
+                    onClick={() => setMobileOpen(true)}
+                >
+                    <MenuIcon className="w-6 h-6" />
+                </button>
+            </div>
+
+            {/* Drawer موبایل */}
+            <AnimatePresence>
+                {mobileOpen && (
+                    <>
+                        {/* بک‌گراند نیمه‌شفاف */}
+                        <motion.div
+                            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 0.5 }}
+                            exit={{ opacity: 0 }}
+                            onClick={() =>
+                                setMobileOpen(false)
+                            }
+                        />
+
+                        {/* پنل */}
+                        <motion.div
+                            className="fixed top-0 right-0 w-3/4 max-w-xs h-full bg-white dark:bg-gray-900 z-50 shadow-lg p-4 flex flex-col"
+                            initial={{ x: "100%" }}
+                            animate={{ x: 0 }}
+                            exit={{ x: "100%" }}
+                            transition={{
+                                type: "tween",
+                                duration: 0.3,
+                            }}
+                        >
+                            <div className="flex justify-between items-center mb-4">
+                                <h2 className="text-lg font-semibold text-gray-800 dark:text-gray-100">
+                                    دسته‌بندی‌ها
+                                </h2>
+                                <button
+                                    onClick={() =>
+                                        setMobileOpen(false)
+                                    }
+                                >
+                                    <CloseIcon className="w-6 h-6 text-gray-700 dark:text-gray-200" />
+                                </button>
+                            </div>
+
+                            <motion.div
+                                initial="collapsed"
+                                animate="open"
+                                variants={{
+                                    open: {
+                                        height: "auto",
+                                    },
+                                    collapsed: {
+                                        height: 0,
+                                    },
+                                }}
+                                transition={{
+                                    duration: 0.3,
+                                }}
+                                className="overflow-auto flex-1"
+                            >
+                                {categories.map((cat) => (
+                                    <details
+                                        key={cat.id}
+                                        className="mb-2"
+                                    >
+                                        <summary className="cursor-pointer py-2 px-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition">
+                                            {cat.title}
+                                        </summary>
+                                        <div className="pl-4 mt-1 space-y-1">
+                                            {cat.subResultCategorys.map(
+                                                (sub) => (
+                                                    <Link
+                                                        key={
+                                                            sub.id
+                                                        }
+                                                        href={`/${cat.uniqCode}/${sub.uniqCode}`}
+                                                        className="block py-1 px-2 hover:text-blue-600 transition"
+                                                    >
+                                                        {
+                                                            sub.title
+                                                        }
+                                                    </Link>
+                                                )
+                                            )}
+                                        </div>
+                                    </details>
+                                ))}
+
+                                {/* آیتم‌های ثابت بیشتر */}
+                                <Link
+                                    href="/aboutus"
+                                    className="block py-2 px-2 hover:text-blue-600 transition"
+                                >
+                                    درباره ما
+                                </Link>
+                                <Link
+                                    href="/contactus"
+                                    className="block py-2 px-2 hover:text-blue-600 transition"
+                                >
+                                    تماس با ما
+                                </Link>
+                                <Link
+                                    href="/blog"
+                                    className="block py-2 px-2 hover:text-blue-600 transition"
+                                >
+                                    مجله
+                                </Link>
+                            </motion.div>
+                        </motion.div>
+                    </>
+                )}
+            </AnimatePresence>
+        </nav>
+    );
 }

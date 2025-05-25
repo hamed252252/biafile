@@ -1,397 +1,467 @@
 "use client";
 
-import BlueEyes from "@/public/BlueEyesTecherFm.webp";
-import BrownEyes from "@/public/brownEyesTeacherFm.webp";
-import { useState, useEffect } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "@/components/ui/tabs";
-import {
-    Accordion,
-    AccordionContent,
-    AccordionItem,
-    AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import {
-    ChevronLeft,
-    ChevronRight,
-    Mail,
-} from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+    motion,
+    AnimatePresence,
+    LayoutGroup,
+} from "framer-motion";
+import {
+    Accordion,
+    AccordionItem,
+    AccordionTrigger,
+    AccordionContent,
+} from "@/components/ui/accordion";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
-export default function AboutUs() {
+const testimonialsData = [
+    {
+        name: "سارا احمدی",
+        text: "این موسسه زندگی تحصیلی من را متحول کرد. معلمان فوق‌العاده و منابع عالی!",
+    },
+    {
+        name: "علی محمدی",
+        text: "من توانستم به دانشگاه مورد علاقه‌ام راه پیدا کنم. از همه معلمان و کارکنان سپاسگزارم.",
+    },
+    {
+        name: "مریم رضایی",
+        text: "کلاس‌های آنلاین بسیار انعطاف‌پذیر و مفید هستند. من توانستم در کنار کار، تحصیلاتم را ادامه دهم.",
+    },
+];
+
+export default function AboutUsPage() {
+    const [mounted, setMounted] = useState(false);
     const [currentTestimonial, setCurrentTestimonial] =
         useState(0);
-    const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
-        setIsVisible(true);
+        setMounted(true);
     }, []);
+    if (!mounted) return null;
 
-    const testimonials = [
-        {
-            name: "سارا احمدی",
-            text: "این موسسه زندگی تحصیلی من را متحول کرد. معلمان فوق‌العاده و منابع عالی!",
-        },
-        {
-            name: "علی محمدی",
-            text: "من توانستم به دانشگاه مورد علاقه‌ام راه پیدا کنم. از همه معلمان و کارکنان سپاسگزارم.",
-        },
-        {
-            name: "مریم رضایی",
-            text: "کلاس‌های آنلاین بسیار انعطاف‌پذیر و مفید هستند. من توانستم در کنار کار، تحصیلاتم را ادامه دهم.",
-        },
-    ];
-
-    const nextTestimonial = () => {
+    const nextTestimonial = () =>
         setCurrentTestimonial(
-            (prev) => (prev + 1) % testimonials.length
+            (p) => (p + 1) % testimonialsData.length
         );
-    };
-
-    const prevTestimonial = () => {
+    const prevTestimonial = () =>
         setCurrentTestimonial(
-            (prev) =>
-                (prev - 1 + testimonials.length) %
-                testimonials.length
+            (p) =>
+                (p - 1 + testimonialsData.length) %
+                testimonialsData.length
         );
+
+    const fadeIn = {
+        hidden: { opacity: 0, y: 20 },
+        visible: { opacity: 1, y: 0 },
     };
 
     return (
         <div
             dir="rtl"
-            className="min-h-screen bg-gradient-to-b from-blue-100 to-white rtl"
+            className="bg-gray-50 dark:bg-gray-900 text-gray-800 dark:text-gray-100"
         >
-            <motion.div
-                className="relative h-[95vh] bg-blue-800 overflow-hidden"
+            {/* Hero Section */}
+            <motion.header
+                className="relative h-96 overflow-hidden flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1 }}
             >
-                <Image
-                    src={BrownEyes.src}
-                    fill
-                    alt="Hero background"
-                    layout=""
-                    className="opacity-60 object-fill  aspect-auto "
-                />
-                <motion.div
-                    className="absolute inset-0 flex items-center justify-center"
-                    initial={{ y: 50, opacity: 0 }}
+                <div className="absolute inset-0 mix-blend-overlay bg-black/30" />
+                <motion.h1
+                    className="relative text-5xl sm:text-6xl font-bold text-white drop-shadow-lg"
+                    initial={{ y: 30, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{
                         delay: 0.5,
                         duration: 0.8,
                     }}
                 >
-                    <h1 className="text-5xl font-bold text-primary-foreground text-center mb-8">
-                        به موسسه آموزشی ما خوش آمدید
-                    </h1>
-                </motion.div>
-            </motion.div>
+                    درباره ما
+                </motion.h1>
+            </motion.header>
 
-            <div className="container mx-auto px-4 py-16">
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+            <main className="container mx-auto px-6 py-12 space-y-24">
+                {/* Intro Section */}
+                <motion.section
+                    className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center"
+                    variants={fadeIn}
+                    initial="hidden"
+                    animate="visible"
                     transition={{ duration: 0.8 }}
                 >
-                    <Tabs
-                        dir="rtl"
-                        defaultValue="mission"
-                        className="mb-12"
-                    >
-                        <TabsList className="grid w-full grid-cols-3">
-                            <TabsTrigger value="mission">
-                                ماموریت ما
-                            </TabsTrigger>
-                            <TabsTrigger value="history">
-                                تاریخچه
-                            </TabsTrigger>
-                            <TabsTrigger value="values">
-                                ارزش‌ها
-                            </TabsTrigger>
-                        </TabsList>
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={
-                                    isVisible
-                                        ? "visible"
-                                        : "hidden"
-                                }
-                                initial={{
-                                    opacity: 0,
-                                    y: 20,
-                                }}
-                                animate={{
-                                    opacity: 1,
-                                    y: 0,
-                                }}
-                                exit={{
-                                    opacity: 0,
-                                    y: -20,
-                                }}
-                                transition={{
-                                    duration: 0.5,
-                                }}
-                            >
-                                <TabsContent value="mission">
-                                    <Card>
-                                        <CardContent className="p-6">
-                                            <h2 className="text-2xl font-semibold mb-4 text-blue-700">
-                                                ماموریت ما
-                                            </h2>
-                                            <p className="text-lg text-gray-700">
-                                                ما متعهد به
-                                                ارائه آموزش
-                                                با کیفیت
-                                                بالا به تمام
-                                                دانش‌آموزان
-                                                ایرانی
-                                                هستیم. هدف
-                                                ما
-                                                توانمندسازی
-                                                نسل آینده از
-                                                طریق یادگیری
-                                                نوآورانه و
-                                                فراگیر است.
-                                            </p>
-                                        </CardContent>
-                                    </Card>
-                                </TabsContent>
-                                <TabsContent value="history">
-                                    <Card>
-                                        <CardContent className="p-6">
-                                            <h2 className="text-2xl font-semibold mb-4 text-blue-700">
-                                                تاریخچه ما
-                                            </h2>
-                                            <p className="text-gray-700">
-                                                موسسه آموزشی
-                                                ما در سال
-                                                ۱۳۸۵ تاسیس
-                                                شد. از آن
-                                                زمان، ما به
-                                                بیش از
-                                                ۱۰۰،۰۰۰
-                                                دانش‌آموز در
-                                                سراسر ایران
-                                                خدمت
-                                                کرده‌ایم.
-                                            </p>
-                                        </CardContent>
-                                    </Card>
-                                </TabsContent>
-                                <TabsContent value="values">
-                                    <Card>
-                                        <CardContent className="p-6">
-                                            <h2 className="text-2xl font-semibold mb-4 text-blue-700">
-                                                ارزش‌های ما
-                                            </h2>
-                                            <ul className="list-disc list-inside text-gray-700">
-                                                <li>
-                                                    نوآوری
-                                                    در آموزش
-                                                </li>
-                                                <li>
-                                                    برابری و
-                                                    دسترسی
-                                                </li>
-                                                <li>
-                                                    تعالی
-                                                    علمی
-                                                </li>
-                                                <li>
-                                                    یادگیری
-                                                    مادام‌العمر
-                                                </li>
-                                            </ul>
-                                        </CardContent>
-                                    </Card>
-                                </TabsContent>
-                            </motion.div>
-                        </AnimatePresence>
-                    </Tabs>
-                </motion.div>
+                    <div className="rounded-xl overflow-hidden shadow-lg">
+                        <img
+                            src="https://source.unsplash.com/600x400/?online-learning,education"
+                            alt="معرفی بیا فایل"
+                            className="object-cover w-full h-72 lg:h-full"
+                        />
+                    </div>
+                    <div className="space-y-4">
+                        <h2 className="text-3xl font-semibold">
+                            معرفی بیا فایل
+                        </h2>
+                        <p className="leading-relaxed">
+                            <strong>
+                                تاریخ شروع فعالیت:
+                            </strong>{" "}
+                            آبان ماه ۱۴۰۳
+                        </p>
+                        <p className="leading-relaxed">
+                            سایت بیا فایل، مجموعه‌ای از
+                            دانش‌آموختگان دانشگاه فرهنگیان
+                            (معلمان رسمی) وزارت آموزش و
+                            پرورش جمهوری اسلامی ایران
+                            می‌باشد. در راستای سوگند جایگاه
+                            مقدس معلمی بر خود لازم دانستیم
+                            برای همیاری به همکاران و
+                            دانش‌آموزان خدمات متنوعی ارائه
+                            دهیم.
+                        </p>
+                        <ul className="list-disc list-inside space-y-2 text-lg">
+                            <li>
+                                ارائه فایل‌های متنوع برای
+                                تسهیل جریان یاددهی-یادگیری
+                            </li>
+                            <li>
+                                ایجاد منبع غنی از ابزارهای
+                                ارزشیابی مختلف
+                            </li>
+                            <li>
+                                کاوش در دنیای نوین آموزش
+                                جهانی
+                            </li>
+                        </ul>
+                    </div>
+                </motion.section>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                {/* Team Section */}
+                <motion.section
+                    variants={fadeIn}
+                    initial="hidden"
+                    animate="visible"
                     transition={{
                         duration: 0.8,
                         delay: 0.2,
                     }}
                 >
-                    <h2 className="text-3xl font-bold text-center mb-8 text-blue-800">
+                    <h2 className="text-3xl font-semibold text-center mb-8">
                         تیم ما
                     </h2>
-                    <div className="grid md:grid-cols-3 gap-8 mb-12">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {[1, 2, 3].map((i) => (
                             <motion.div
                                 key={i}
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
+                                whileHover={{
+                                    translateY: -5,
+                                    boxShadow:
+                                        "0 10px 15px rgba(0,0,0,0.2)",
+                                }}
+                                className="bg-white dark:bg-gray-800 rounded-lg overflow-hidden transition-shadow"
                             >
-                                <Card className="group hover:shadow-lg transition-shadow duration-300">
-                                    <CardContent className="p-6 flex flex-col items-center ">
-                                        <div className="relative overflow-hidden rounded-full mb-4 ">
-                                            <Image
-                                                src={
-                                                    BlueEyes
-                                                }
-                                                alt={`Team Member ${i}`}
-                                                width={150}
-                                                height={150}
-                                                className="transition-transform duration-300 group-hover:scale-110"
-                                            />
-                                        </div>
-                                        <h3 className="text-xl font-semibold mb-2 text-blue-700">
-                                            نام عضو تیم {i}
-                                        </h3>
-                                        <p className="text-gray-600 text-center">
-                                            سمت شغلی
-                                        </p>
-                                    </CardContent>
-                                </Card>
+                                <img
+                                    src={`https://source.unsplash.com/400x300/?teacher,portrait?sig=${i}`}
+                                    alt={`عضو تیم ${i}`}
+                                    className="object-cover w-full h-48"
+                                />
+                                <div className="p-4 text-center">
+                                    <h3 className="text-xl font-medium mb-1">
+                                        نام عضو تیم {i}
+                                    </h3>
+                                    <p className="text-gray-500 dark:text-gray-400">
+                                        سمت شغلی
+                                    </p>
+                                </div>
                             </motion.div>
                         ))}
                     </div>
-                </motion.div>
+                </motion.section>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                {/* Testimonials Section */}
+                <motion.section
+                    variants={fadeIn}
+                    initial="hidden"
+                    animate="visible"
                     transition={{
                         duration: 0.8,
                         delay: 0.4,
                     }}
                 >
-                    <h2 className="text-3xl font-bold text-center mb-8 text-blue-800">
+                    <h2 className="text-3xl font-semibold text-center mb-8">
                         نظرات دانش‌آموزان
                     </h2>
-                    <div className="relative bg-white p-8 rounded-lg shadow-lg mb-12">
-                        <button
-                            onClick={prevTestimonial}
-                            className="absolute left-4 top-1/2 transform -translate-y-1/2"
-                            aria-label="Previous testimonial"
-                        >
-                            <ChevronLeft className="h-6 w-6 text-blue-600" />
-                        </button>
-                        <AnimatePresence mode="wait">
-                            <motion.div
-                                key={currentTestimonial}
-                                initial={{
-                                    opacity: 0,
-                                    x: 50,
-                                }}
-                                animate={{
-                                    opacity: 1,
-                                    x: 0,
-                                }}
-                                exit={{
-                                    opacity: 0,
-                                    x: -50,
-                                }}
-                                transition={{
-                                    duration: 0.5,
-                                }}
-                                className="text-center"
+                    <LayoutGroup>
+                        <div className="relative mx-auto max-w-xl bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
+                            <motion.button
+                                whileHover={{ scale: 1.2 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={prevTestimonial}
+                                className="absolute top-1/2 left-4 -translate-y-1/2 text-2xl text-blue-600"
                             >
-                                <p className="text-lg text-gray-700 mb-4">
-                                    {
-                                        testimonials[
-                                            currentTestimonial
-                                        ].text
+                                <ChevronLeft />
+                            </motion.button>
+                            <AnimatePresence
+                                initial={false}
+                                custom={currentTestimonial}
+                            >
+                                <motion.div
+                                    key={currentTestimonial}
+                                    custom={
+                                        currentTestimonial
                                     }
-                                </p>
-                                <p className="font-semibold text-blue-600">
-                                    {
-                                        testimonials[
-                                            currentTestimonial
-                                        ].name
-                                    }
-                                </p>
-                            </motion.div>
-                        </AnimatePresence>
-                        <button
-                            onClick={nextTestimonial}
-                            className="absolute right-4 top-1/2 transform -translate-y-1/2"
-                            aria-label="Next testimonial"
-                        >
-                            <ChevronRight className="h-6 w-6 text-blue-600" />
-                        </button>
-                    </div>
-                </motion.div>
+                                    initial={{
+                                        opacity: 0,
+                                        x: 50,
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        x: 0,
+                                    }}
+                                    exit={{
+                                        opacity: 0,
+                                        x: -50,
+                                    }}
+                                    transition={{
+                                        duration: 0.5,
+                                    }}
+                                    className="text-center px-8"
+                                >
+                                    <p className="italic text-gray-700 dark:text-gray-300 mb-4">
+                                        “
+                                        {
+                                            testimonialsData[
+                                                currentTestimonial
+                                            ].text
+                                        }
+                                        ”
+                                    </p>
+                                    <p className="font-medium text-blue-600 dark:text-blue-400">
+                                        —{" "}
+                                        {
+                                            testimonialsData[
+                                                currentTestimonial
+                                            ].name
+                                        }
+                                    </p>
+                                </motion.div>
+                            </AnimatePresence>
+                            <motion.button
+                                whileHover={{ scale: 1.2 }}
+                                whileTap={{ scale: 0.9 }}
+                                onClick={nextTestimonial}
+                                className="absolute top-1/2 right-4 -translate-y-1/2 text-2xl text-blue-600"
+                            >
+                                <ChevronRight />
+                            </motion.button>
+                        </div>
+                    </LayoutGroup>
+                </motion.section>
 
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                {/* FAQ Section */}
+                <motion.section
+                    variants={fadeIn}
+                    initial="hidden"
+                    animate="visible"
                     transition={{
                         duration: 0.8,
                         delay: 0.6,
                     }}
                 >
-                    <h2
-                        id="faq"
-                        className="text-3xl font-bold text-center mb-8 text-blue-800 dark:text-muted"
-                    >
+                    <h2 className="text-3xl font-semibold text-center mb-8">
                         سوالات متداول
                     </h2>
-                    <Accordion
-                        type="single"
-                        collapsible
-                        className="mb-12 dark:text-muted"
-                    >
-                        <AccordionItem value="item-1">
-                            <AccordionTrigger>
-                                چگونه می‌توانم در دوره‌های
-                                شما ثبت‌نام کنم؟
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                برای ثبت‌نام، به صفحه
-                                دوره‌های ما مراجعه کنید و
-                                دوره مورد نظر خود را انتخاب
-                                کنید. سپس روی دکمه "ثبت‌نام"
-                                کلیک کرده و مراحل را دنبال
-                                کنید.
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-2">
-                            <AccordionTrigger>
-                                آیا دوره‌های آنلاین ارائه
-                                می‌دهید؟
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                بله، ما طیف وسیعی از
-                                دوره‌های آنلاین را ارائه
-                                می‌دهیم که می‌توانید از هر
-                                جایی به آنها دسترسی داشته
-                                باشید.
-                            </AccordionContent>
-                        </AccordionItem>
-                        <AccordionItem value="item-3">
-                            <AccordionTrigger>
-                                شهریه دوره‌ها چگونه محاسبه
-                                می‌شود؟
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                شهریه بر اساس نوع دوره، مدت
-                                زمان و سطح آن متفاوت است.
-                                برای اطلاعات دقیق، لطفاً به
-                                صفحه هر دوره مراجعه کنید یا
-                                با ما تماس بگیرید.
-                            </AccordionContent>
-                        </AccordionItem>
-                    </Accordion>
-                </motion.div>
-            </div>
+                    <div className="max-w-xl mx-auto space-y-4">
+                        <Accordion
+                            type="single"
+                            collapsible
+                        >
+                            <AccordionItem value="faq-1">
+                                <AccordionTrigger>
+                                    اهداف سایت چیست؟
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    <ul className="list-disc space-y-1">
+                                        <li>
+                                            ارائه فایل‌های
+                                            متنوع برای تسهیل
+                                            یاددهی-یادگیری
+                                        </li>
+                                        <li>
+                                            ایجاد منبع غنی
+                                            ابزارهای
+                                            ارزشیابی
+                                        </li>
+                                        <li>
+                                            کاوش در دنیای
+                                            نوین آموزش جهانی
+                                        </li>
+                                    </ul>
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem value="faq-2">
+                                <AccordionTrigger>
+                                    نحوه ثبت‌نام چگونه است؟
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    برای ثبت‌نام ارائه یک
+                                    ایمیل معتبر یا شماره
+                                    تماس، دریافت کد پیامکی و
+                                    احراز هویت کافی است.
+                                </AccordionContent>
+                            </AccordionItem>
+                            <AccordionItem value="faq-3">
+                                <AccordionTrigger>
+                                    چگونه فایل‌ها را دانلود
+                                    کنم؟
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                    پس از ورود به حساب
+                                    کاربری، در بخش فایل‌ها
+                                    دکمه دانلود کنار هر فایل
+                                    را کلیک کنید.
+                                </AccordionContent>
+                            </AccordionItem>
+                        </Accordion>
+                    </div>
+                </motion.section>
+
+                {/* Rules & Policies Section */}
+                <motion.section
+                    variants={fadeIn}
+                    initial="hidden"
+                    animate="visible"
+                    transition={{
+                        duration: 0.8,
+                        delay: 0.8,
+                    }}
+                    className="space-y-12"
+                >
+                    <h2 className="text-3xl font-semibold text-center mb-8">
+                        قوانین و سیاست‌ها
+                    </h2>
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                            <h3 className="text-xl font-medium mb-4">
+                                قوانین ثبت‌نام
+                            </h3>
+                            <ul className="list-decimal list-inside space-y-2 text-lg">
+                                <li>
+                                    ارائه ایمیل معتبر یا
+                                    شماره تماس برای ثبت‌نام
+                                    کافی است.
+                                </li>
+                                <li>
+                                    احراز هویت از طریق ارسال
+                                    پیامک کد تأیید انجام
+                                    می‌شود.
+                                </li>
+                                <li>
+                                    با ثبت‌نام، کاربر اعلام
+                                    می‌کند سن قانونی را دارد
+                                    یا زیرنظر قیم قانونی
+                                    است.
+                                </li>
+                                <li>
+                                    تکمیل اطلاعات فردی در
+                                    پنل کاملاً اختیاری است.
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                            <h3 className="text-xl font-medium mb-4">
+                                قوانین سایت
+                            </h3>
+                            <ul className="list-decimal list-inside space-y-2 text-lg">
+                                <li>
+                                    اشتراک‌گذاری با ذکر منبع
+                                    مجاز است.
+                                </li>
+                                <li>
+                                    مبالغ شارژ اصلی غیرقابل
+                                    عودت است.
+                                </li>
+                                <li>
+                                    اعتبار هدیه محدودیت
+                                    زمانی دارد و پس از مهلت
+                                    صفر می‌شود.
+                                </li>
+                                <li>
+                                    حقوق مادی و معنوی متعلق
+                                    به مالک سایت است.
+                                </li>
+                                <li>
+                                    سایت تابع قوانین جمهوری
+                                    اسلامی ایران است.
+                                </li>
+                                <li>
+                                    بحث سیاسی، مذهبی و توهین
+                                    ممنوع است.
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                            <h3 className="text-xl font-medium mb-4">
+                                قوانین خرید
+                            </h3>
+                            <ul className="list-decimal list-inside space-y-2 text-lg">
+                                <li>
+                                    مبالغ پیش‌فرض برای شارژ
+                                    اعتبار در نظر گرفته شده
+                                    است.
+                                </li>
+                                <li>
+                                    با هر شارژ اعتبار،
+                                    اعتبار هدیه نیز تعلق
+                                    می‌گیرد.
+                                </li>
+                                <li>
+                                    ابتدا اعتبار هدیه مصرف
+                                    می‌شود.
+                                </li>
+                                <li>
+                                    مبالغ شارژ اصلی
+                                    بازگشت‌ناپذیر است.
+                                </li>
+                                <li>
+                                    دانلودها در تاریخچه ثبت
+                                    می‌شوند.
+                                </li>
+                                <li>
+                                    سایت مسوول تطابق فایل با
+                                    نیاز شما نیست.
+                                </li>
+                                <li>
+                                    لینک خراب را به پشتیبانی
+                                    گزارش دهید.
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                            <h3 className="text-xl font-medium mb-4">
+                                سیاست‌های حریم خصوصی
+                            </h3>
+                            <ul className="list-decimal list-inside space-y-2 text-lg">
+                                <li>
+                                    استفاده از ایمیل یا
+                                    شماره تماس فقط برای
+                                    تبلیغات و ارائه خدمات
+                                    است.
+                                </li>
+                                <li>
+                                    اطلاعات شخصی قابل معامله
+                                    نیست مگر در مواقع فورس
+                                    ماژور.
+                                </li>
+                                <li>
+                                    سعی ما بر حفظ حداکثری
+                                    امنیت اطلاعات شما است.
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </motion.section>
+            </main>
         </div>
     );
 }
