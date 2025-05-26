@@ -59,6 +59,7 @@ export default function NavigationMenu() {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
                     >
+                  
                         <CategoryMenu />
                     </motion.div>
 
@@ -101,7 +102,10 @@ export default function NavigationMenu() {
                 </div>
 
                 {/* Mobile Toggle */}
+                <div className="md:hidden ">
+
                 <CategoryMenu />
+                </div>
             </div>
 
             {/* Mobile Drawer */}
