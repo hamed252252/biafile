@@ -83,7 +83,9 @@ export default function NavigationMenu() {
                         transition={{ delay: 0.4 }}
                         className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition"
                     >
+                        <Link href={"/dashboard"}>
                         <User className="text-gray-600 dark:text-gray-300" />
+                        </Link>
                     </motion.button>
 
                     <motion.button
