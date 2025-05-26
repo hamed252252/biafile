@@ -110,7 +110,7 @@ const GradeCard: React.FC<GradeCardProps> = ({
                                     </h4>
                                     <ScrollArea
                                         dir="rtl"
-                                        className="h-[calc(100vh-350px)]"
+                                        className="h-[calc(100vh-100px)]"
                                     >
                                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                                             {lessons
@@ -172,6 +172,7 @@ const LessonCard: React.FC<LessonCardProps> = ({
     return (
         <Card className="flex flex-col h-full shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 overflow-hidden group">
             <div className="relative w-full h-48 overflow-hidden">
+
                 {lesson.imageUIrl ? (
                     <Image
                         src={

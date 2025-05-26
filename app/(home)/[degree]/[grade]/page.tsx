@@ -25,11 +25,15 @@ export default async function GradePage({
     if (!gradeData) return notFound();
 
     return (
+
+        <div>
         <GradeCard
             degree={degree}
             gradeSlug={grade}
             gradeData={gradeData}
             lessons={lessons.entities}
         />
+        </div>
+
     );
 }

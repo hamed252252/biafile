@@ -78,6 +78,7 @@ export default async function SubjectPage({
             className="p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
             dir="rtl"
         >
+            
             {filteredLessons.map((item) => (
                 <SubjectCard
                     key={item.id}
