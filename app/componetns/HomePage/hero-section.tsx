@@ -15,9 +15,10 @@ interface HeroEntity {
     title: string;
     description: string;
     jsonPictures: string | null;
+    jsonVideos: string | null;
 }
 
-interface Picture {
+interface MediaItem {
     Title: string;
     PathFileName: string;
 }
@@ -32,17 +33,25 @@ export default function HeroSection() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
-    // Index state only used if needed for fallback
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    // Safely parse escaped JSON
-    const pictures: Picture[] = useMemo(() => {
+    // Parse JSON arrays
+    const pictures: MediaItem[] = useMemo(() => {
         if (!hero?.jsonPictures) return [];
         try {
             const parsed = JSON.parse(hero.jsonPictures);
             return typeof parsed === "string"
-                ? (JSON.parse(parsed) as Picture[])
-                : (parsed as Picture[]);
+                ? JSON.parse(parsed)
+                : parsed;
+        } catch {
+            return [];
+        }
+    }, [hero]);
+    const videos: MediaItem[] = useMemo(() => {
+        if (!hero?.jsonVideos) return [];
+        try {
+            const parsed = JSON.parse(hero.jsonVideos);
+            return typeof parsed === "string"
+                ? JSON.parse(parsed)
+                : parsed;
         } catch {
             return [];
         }
@@ -85,6 +94,11 @@ export default function HeroSection() {
             </div>
         );
 
+    const mediaItems = [
+        ...pictures.map((p) => ({ ...p, type: "image" })),
+        ...videos.map((v) => ({ ...v, type: "video" })),
+    ];
+
     return (
         <section className="relative w-full overflow-hidden bg-white dark:bg-gray-900">
             {/* Curved Background */}
@@ -105,71 +119,86 @@ export default function HeroSection() {
             </div>
 
             {/* Hero Content */}
-            <div className="relative z-10 py-16 md:py-24">
-                <div className="container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
-                    {/* Text Content */}
-                    <div className="md:w-1/2 text-right space-y-6">
-                        <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-slate-100">
-                            {hero.title}
-                        </h1>
-                        <div
-                            className="text-lg md:text-xl text-gray-600 dark:text-slate-100 leading-relaxed"
-                            dangerouslySetInnerHTML={{
-                                __html: hero.description,
-                            }}
-                        />
-                    </div>
+            <div className="relative z-10 py-16 md:py-24 container mx-auto px-4 flex flex-col md:flex-row items-center gap-8">
+                {/* Text */}
+                <div className="md:w-1/2 text-right space-y-6">
+                    <h1 className="text-4xl md:text-5xl font-extrabold text-gray-800 dark:text-slate-100">
+                        {hero.title}
+                    </h1>
+                    <div
+                        className="text-lg md:text-xl text-gray-600 dark:text-slate-100 leading-relaxed"
+                        dangerouslySetInnerHTML={{
+                            __html: hero.description,
+                        }}
+                    />
+                </div>
 
-                    {/* Carousel or Single Image */}
-                    <div className="md:w-1/2">
-                        {pictures.length > 1 ? (
-                            <Carousel
-                                dir="ltr"
-                                opts={{
-                                    align: "start",
-                                    loop: true,
-                                }}
-                                className="relative rounded-2xl overflow-hidden shadow-xl"
-                            >
-                                <CarouselContent className="space-x-0">
-                                    {pictures.map((pic) => (
+                {/* Shadcn Carousel */}
+                <div className="md:w-1/2">
+                    {mediaItems.length > 1 ? (
+                        <Carousel
+                            dir="ltr"
+                            className="relative rounded-2xl overflow-hidden shadow-xl"
+                        >
+                            <CarouselContent className="space-x-0">
+                                {mediaItems.map(
+                                    (item, idx) => (
                                         <CarouselItem
-                                            key={
-                                                pic.PathFileName
-                                            }
+                                            key={idx}
                                             className="relative w-full aspect-[3/2]"
                                         >
-                                            <Image
-                                                src={`${IMAGE_BASE_URL}/${pic.PathFileName}`}
-                                                alt={
-                                                    pic.Title
-                                                }
-                                                fill
-                                                sizes="(max-width: 768px) 100vw, 50vw"
-                                                className="object-cover"
-                                                priority
-                                            />
+                                            {item.type ===
+                                            "image" ? (
+                                                <Image
+                                                    src={`${IMAGE_BASE_URL}/${item.PathFileName}`}
+                                                    alt={
+                                                        item.Title
+                                                    }
+                                                    fill
+                                                    sizes="(max-width: 768px) 100vw, 50vw"
+                                                    className="object-cover"
+                                                    priority
+                                                />
+                                            ) : (
+                                                <video
+                                                    src={`${IMAGE_BASE_URL}/${item.PathFileName}`}
+                                                    controls
+                                                    className="w-full h-full object-cover"
+                                                />
+                                            )}
                                         </CarouselItem>
-                                    ))}
-                                </CarouselContent>
-                            </Carousel>
-                        ) : (
-                            <div className="relative w-full aspect-[3/2] rounded-2xl overflow-hidden shadow-xl">
+                                    )
+                                )}
+                            </CarouselContent>
+                            <CarouselPrevious className="absolute top-1/2 left-4 -translate-y-1/2 z-10" />
+                            <CarouselNext className="absolute top-1/2 right-4 -translate-y-1/2 z-10" />
+                        </Carousel>
+                    ) : (
+                        <div className="relative w-full aspect-[3/2] rounded-2xl overflow-hidden shadow-xl">
+                            {mediaItems[0]?.type ===
+                            "image" ? (
                                 <Image
-                                    src={
-                                        pictures[0]
-                                            ? `${IMAGE_BASE_URL}/${pictures[0].PathFileName}`
-                                            : "/placeholder.svg"
+                                    src={`${IMAGE_BASE_URL}/${mediaItems[0].PathFileName}`}
+                                    alt={
+                                        mediaItems[0].Title
                                     }
-                                    alt={hero.title}
                                     fill
                                     sizes="(max-width: 768px) 100vw, 50vw"
                                     className="object-cover"
                                     priority
                                 />
-                            </div>
-                        )}
-                    </div>
+                            ) : mediaItems[0]?.type ===
+                              "video" ? (
+                                <video
+                                    src={`${IMAGE_BASE_URL}/${mediaItems[0].PathFileName}`}
+                                    controls
+                                    className="w-full h-full object-cover"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-gray-200 dark:bg-gray-700" />
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
         </section>
