@@ -29,6 +29,16 @@ const nextConfig: NextConfig = {
                 hostname: "adminsite.biafile.ir",
                 pathname: "**/**",
             },
+            {
+                protocol: "https",
+                hostname: "api.biafile.ir",
+                pathname: "**/**",
+            },
+            {
+                protocol: "http",
+                hostname: "api.biafile.ir",
+                pathname: "**/**",
+            },
         ],
     },
 };

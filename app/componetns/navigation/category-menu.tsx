@@ -54,7 +54,9 @@ export default function CategoryMenu() {
                             }
                         >
                             <button className="flex items-center space-x-1 rtl:space-x-reverse text-gray-700 dark:text-gray-200 hover:text-blue-600 transition">
-                                <span>{cat.title}</span>
+                                <span className="">
+                                    {cat.title}
+                                </span>
                                 {cat.subResultCategorys
                                     .length > 0 && (
                                     <motion.span
@@ -93,7 +95,7 @@ export default function CategoryMenu() {
                                             transition={{
                                                 duration: 0.2,
                                             }}
-                                            className="absolute top-full left-0 mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg overflow-hidden"
+                                            className="absolute top-full left-0 min-w-40 mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg overflow-hidden"
                                         >
                                             {cat.subResultCategorys.map(
                                                 (sub) => (
@@ -162,7 +164,7 @@ export default function CategoryMenu() {
                                     transition={{
                                         duration: 0.2,
                                     }}
-                                    className="absolute top-full left-0 mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg overflow-hidden"
+                                    className="absolute top-full   left-0 mt-2 bg-white dark:bg-gray-800 rounded-md shadow-lg overflow-hidden"
                                 >
                                     {[
                                         {
@@ -181,7 +183,7 @@ export default function CategoryMenu() {
                                         <Link
                                             key={item.href}
                                             href={item.href}
-                                            className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
+                                            className="block px-4 py-2 w-full min-w-40 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                                         >
                                             {item.label}
                                         </Link>
@@ -281,7 +283,7 @@ export default function CategoryMenu() {
                                 ))}
 
                                 {/* آیتم‌های ثابت بیشتر */}
-                                <div className="mt-4 space-y-2">
+                                <div className="mt-4 space-y-2 w-full">
                                     <Link
                                         href="/aboutus"
                                         className="block py-2 px-2 hover:text-blue-600 transition"
