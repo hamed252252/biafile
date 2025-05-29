@@ -1,236 +1,247 @@
+// app/(auth)/signup/page.tsx
 "use client";
-import React, {
-    useState,
-    ChangeEvent,
-    FormEvent,
-} from "react";
-import {
-    Card,
-    CardContent,
-    CardFooter,
-    CardHeader,
-    CardTitle,
-} from "./ui/card";
-import { Label } from "@radix-ui/react-label";
-import { Input } from "./ui/input";
-import { Button } from "./ui/button";
-import { Progress } from "./ui/progress";
-import { EyeIcon } from "@heroicons/react/24/outline";
-import { EyeOffIcon } from "lucide-react";
+import { useState, ChangeEvent, FormEvent } from "react";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Progress } from "@/components/ui/progress";
+import { Eye, EyeOff } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FormData {
-    username: string;
+    userName: string;
     email: string;
     password: string;
     confirmPassword: string;
+    roleName: string;
+    customerID: number;
+    mobile: string;
 }
 
-const SignupForm: React.FC = () => {
-    const [formData, setFormData] = useState<FormData>({
-        username: "",
+export default function SignupPage() {
+    const router = useRouter();
+    const [form, setForm] = useState<FormData>({
+        userName: "",
         email: "",
         password: "",
         confirmPassword: "",
+        roleName: "کاربر",
+        customerID: 0,
+        mobile: "",
     });
     const [errors, setErrors] = useState<Partial<FormData>>(
         {}
     );
-    const [passwordStrength, setPasswordStrength] =
-        useState(0);
-    const [showPassword, setShowPassword] = useState(false);
+    const [strength, setStrength] = useState(0);
+    const [show, setShow] = useState(false);
+    const [generalError, setGeneralError] = useState("");
+
+    const calcStrength = (pwd: string) => {
+        let s = 0;
+        if (pwd.length >= 8) s += 25;
+        if (/[A-Z]/.test(pwd)) s += 25;
+        if (/[a-z]/.test(pwd)) s += 25;
+        if (/\d/.test(pwd)) s += 25;
+        return s;
+    };
 
     const handleChange = (
         e: ChangeEvent<HTMLInputElement>
     ) => {
         const { name, value } = e.target;
-        setFormData((prevState) => ({
-            ...prevState,
-            [name]: value,
-        }));
+        setForm((f) => ({ ...f, [name]: value }));
         if (name === "password")
-            setPasswordStrength(
-                calculatePasswordStrength(value)
-            );
+            setStrength(calcStrength(value));
     };
 
-    const calculatePasswordStrength = (
-        password: string
-    ): number => {
-        let strength = 0;
-        if (password.length >= 8) strength += 25;
-        if (/[A-Z]/.test(password)) strength += 25;
-        if (/[a-z]/.test(password)) strength += 25;
-        if (/\d/.test(password)) strength += 25;
-        return strength;
-    };
-
-    const validateForm = (): boolean => {
-        const newErrors: Partial<FormData> = {};
-        let isValid = true;
-
-        if (!formData.username.trim()) {
-            newErrors.username = "نام کاربری الزامی است";
-            isValid = false;
+    const validate = () => {
+        const e: Partial<FormData> = {};
+        let ok = true;
+        if (!form.userName.trim()) {
+            e.userName = "نام کاربری الزامی است";
+            ok = false;
         }
-        if (!formData.email.trim()) {
-            newErrors.email = "ایمیل الزامی است";
-            isValid = false;
-        } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-            newErrors.email = "ایمیل نامعتبر است";
-            isValid = false;
+        if (!/\S+@\S+\.\S+/.test(form.email)) {
+            e.email = "ایمیل نامعتبر است";
+            ok = false;
         }
-        if (!formData.password) {
-            newErrors.password = "رمز عبور الزامی است";
-            isValid = false;
-        } else if (formData.password.length < 8) {
-            newErrors.password =
+        if (form.password.length < 8) {
+            e.password =
                 "رمز عبور باید حداقل ۸ کاراکتر باشد";
-            isValid = false;
+            ok = false;
         }
-        if (
-            formData.password !== formData.confirmPassword
-        ) {
-            newErrors.confirmPassword =
-                "رمزهای عبور مطابقت ندارند";
-            isValid = false;
+        if (form.password !== form.confirmPassword) {
+            e.confirmPassword = "رمزها مطابقت ندارند";
+            ok = false;
         }
-        setErrors(newErrors);
-        return isValid;
+        setErrors(e);
+        return ok;
     };
 
-    const handleSubmit = (e: FormEvent) => {
+    const handleSubmit = async (e: FormEvent) => {
         e.preventDefault();
-        if (validateForm()) {
-            console.log("فرم ارسال شد", formData);
+        setGeneralError("");
+        if (!validate()) return;
+
+        try {
+            const res = await fetch(
+                "https://api.biafile.ir/Api/Accounts/User",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type":
+                            "application/json-patch+json",
+                    },
+                    body: JSON.stringify(form),
+                }
+            );
+            const data = await res.json();
+            if (!res.ok) {
+                setGeneralError(
+                    data.message || "خطای ثبت‌نام"
+                );
+                return;
+            }
+            // ثبت نام موفق — هدایت به صفحه ورود
+            router.push("/login");
+        } catch {
+            setGeneralError("خطا در ارتباط با سرور");
         }
     };
 
     return (
-        <Card className="max-w-md mx-auto mt-10 p-6 shadow-xl rounded-lg border border-gray-200 bg-white">
-            <CardHeader className="text-center mb-4">
-                <CardTitle className="text-2xl font-semibold text-gray-800">
-                    ایجاد حساب کاربری
-                </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <form
-                    onSubmit={handleSubmit}
-                    noValidate
-                >
-                    {[
-                        {
-                            label: "نام کاربری",
-                            type: "text",
-                            name: "username",
-                        },
-                        {
-                            label: "ایمیل",
-                            type: "email",
-                            name: "email",
-                        },
-                        {
-                            label: "رمز عبور",
-                            type: showPassword
-                                ? "text"
-                                : "password",
-                            name: "password",
-                        },
-                        {
-                            label: "تأیید رمز عبور",
-                            type: "password",
-                            name: "confirmPassword",
-                        },
-                    ].map((field, index) => (
-                        <div
-                            className="mb-6 relative"
-                            key={index}
-                        >
-                            <Label
-                                htmlFor={field.name}
-                                className="mb-2 block text-gray-600 font-medium"
-                            >
-                                {field.label}
-                            </Label>
-                            <Input
-                                type={field.type}
-                                name={field.name}
-                                id={field.name}
-                                value={
-                                    formData[
-                                        field.name as keyof FormData
+        <div className="min-h-screen flex items-center justify-center p-6 bg-gray-50">
+            <form
+                onSubmit={handleSubmit}
+                className="w-full max-w-md bg-white p-8 rounded-lg shadow"
+            >
+                <h1 className="text-2xl text-center mb-6">
+                    ثبت‌نام
+                </h1>
+
+                {[
+                    {
+                        label: "نام کاربری",
+                        name: "userName",
+                        type: "text",
+                    },
+                    {
+                        label: "ایمیل",
+                        name: "email",
+                        type: "email",
+                    },
+                ].map((f) => (
+                    <div
+                        key={f.name}
+                        className="mb-4"
+                    >
+                        <Label htmlFor={f.name}>
+                            {f.label}
+                        </Label>
+                        <Input
+                            id={f.name}
+                            name={f.name}
+                            type={f.type}
+                            value={
+                                form[
+                                    f.name as keyof FormData
+                                ]
+                            }
+                            onChange={handleChange}
+                            className={cn(
+                                errors[
+                                    f.name as keyof FormData
+                                ] && "border-red-500"
+                            )}
+                        />
+                        {errors[
+                            f.name as keyof FormData
+                        ] && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {
+                                    errors[
+                                        f.name as keyof FormData
                                     ]
                                 }
-                                onChange={handleChange}
-                                className={`w-full p-3 rounded-lg border relative ${
-                                    errors[
-                                        field.name as keyof FormData
-                                    ]
-                                        ? "border-red-500"
-                                        : "border-gray-300"
-                                } focus:outline-none focus:ring-2 focus:ring-primary`}
-                            />
-                            {errors[
-                                field.name as keyof FormData
-                            ] && (
-                                <p className="text-red-500 text-sm mt-1">
-                                    {
-                                        errors[
-                                            field.name as keyof FormData
-                                        ]
-                                    }
-                                </p>
-                            )}
-                            {field.name === "password" && (
-                                <>
-                                    <Button
-                                        type="button"
-                                        onClick={() =>
-                                            setShowPassword(
-                                                !showPassword
-                                            )
-                                        }
-                                        variant="ghost"
-                                        className="absolute top-7 left-0"
-                                    >
-                                        {showPassword ? (
-                                            <EyeOffIcon className="h-5 w-5 text-gray-500" />
-                                        ) : (
-                                            <EyeIcon className="h-5 w-5 text-gray-500" />
-                                        )}
-                                    </Button>
-                                    <Progress
-                                        value={
-                                            passwordStrength
-                                        }
-                                        max={100}
-                                        className="mt-2"
-                                    />
-                                    <p className="text-sm mt-1">
-                                        قدرت رمز عبور:{" "}
-                                        {passwordStrength <
-                                        50
-                                            ? "ضعیف"
-                                            : passwordStrength <
-                                              75
-                                            ? "متوسط"
-                                            : "قوی"}
-                                    </p>
-                                </>
-                            )}
-                        </div>
-                    ))}
-                    <CardFooter>
-                        <Button
-                            type="submit"
-                            className="w-full py-3 mt-4 font-semibold text-white bg-primary rounded-lg hover:bg-primary-dark transition-all"
-                        >
-                            ثبت نام
-                        </Button>
-                    </CardFooter>
-                </form>
-            </CardContent>
-        </Card>
-    );
-};
+                            </p>
+                        )}
+                    </div>
+                ))}
 
-export default SignupForm;
+                <div className="mb-4 relative">
+                    <Label htmlFor="password">
+                        رمز عبور
+                    </Label>
+                    <Input
+                        id="password"
+                        name="password"
+                        type={show ? "text" : "password"}
+                        value={form.password}
+                        onChange={handleChange}
+                    />
+                    <button
+                        type="button"
+                        onClick={() => setShow(!show)}
+                        className="absolute inset-y-0 left-0 pr-3 flex items-center"
+                    >
+                        {show ? <EyeOff /> : <Eye />}
+                    </button>
+                    {errors.password && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.password}
+                        </p>
+                    )}
+                    <Progress
+                        value={strength}
+                        className="mt-2"
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <Label htmlFor="confirmPassword">
+                        تأیید رمز عبور
+                    </Label>
+                    <Input
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        type="password"
+                        value={form.confirmPassword}
+                        onChange={handleChange}
+                    />
+                    {errors.confirmPassword && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.confirmPassword}
+                        </p>
+                    )}
+                </div>
+
+                {generalError && (
+                    <p className="text-red-500 mb-4">
+                        {generalError}
+                    </p>
+                )}
+
+                <Button
+                    type="submit"
+                    className="w-full"
+                >
+                    ثبت‌نام
+                </Button>
+
+                <p className="text-center mt-4">
+                    قبلا ثبت‌نام کرده‌اید؟{" "}
+                    <button
+                        type="button"
+                        onClick={() =>
+                            router.push("/signin")
+                        }
+                        className="text-primary hover:underline"
+                    >
+                        ورود
+                    </button>
+                </p>
+            </form>
+        </div>
+    );
+}
