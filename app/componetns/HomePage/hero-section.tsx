@@ -134,7 +134,7 @@ export default function HeroSection() {
                 </div>
 
                 {/* Shadcn Carousel */}
-                <div className="md:w-1/2">
+                <div className=" w-full h-full md:w-1/2">
                     {mediaItems.length > 1 ? (
                         <Carousel
                             dir="ltr"
