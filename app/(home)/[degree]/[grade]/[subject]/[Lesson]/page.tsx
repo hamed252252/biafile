@@ -12,21 +12,25 @@ type RouteParams = {
     Lesson: string;
 };
 
-/** اینترفیس ساده برای درخت دسته‌بندی‌ها */
 interface CategoryEntity {
     id: number;
     title: string;
     uniqCode: string;
+    slug?: string | null;
     subResultCategorys: CategoryEntity[];
-    // می‌توانید فیلدهای دیگری هم اضافه کنید اگر لازم دارید
 }
+
+// ✅ تابع بررسی slug یا uniqCode
+const matchesSlug = (
+    routeParam: string,
+    entity: { slug?: string | null; uniqCode: string }
+): boolean => entity.slug === routeParam || entity.uniqCode === routeParam;
 
 export default async function WorksheetDetail({
     params,
 }: {
-    params: Promise<RouteParams>; // Next.js 15+
+    params: Promise<RouteParams>;
 }) {
-    // 1) پارامترهای URL را await می‌کنیم
     const {
         degree,
         grade,
@@ -34,50 +38,41 @@ export default async function WorksheetDetail({
         Lesson: lessonId,
     } = await params;
 
-    // 2) داده‌ها را می‌خوانیم
     const { lessons, classData } =
         await fetchDataLessonsClassData();
 
-    // 3) آرایه‌ها را تایپ می‌کنیم
-    const categories =
-        classData.entities as CategoryEntity[];
-    const lessonList =
-        lessons.entities as LessonHeadingEntity[];
+    const categories = classData.entities as CategoryEntity[];
+    const lessonList = lessons.entities as LessonHeadingEntity[];
 
-    // 4) مسیر‌یابی درختی بدون any
-    const degreeData = categories.find(
-        (cat) => cat.uniqCode === degree
+    // استفاده از matchesSlug
+    const degreeData = categories.find((cat) =>
+        matchesSlug(degree, cat)
     );
     if (!degreeData) return null;
 
-    const gradeData = degreeData.subResultCategorys.find(
-        (gr) => gr.uniqCode === grade
+    const gradeData = degreeData.subResultCategorys.find((gr) =>
+        matchesSlug(grade, gr)
     );
     if (!gradeData) return null;
 
-    const subjectData = gradeData.subResultCategorys.find(
-        (su) => su.uniqCode === subject
+    const subjectData = gradeData.subResultCategorys.find((su) =>
+        matchesSlug(subject, su)
     );
     if (!subjectData) return null;
 
-    // 5) پیدا کردن درس
     const lessonById = lessonList.find(
         (l) => l.id.toString() === lessonId
     );
 
-    // 6) رندر UI
     return (
-        <div
-            className="min-h-screen bg-background"
-            dir="rtl"
-        >
+        <div className="min-h-screen bg-background" dir="rtl">
             <div className="container mx-auto px-4 mt-4">
                 <BreadcrumbClient
-                    degreeId={degreeData.uniqCode}
+                    degreeId={degreeData.slug || degreeData.uniqCode}
                     degreeTitle={degreeData.title}
-                    gradeId={gradeData.uniqCode}
+                    gradeId={gradeData.slug || gradeData.uniqCode}
                     GradeTitle={gradeData.title}
-                    subjectId={subjectData.uniqCode}
+                    subjectId={subjectData.slug || subjectData.uniqCode}
                     subjectTitle={subjectData.title}
                 />
 
@@ -97,16 +92,13 @@ export default async function WorksheetDetail({
                             </CardContent>
                         </Card>
                         <p className="text-sm text-muted-foreground text-center">
-                            پیش‌نمایش صفحهٔ اول فایل • تعداد
-                            صفحات: ۴
+                            پیش‌نمایش صفحهٔ اول فایل • تعداد صفحات: ۴
                         </p>
                     </div>
 
                     {/* جزئیات */}
                     <div className="space-y-6">
-                        <DetailsSectionClient
-                            Lesson={lessonById}
-                        />
+                        <DetailsSectionClient Lesson={lessonById} />
                     </div>
                 </div>
             </div>

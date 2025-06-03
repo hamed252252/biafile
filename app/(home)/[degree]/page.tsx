@@ -21,7 +21,7 @@ interface CategoryEntity {
 interface LocalClassData {
     entities: CategoryEntity[];
 }
-
+const getSafeSlug = (e: { slug?: string | null, uniqCode: string }) => e.slug || e.uniqCode;
 export default async function DegreePage({
     params,
 }: PageProps) {
@@ -73,7 +73,7 @@ export default async function DegreePage({
                             subitem.subResultCategorys.map(
                                 (lesson) => ({
                                     name: lesson.title,
-                                    url: `/${degree}/${subitem.uniqCode}/${lesson.uniqCode}`,
+                             url: `/${degree}/${getSafeSlug(subitem)}/${getSafeSlug(lesson)}`,
                                 })
                             );
 

@@ -26,10 +26,12 @@ interface EntityPost {
     registerDate: string;
     editDate: string;
     uniqCode: string | null;
+    designer:string|null
     registerTime: string;
     editTime: string;
     jsonLableTexts: string | null;
     resultJsonLables: ResultJsonLabel[] | null;
+    time:string|null
 }
 
 export interface ApiResponsePost {
@@ -48,8 +50,12 @@ export interface Post {
     coverImage: string;
     tags: string[];
     date: string;
-    readingTime: string;
+    time:string|null
+    longDescription: string; // افزودن longDescription
+    resultJsonLables: ResultJsonLabel[]; // افزودن resultJsonLables
+    jsonPictures: string; // افزودن jsonPictures
 }
+
 
 // Home Component
 const Home = async (): Promise<JSX.Element> => {
@@ -66,11 +72,8 @@ const Home = async (): Promise<JSX.Element> => {
     } catch (error) {
         console.error("Error fetching posts:", error);
         return (
-            <div>
-                <p>
-                    خطا در دریافت پست‌ها. لطفاً دوباره تلاش
-                    کنید.
-                </p>
+            <div className="text-center">
+                <p className="text-red-500">خطا در دریافت پست‌ها. لطفاً دوباره تلاش کنید.</p>
             </div>
         );
     }
@@ -78,7 +81,7 @@ const Home = async (): Promise<JSX.Element> => {
     const postEntity = postData.entities;
     if (!postEntity || postEntity.length === 0) {
         return (
-            <div>
+            <div className="text-center">
                 <p>هیچ پستی موجود نیست.</p>
             </div>
         );
@@ -89,24 +92,17 @@ const Home = async (): Promise<JSX.Element> => {
     const otherPosts = mappedPosts.slice(1);
 
     return (
-        <div className="space-y-12 py-8 container">
+        <div dir="rtl" className="space-y-12 py-8 container">
             <section>
-                <h2 className="text-3xl font-bold mb-6">
-                    پست ویژه
-                </h2>
+                <h2 className="text-3xl font-bold mb-6">پست ویژه</h2>
                 <FeaturedPost post={featuredPost} />
             </section>
 
             <section>
-                <h2 className="text-3xl font-bold mb-6">
-                    آخرین پست‌ها
-                </h2>
+                <h2 className="text-3xl font-bold mb-6">آخرین پست‌ها</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {otherPosts.map((post: Post) => (
-                        <PostCard
-                            key={post.slug}
-                            post={post}
-                        />
+                        <PostCard key={post.slug} post={post} />
                     ))}
                 </div>
             </section>
@@ -119,18 +115,31 @@ export default Home;
 
 // Define mapEntityPostToPost function
 const mapEntityPostToPost = (entity: EntityPost): Post => {
+    // تجزیه jsonPictures
+    const parsedImages = entity.jsonPictures ? JSON.parse(entity.jsonPictures) : [];
+    const coverImage = parsedImages.length > 0 ? parsedImages[0].PathFileName : entity.imageUIrl || "/default-image.jpg";
+
+    // استخراج تگ‌ها از resultJsonLables
+    const tags = entity.resultJsonLables ? entity.resultJsonLables.map((label) => label.text) : [];
+
     return {
-        slug: entity.uniqCode || `${entity.id}`, // assuming `uniqCode` is your slug
-        author: entity.registerDate, // You can adjust this based on your requirements
+        slug: entity.uniqCode || `${entity.id}`, // اگر uniqCode موجود نیست از id استفاده کن
+        author: entity.registerDate, // می‌توان این را بر اساس نیازتان تغییر داد
         title: entity.title,
         excerpt: entity.shortDescription,
-        coverImage:
-            entity.imageUIrl &&
-            entity.imageUIrl.trim() !== ""
-                ? entity.imageUIrl
-                : "/default-image.jpg", // مقدار پیش‌فرض برای تصویر
-        tags: [], // Add logic to map tags if needed
-        date: entity.registerDate,
-        readingTime: "5 min", // You can calculate or fetch reading time if necessary
+        coverImage,
+        tags,
+        date: formatDate(entity.registerDate), // فراخوانی تابع فرمت تاریخ
+        time: entity.time, // می‌توانید زمان خواندن را به صورت داینامیک محاسبه کنید
+        longDescription: entity.longDescription, // افزودن longDescription
+        resultJsonLables: entity.resultJsonLables || [], // افزودن resultJsonLables
+        jsonPictures: entity.jsonPictures, // افزودن jsonPictures
     };
+};
+
+
+// Format the date for better readability
+const formatDate = (date: string): string => {
+    const [day, month, year] = date.split("/"); // Assuming the date is in `1403/11/04` format
+    return `${year}-${month}-${day}`; // Format to `YYYY-MM-DD`
 };

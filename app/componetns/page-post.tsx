@@ -18,9 +18,9 @@ import { cn } from "@/lib/utils";
 
 interface Post {
     title: string;
-    author: string;
+    author: string |null;
     date: string;
-    readingTime?: number;
+    readingTime?: string|null;
     coverImage: string;
     content: string;
     excerpt: string;
@@ -61,8 +61,20 @@ const extractHeadings = (
 
     return { headings, updatedContent: doc.body.innerHTML };
 };
-
+const baseImageURl="https://api.biafile.ir/Uploadfiles/Files/"
 function PostHeader({ post }: { post: Post }) {
+
+    // Check if the coverImage is a valid JSON string
+    const jsonPictures = post.coverImage ? JSON.parse(post.coverImage) : [];
+
+    // Log the parsed jsonPictures
+    console.log(jsonPictures);
+
+    // If jsonPictures is not empty, extract PathFileName
+    const imagePath = jsonPictures.length > 0 ? jsonPictures[0].PathFileName : "/default-image.jpg";
+    console.log(imagePath); // Path to the image
+
+
     return (
         <div
             dir="rtl"
@@ -70,7 +82,7 @@ function PostHeader({ post }: { post: Post }) {
         >
             <div className="relative h-64 rounded-lg overflow-hidden">
                 <Image
-                    src={post.coverImage}
+                    src={`${baseImageURl}${imagePath}`}
                     alt={post.title}
                     fill
                     className="object-cover"
@@ -94,8 +106,7 @@ function PostHeader({ post }: { post: Post }) {
                 <div className="flex items-center gap-1">
                     <Clock className="h-4 w-4" />
                     <span>
-                        {post.readingTime} دقیقه مطالعه
-                    </span>
+                        {post.readingTime}                     </span>
                 </div>
             </div>
         </div>

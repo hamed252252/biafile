@@ -18,6 +18,7 @@ interface CategoryEntity {
     title: string;
     uniqCode: string;
     subResultCategorys: CategoryEntity[];
+    slug:string | null;
 }
 
 export default function CategoryMenu() {
@@ -36,6 +37,8 @@ export default function CategoryMenu() {
             .then((data) => setCategories(data.entities))
             .catch(console.error);
     }, []);
+const getPath = (cat: CategoryEntity, sub: CategoryEntity) =>
+    `/${cat.slug || cat.uniqCode}/${sub.slug || sub.uniqCode}`;
 
     return (
         <nav className="relative z-50 dark:bg-gray-900">
@@ -103,7 +106,7 @@ export default function CategoryMenu() {
                                                         key={
                                                             sub.id
                                                         }
-                                                        href={`/${cat.uniqCode}/${sub.uniqCode}`}
+                                                        href={getPath(cat, sub)}
                                                         className="block px-4 py-2 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 transition"
                                                     >
                                                         {
@@ -269,7 +272,7 @@ export default function CategoryMenu() {
                                                         key={
                                                             sub.id
                                                         }
-                                                        href={`/${cat.uniqCode}/${sub.uniqCode}`}
+                                                      href={getPath(cat, sub)}
                                                         className="block py-1 px-2 hover:text-blue-600 transition"
                                                     >
                                                         {

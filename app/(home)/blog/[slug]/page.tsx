@@ -27,15 +27,14 @@ export default async function Page({
 
     return (
         <div>
+          
             <PostPage
                 post={{
-                    author: "نویسینده",
+                    author: postBySlug.designer,
                     content: postBySlug.longDescription,
-                    coverImage: postBySlug.imageUIrl
-                        ? postBySlug.imageUIrl
-                        : "/",
+                    coverImage: postBySlug.jsonPictures,
                     date: postBySlug.registerDate,
-                    readingTime: 10,
+                    readingTime: postBySlug.time,
                     excerpt: postBySlug.shortDescription,
 
                     title: postBySlug.title,

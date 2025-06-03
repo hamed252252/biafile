@@ -1,4 +1,3 @@
-// app/(home)/[degree]/[grade]/[subject]/page.tsx
 import SubjectCard from "@/app/componetns/subject/subject-card";
 import { fetchDataLessonsClassData } from "@/app/lib/fetchdataLessonsClassData";
 import type {
@@ -12,83 +11,66 @@ type RouteParams = {
     subject: string;
 };
 
-/**
- * اینترفیس ساده برای داده‌های کلاس‌ها
- * مطابق خروجی واقعی API در nested-cards.tsx
- */
 interface CategoryEntity {
     id: number;
     title: string;
     uniqCode: string;
+    slug?: string | null;
     subResultCategorys: CategoryEntity[];
 }
 
-/**
- * چون از ApiResponseCategorysCategorys مستقیم import نکردیم،
- * مشخص می‌کنیم که classData فقط همین فیلد entities را دارد.
- */
 interface LocalClassData {
     entities: CategoryEntity[];
 }
+
+// ✅ تابع کمکی برای بررسی slug یا uniqCode
+const matchesSlug = (
+    routeParam: string,
+    entity: { slug?: string | null; uniqCode: string }
+): boolean => entity.slug === routeParam || entity.uniqCode === routeParam;
 
 export default async function SubjectPage({
     params,
 }: {
     params: Promise<RouteParams>;
 }) {
-    // — 1) پارامترهای URL را await می‌کنیم —
     const { degree, grade, subject } = await params;
 
-    // — 2) صدا زدن API —
     const { lessons, classData } =
         (await fetchDataLessonsClassData()) as {
             lessons: ApiResponseLessonHeading;
             classData: LocalClassData;
         };
 
-    // — 3) آرایه‌ها را تایپ می‌کنیم —
     const categories: CategoryEntity[] = classData.entities;
-    const lessonList: LessonHeadingEntity[] =
-        lessons.entities;
+    const lessonList: LessonHeadingEntity[] = lessons.entities;
 
-    // — 4) پیمایش درخت دسته‌بندی‌ها —
-    const degreeData = categories.find(
-        (cat) => cat.uniqCode === degree
-    );
+    // ✅ استفاده از matchesSlug
+    const degreeData = categories.find((cat) => matchesSlug(degree, cat));
     if (!degreeData) return null;
 
-    const gradeData = degreeData.subResultCategorys.find(
-        (gr) => gr.uniqCode === grade
+    const gradeData = degreeData.subResultCategorys.find((gr) =>
+        matchesSlug(grade, gr)
     );
     if (!gradeData) return null;
 
-    const subjectData = gradeData.subResultCategorys.find(
-        (su) => su.uniqCode === subject
+    const subjectData = gradeData.subResultCategorys.find((su) =>
+        matchesSlug(subject, su)
     );
     if (!subjectData) return null;
 
-    // — 5) فیلتر کردن درس‌ها برای این موضوع —
     const filteredLessons = lessonList.filter(
         (lesson) => lesson.categoryID === subjectData.id
     );
 
-    // — 6) رندر نهایی —
     return (
-        <div
-            className="p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
-            dir="rtl"
-        >
-            
+        <div className="p-4 grid gap-4 md:grid-cols-2 lg:grid-cols-3" dir="rtl">
             {filteredLessons.map((item) => (
                 <SubjectCard
                     key={item.id}
                     title={item.title}
-                    status={
-                        item.resultLessonHeadingStatus.title
-                    }
-                    tags={item.resultJsonLables.map(
-                        (lbl) => lbl.text
-                    )}
+                    status={item.resultLessonHeadingStatus.title}
+                    tags={item.resultJsonLables.map((lbl) => lbl.text)}
                     description={item.shortDescription}
                     designerAvatar="https://github.com/shadcn.png"
                     designerName={item.designer}
@@ -101,10 +83,7 @@ export default async function SubjectPage({
     );
 }
 
-export async function generateStaticParams(): Promise<
-    RouteParams[]
-> {
-    // باز هم همین structure لوکال برای classData
+export async function generateStaticParams(): Promise<RouteParams[]> {
     const { classData } =
         (await fetchDataLessonsClassData()) as {
             lessons: ApiResponseLessonHeading;
@@ -114,9 +93,9 @@ export async function generateStaticParams(): Promise<
     return classData.entities.flatMap((deg) =>
         deg.subResultCategorys.flatMap((gr) =>
             gr.subResultCategorys.map((su) => ({
-                degree: deg.uniqCode,
-                grade: gr.uniqCode,
-                subject: su.uniqCode,
+                degree: deg.slug || deg.uniqCode,
+                grade: gr.slug || gr.uniqCode,
+                subject: su.slug || su.uniqCode,
             }))
         )
     );
