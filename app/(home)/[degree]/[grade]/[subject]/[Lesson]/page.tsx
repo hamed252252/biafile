@@ -62,6 +62,7 @@ export default async function WorksheetDetail({
 
     const lessonById = lessonList.find(
         (l) => l.id.toString() === lessonId
+        
     );
 
     return (

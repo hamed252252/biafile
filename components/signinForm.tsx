@@ -76,7 +76,7 @@ export default function ModernSignInForm() {
                     className="h-12 pl-12 pr-4 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     disabled={isLoading}
                   />
-                  <User className="absolute right-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
+                  <User className="absolute left-4 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 dark:text-gray-500" />
                 </div>
               </div>
 

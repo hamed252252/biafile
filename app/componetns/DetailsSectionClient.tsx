@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { LessonHeadingEntity } from "../type/edcation";
+import Link from "next/link";
 
 export default function DetailsSectionClient({
     Lesson,
