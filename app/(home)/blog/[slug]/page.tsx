@@ -19,8 +19,7 @@ export default async function Page({
     const postBySlug = postEntity.find(
         (post) => post.id === parseInt(resolvedParams.slug)
     );
-    console.log("post byslug");
-    console.log(postBySlug);
+
     if (!postBySlug) {
         return <p>پست موردنظر یافت نشد.</p>;
     }

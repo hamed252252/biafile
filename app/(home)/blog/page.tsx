@@ -7,10 +7,7 @@ export interface ResultJsonLabel {
     text: string;
 }
 
-export interface JsonPicture {
-    Title: string;
-    PathFileName: string;
-}
+
 
 interface EntityPost {
     id: number;
