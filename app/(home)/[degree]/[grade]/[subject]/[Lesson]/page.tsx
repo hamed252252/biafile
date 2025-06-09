@@ -64,7 +64,16 @@ export default async function WorksheetDetail({
         (l) => l.id.toString() === lessonId
         
     );
-
+    console.log(lessonById?.jsonPictures)
+if (!degreeData || !gradeData || !subjectData || !lessonById) {
+    return (
+        <div className="min-h-screen bg-background flex items-center justify-center" dir="rtl">
+            <p className="text-lg text-red-500">
+                خطا: اطلاعات درس یافت نشد. لطفاً دوباره تلاش کنید.
+            </p>
+        </div>
+    );
+}
     return (
         <div className="min-h-screen bg-background" dir="rtl">
             <div className="container mx-auto px-4 mt-4">
@@ -77,7 +86,7 @@ export default async function WorksheetDetail({
                     subjectTitle={subjectData.title}
                 />
 
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                     {/* پیش‌نمایش */}
                     <div className="space-y-4">
                         <Card className="overflow-hidden">
@@ -96,7 +105,6 @@ export default async function WorksheetDetail({
                             پیش‌نمایش صفحهٔ اول فایل • تعداد صفحات: ۴
                         </p>
                     </div>
-
                     {/* جزئیات */}
                     <div className="space-y-6">
                         <DetailsSectionClient Lesson={lessonById} />
