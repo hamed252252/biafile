@@ -73,19 +73,22 @@ export default async function WorksheetDetail({
         (l) => l.id.toString() === lessonId
         
     );
-    console.log(lessonById)
+    // console.log(lessonById)
 // هندل کردن حالتی که jsonPictures ممکنه یا string باشه یا JsonPicture[]
 let rawPictures: JsonPicture[] = []
+let videoFiles: JsonPicture[] = []
 
-const data = lessonById?.jsonPictures
-
-if (typeof data === 'string') {
-  rawPictures = JSON.parse(data)
-} else if (Array.isArray(data)) {
-  rawPictures = data
+if (typeof lessonById?.jsonPictures === 'string') {
+  rawPictures = JSON.parse(lessonById.jsonPictures)
+} else if (Array.isArray(lessonById?.jsonPictures)) {
+  rawPictures = lessonById.jsonPictures
 }
 
-
+if (typeof lessonById?.jsonVideos === 'string') {
+  videoFiles = JSON.parse(lessonById.jsonVideos)
+} else if (Array.isArray(lessonById?.jsonVideos)) {
+  videoFiles = lessonById.jsonVideos
+}
   
 if (!degreeData || !gradeData || !subjectData || !lessonById) {
     return (
@@ -113,45 +116,46 @@ if (!degreeData || !gradeData || !subjectData || !lessonById) {
 
 <Carousel orientation="vertical" dir="ltr">
   <CarouselContent>
-    {rawPictures.map((image, index) => (
-      <CarouselItem
-        key={index}
-        className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 px-2"
-      >
-        <div className="w-full h-[200px] sm:h-[250px] md:h-[300px] relative rounded-xl overflow-hidden">
-          <Image
-            src={`${process.env.API_UPLOADED_FILES}${image.PathFileName}`}
-            alt={image.Title}
-            fill
-            className="object-cover"
-          />
-        </div>
-        <p className="mt-2 text-center text-sm font-medium">{image.Title}</p>
-      </CarouselItem>
-    ))}
+    {[...rawPictures.map(p => ({ ...p, type: "image" })), ...(videoFiles?.map(v => ({ ...v, type: "video" })) || [])]
+      .map((item, index) => (
+        <CarouselItem
+          key={index}
+          className="basis-full sm:basis-1/2 md:basis-1/3 lg:basis-1/4 px-2"
+        >
+          <div className="w-full min-h-[200px] max-h-full sm:h-[250px] md:h-[300px] relative rounded-xl overflow-hidden">
+            {item.type === "image" ? (
+              <Image
+                src={`${process.env.API_UPLOADED_FILES}${item.PathFileName}`}
+                alt={item.Title}
+                fill
+                className="object-cover"
+              />
+            ) : (
+              <video
+                controls
+                className="w-full h-full object-cover rounded-xl"
+              >
+                <source
+                  src={`${process.env.API_UPLOADED_FILES}${item.PathFileName}`}
+                  type="video/mp4"
+                />
+                مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+              </video>
+            )}
+          </div>
+          <p className="mt-2 text-center text-sm font-medium">
+            {item.Title}
+          </p>
+        </CarouselItem>
+      ))}
   </CarouselContent>
-
-
+  <CarouselPrevious />
+  <CarouselNext />
 </Carousel>
 
 
-                    {/* <div className="space-y-4">
-                        <Card className="overflow-hidden">
-                            <CardContent className="p-0">
-                                <div className="relative aspect-[3/4] w-full">
-                                    <Image
-                                        src="/placeholder.svg"
-                                        alt="Worksheet preview"
-                                        fill
-                                        className="object-cover"
-                                    />
-                                </div>
-                            </CardContent>
-                        </Card>
-                        <p className="text-sm text-muted-foreground text-center">
-                            پیش‌نمایش صفحهٔ اول فایل • تعداد صفحات: ۴
-                        </p>
-                    </div> */}
+
+            
                     {/* جزئیات */}
                     <div className="space-y-6">
                         <DetailsSectionClient Lesson={lessonById} />
