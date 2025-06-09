@@ -4,7 +4,7 @@ import NavigationMenuComponents from "../componetns/navigation-menu";
 import "../globals.css";
 import Footer from "../componetns/footer";
 import Advertisement from "../componetns/advertisment";
-
+import { Analytics } from "@vercel/analytics/next"
 const myFont = localFont({
     src: [
         // { , path: "./fonts/IRANSansXV.woff2" },
@@ -82,6 +82,7 @@ export default function RootLayout({
         <main
             className={` ${myFont.className}  antialiased`}
         >
+            <Analytics/>
             <Advertisement />
             <NavigationMenuComponents />
 
