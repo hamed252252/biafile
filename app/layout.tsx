@@ -1,10 +1,12 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 import ScrollToTopButton from './componetns/ScrollToTopButton';
 import SupportButton from './componetns/SupportButton';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from 'next-themes';
+import { Analytics } from '@vercel/analytics/next';
 const myFont = localFont({
   src: [
     // { , path: "./fonts/IRANSansXV.woff2" },
@@ -86,6 +88,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <SpeedInsights />
+          <Analytics />
+
           {/* محتوای صفحه */}
           {children}
           <ScrollToTopButton />

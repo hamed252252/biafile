@@ -80,7 +80,6 @@ export default function RootLayout({
 }>) {
   return (
     <main className={` ${myFont.className}  antialiased`}>
-      <Analytics />
       <Advertisement />
       <NavigationMenuComponents />
 
