@@ -1,7 +1,7 @@
-"use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import { MotionValue, motion, useScroll, useTransform } from "framer-motion";
-import { cn } from "@/lib/utils";
+'use client';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { MotionValue, motion, useScroll, useTransform } from 'framer-motion';
+import { cn } from '@/lib/utils';
 import {
   IconBrightnessDown,
   IconBrightnessUp,
@@ -17,13 +17,13 @@ import {
   IconVolume,
   IconVolume2,
   IconVolume3,
-} from "@tabler/icons-react";
-import { IconSearch } from "@tabler/icons-react";
-import { IconWorld } from "@tabler/icons-react";
-import { IconCommand } from "@tabler/icons-react";
-import { IconCaretLeftFilled } from "@tabler/icons-react";
-import { IconCaretDownFilled } from "@tabler/icons-react";
-import Image from "next/image";
+} from '@tabler/icons-react';
+import { IconSearch } from '@tabler/icons-react';
+import { IconWorld } from '@tabler/icons-react';
+import { IconCommand } from '@tabler/icons-react';
+import { IconCaretLeftFilled } from '@tabler/icons-react';
+import { IconCaretDownFilled } from '@tabler/icons-react';
+import Image from 'next/image';
 
 export const MacbookScroll = ({
   src,
@@ -39,7 +39,7 @@ export const MacbookScroll = ({
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start start", "end start"],
+    offset: ['start start', 'end start'],
   });
 
   const [isMobile, setIsMobile] = useState(false);
@@ -50,16 +50,8 @@ export const MacbookScroll = ({
     }
   }, []);
 
-  const scaleX = useTransform(
-    scrollYProgress,
-    [0, 0.3],
-    [1.2, isMobile ? 1 : 1.5]
-  );
-  const scaleY = useTransform(
-    scrollYProgress,
-    [0, 0.3],
-    [0.6, isMobile ? 1 : 1.5]
-  );
+  const scaleX = useTransform(scrollYProgress, [0, 0.3], [1.2, isMobile ? 1 : 1.5]);
+  const scaleY = useTransform(scrollYProgress, [0, 0.3], [0.6, isMobile ? 1 : 1.5]);
   const translate = useTransform(scrollYProgress, [0, 1], [0, 1500]);
   const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3], [-28, -28, 0]);
   const textTransform = useTransform(scrollYProgress, [0, 0.3], [0, 100]);
@@ -84,13 +76,7 @@ export const MacbookScroll = ({
         )}
       </motion.h2>
       {/* Lid */}
-      <Lid
-        src={src}
-        scaleX={scaleX}
-        scaleY={scaleY}
-        rotate={rotate}
-        translate={translate}
-      />
+      <Lid src={src} scaleX={scaleX} scaleY={scaleY} rotate={rotate} translate={translate} />
       {/* Base area */}
       <div className="h-[22rem] w-[32rem] bg-gray-200 dark:bg-[#272729] rounded-2xl overflow-hidden relative -z-10">
         {/* above keyboard bar */}
@@ -136,15 +122,15 @@ export const Lid = ({
     <div className="relative [perspective:800px]">
       <div
         style={{
-          transform: "perspective(800px) rotateX(-25deg) translateZ(0px)",
-          transformOrigin: "bottom",
-          transformStyle: "preserve-3d",
+          transform: 'perspective(800px) rotateX(-25deg) translateZ(0px)',
+          transformOrigin: 'bottom',
+          transformStyle: 'preserve-3d',
         }}
         className="h-[12rem] w-[32rem] bg-[#010101] rounded-2xl p-2 relative"
       >
         <div
           style={{
-            boxShadow: "0px 2px 0px 2px var(--neutral-900) inset",
+            boxShadow: '0px 2px 0px 2px var(--neutral-900) inset',
           }}
           className="absolute inset-0 bg-[#010101] rounded-lg flex items-center justify-center"
         >
@@ -159,8 +145,8 @@ export const Lid = ({
           scaleY: scaleY,
           rotateX: rotate,
           translateY: translate,
-          transformStyle: "preserve-3d",
-          transformOrigin: "top",
+          transformStyle: 'preserve-3d',
+          transformOrigin: 'top',
         }}
         className="h-96 w-[32rem] absolute inset-0 bg-[#010101] rounded-2xl p-2"
       >
@@ -181,7 +167,7 @@ export const Trackpad = () => {
     <div
       className="w-[40%] mx-auto h-32  rounded-xl my-1"
       style={{
-        boxShadow: "0px 0px 1px 1px #00000020 inset",
+        boxShadow: '0px 0px 1px 1px #00000020 inset',
       }}
     ></div>
   );
@@ -458,7 +444,7 @@ export const Keypad = () => {
         <KBtn>
           <span className="block">{`>`}</span>
           <span className="block">{`.`}</span>
-        </KBtn>{" "}
+        </KBtn>{' '}
         <KBtn>
           <span className="block">{`?`}</span>
           <span className="block">{`/`}</span>
@@ -497,10 +483,7 @@ export const Keypad = () => {
             <span className="block">option</span>
           </div>
         </KBtn>
-        <KBtn
-          className="w-8"
-          childrenClassName="h-full justify-between py-[4px]"
-        >
+        <KBtn className="w-8" childrenClassName="h-full justify-between py-[4px]">
           <div className="flex justify-end w-full pr-1">
             <IconCommand className="h-[6px] w-[6px]" />
           </div>
@@ -509,10 +492,7 @@ export const Keypad = () => {
           </div>
         </KBtn>
         <KBtn className="w-[8.2rem]"></KBtn>
-        <KBtn
-          className="w-8"
-          childrenClassName="h-full justify-between py-[4px]"
-        >
+        <KBtn className="w-8" childrenClassName="h-full justify-between py-[4px]">
           <div className="flex justify-start w-full pl-1">
             <IconCommand className="h-[6px] w-[6px]" />
           </div>
@@ -561,26 +541,22 @@ export const KBtn = ({
 }) => {
   return (
     <div
-      className={cn(
-        "p-[0.5px] rounded-[4px]",
-        backlit && "bg-white/[0.2] shadow-xl shadow-white"
-      )}
+      className={cn('p-[0.5px] rounded-[4px]', backlit && 'bg-white/[0.2] shadow-xl shadow-white')}
     >
       <div
         className={cn(
-          "h-6 w-6 bg-[#0A090D] rounded-[3.5px] flex items-center justify-center",
-          className
+          'h-6 w-6 bg-[#0A090D] rounded-[3.5px] flex items-center justify-center',
+          className,
         )}
         style={{
-          boxShadow:
-            "0px -0.5px 2px 0 #0D0D0F inset, -0.5px 0px 2px 0 #0D0D0F inset",
+          boxShadow: '0px -0.5px 2px 0 #0D0D0F inset, -0.5px 0px 2px 0 #0D0D0F inset',
         }}
       >
         <div
           className={cn(
-            "text-neutral-200 text-[5px] w-full flex justify-center items-center flex-col",
+            'text-neutral-200 text-[5px] w-full flex justify-center items-center flex-col',
             childrenClassName,
-            backlit && "text-white"
+            backlit && 'text-white',
           )}
         >
           {children}
@@ -591,11 +567,7 @@ export const KBtn = ({
 };
 
 export const Row = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="flex gap-[2px] mb-[2px] w-full flex-shrink-0">
-      {children}
-    </div>
-  );
+  return <div className="flex gap-[2px] mb-[2px] w-full flex-shrink-0">{children}</div>;
 };
 
 export const SpeakerGrid = () => {
@@ -603,9 +575,8 @@ export const SpeakerGrid = () => {
     <div
       className="flex px-[0.5px] gap-[2px] mt-2 h-40"
       style={{
-        backgroundImage:
-          "radial-gradient(circle, #08080A 0.5px, transparent 0.5px)",
-        backgroundSize: "3px 3px",
+        backgroundImage: 'radial-gradient(circle, #08080A 0.5px, transparent 0.5px)',
+        backgroundSize: '3px 3px',
       }}
     ></div>
   );
@@ -621,26 +592,13 @@ export const OptionKey = ({ className }: { className: string }) => {
       viewBox="0 0 32 32"
       className={className}
     >
-      <rect
-        stroke="currentColor"
-        strokeWidth={2}
-        x="18"
-        y="5"
-        width="10"
-        height="2"
-      />
+      <rect stroke="currentColor" strokeWidth={2} x="18" y="5" width="10" height="2" />
       <polygon
         stroke="currentColor"
         strokeWidth={2}
         points="10.6,5 4,5 4,7 9.4,7 18.4,27 28,27 28,25 19.6,25 "
       />
-      <rect
-        id="_Transparent_Rectangle_"
-        className="st0"
-        width="32"
-        height="32"
-        stroke="none"
-      />
+      <rect id="_Transparent_Rectangle_" className="st0" width="32" height="32" stroke="none" />
     </svg>
   );
 };

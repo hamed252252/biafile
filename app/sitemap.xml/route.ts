@@ -1,12 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest) {
-    const siteUrl =
-        process.env.NEXT_PUBLIC_SITE_URL ||
-        "https://yourdomain.com";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://yourdomain.com';
 
-    // Generate a dynamic sitemap if needed
-    const sitemap = `
+  // Generate a dynamic sitemap if needed
+  const sitemap = `
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>${siteUrl}/</loc>
@@ -17,9 +15,9 @@ export async function GET(request: NextRequest) {
 </urlset>
 `;
 
-    return new NextResponse(sitemap, {
-        headers: {
-            "Content-Type": "application/xml",
-        },
-    });
+  return new NextResponse(sitemap, {
+    headers: {
+      'Content-Type': 'application/xml',
+    },
+  });
 }

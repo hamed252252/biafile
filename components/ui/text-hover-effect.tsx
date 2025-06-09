@@ -1,6 +1,6 @@
-"use client";
-import React, { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+'use client';
+import React, { useRef, useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 
 export const TextHoverEffect = ({
   text,
@@ -13,7 +13,7 @@ export const TextHoverEffect = ({
   const svgRef = useRef<SVGSVGElement>(null);
   const [cursor, setCursor] = useState({ x: 0, y: 0 });
   const [hovered, setHovered] = useState(false);
-  const [maskPosition, setMaskPosition] = useState({ cx: "50%", cy: "50%" });
+  const [maskPosition, setMaskPosition] = useState({ cx: '50%', cy: '50%' });
 
   useEffect(() => {
     if (svgRef.current && cursor.x !== null && cursor.y !== null) {
@@ -40,20 +40,14 @@ export const TextHoverEffect = ({
       className="select-none"
     >
       <defs>
-        <linearGradient
-          id="textGradient"
-          gradientUnits="userSpaceOnUse"
-          cx="50%"
-          cy="50%"
-          r="25%"
-        >
+        <linearGradient id="textGradient" gradientUnits="userSpaceOnUse" cx="50%" cy="50%" r="25%">
           {hovered && (
             <>
-              <stop offset="0%" stopColor={"var(--yellow-500)"} />
-              <stop offset="25%" stopColor={"var(--red-500)"} />
-              <stop offset="50%" stopColor={"var(--blue-500)"} />
-              <stop offset="75%" stopColor={"var(--cyan-500)"} />
-              <stop offset="100%" stopColor={"var(--violet-500)"} />
+              <stop offset="0%" stopColor={'var(--yellow-500)'} />
+              <stop offset="25%" stopColor={'var(--red-500)'} />
+              <stop offset="50%" stopColor={'var(--blue-500)'} />
+              <stop offset="75%" stopColor={'var(--cyan-500)'} />
+              <stop offset="100%" stopColor={'var(--violet-500)'} />
             </>
           )}
         </linearGradient>
@@ -63,7 +57,7 @@ export const TextHoverEffect = ({
           gradientUnits="userSpaceOnUse"
           r="20%"
           animate={maskPosition}
-          transition={{ duration: duration ?? 0, ease: "easeOut" }}
+          transition={{ duration: duration ?? 0, ease: 'easeOut' }}
 
           // example for a smoother animation below
 
@@ -77,13 +71,7 @@ export const TextHoverEffect = ({
           <stop offset="100%" stopColor="black" />
         </motion.radialGradient>
         <mask id="textMask">
-          <rect
-            x="0"
-            y="0"
-            width="100%"
-            height="100%"
-            fill="url(#revealMask)"
-          />
+          <rect x="0" y="0" width="100%" height="100%" fill="url(#revealMask)" />
         </mask>
       </defs>
       <text
@@ -111,7 +99,7 @@ export const TextHoverEffect = ({
         }}
         transition={{
           duration: 4,
-          ease: "easeInOut",
+          ease: 'easeInOut',
         }}
       >
         {text}

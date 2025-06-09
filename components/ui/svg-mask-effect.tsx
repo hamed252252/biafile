@@ -1,7 +1,7 @@
-"use client";
-import { useState, useEffect, useRef } from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+'use client';
+import { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 export const MaskContainer = ({
   children,
@@ -25,13 +25,10 @@ export const MaskContainer = ({
   };
 
   useEffect(() => {
-    containerRef.current.addEventListener("mousemove", updateMousePosition);
+    containerRef.current.addEventListener('mousemove', updateMousePosition);
     return () => {
       if (containerRef.current) {
-        containerRef.current.removeEventListener(
-          "mousemove",
-          updateMousePosition
-        );
+        containerRef.current.removeEventListener('mousemove', updateMousePosition);
       }
     };
   }, []);
@@ -40,17 +37,15 @@ export const MaskContainer = ({
   return (
     <motion.div
       ref={containerRef}
-      className={cn("h-screen relative", className)}
+      className={cn('h-screen relative', className)}
       animate={{
-        backgroundColor: isHovered ? "var(--slate-900)" : "var(--white)",
+        backgroundColor: isHovered ? 'var(--slate-900)' : 'var(--white)',
       }}
     >
       <motion.div
         className="w-full h-full flex items-center justify-center text-6xl absolute bg-black bg-grid-white/[0.2] text-white [mask-image:url(/mask.svg)] [mask-size:40px] [mask-repeat:no-repeat]"
         animate={{
-          maskPosition: `${mousePosition.x - maskSize / 2}px ${
-            mousePosition.y - maskSize / 2
-          }px`,
+          maskPosition: `${mousePosition.x - maskSize / 2}px ${mousePosition.y - maskSize / 2}px`,
           maskSize: `${maskSize}px`,
         }}
         transition={{
@@ -71,9 +66,7 @@ export const MaskContainer = ({
         </div>
       </motion.div>
 
-      <div className="w-full h-full flex items-center justify-center  text-white">
-        {revealText}
-      </div>
+      <div className="w-full h-full flex items-center justify-center  text-white">{revealText}</div>
     </motion.div>
   );
 };

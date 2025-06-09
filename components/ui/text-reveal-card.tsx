@@ -1,8 +1,8 @@
-"use client";
-import React, { useEffect, useRef, useState, memo } from "react";
-import { motion } from "framer-motion";
-import { twMerge } from "tailwind-merge";
-import { cn } from "@/lib/utils";
+'use client';
+import React, { useEffect, useRef, useState, memo } from 'react';
+import { motion } from 'framer-motion';
+import { twMerge } from 'tailwind-merge';
+import { cn } from '@/lib/utils';
 
 export const TextRevealCard = ({
   text,
@@ -23,8 +23,7 @@ export const TextRevealCard = ({
 
   useEffect(() => {
     if (cardRef.current) {
-      const { left, width: localWidth } =
-        cardRef.current.getBoundingClientRect();
+      const { left, width: localWidth } = cardRef.current.getBoundingClientRect();
       setLeft(left);
       setLocalWidth(localWidth);
     }
@@ -67,8 +66,8 @@ export const TextRevealCard = ({
       onTouchMove={touchMoveHandler}
       ref={cardRef}
       className={cn(
-        "bg-[#1d1c20] border border-white/[0.08] w-[40rem] rounded-lg p-8 relative overflow-hidden",
-        className
+        'bg-[#1d1c20] border border-white/[0.08] w-[40rem] rounded-lg p-8 relative overflow-hidden',
+        className,
       )}
     >
       {children}
@@ -76,7 +75,7 @@ export const TextRevealCard = ({
       <div className="h-40  relative flex items-center overflow-hidden">
         <motion.div
           style={{
-            width: "100%",
+            width: '100%',
           }}
           animate={
             isMouseOver
@@ -93,7 +92,7 @@ export const TextRevealCard = ({
         >
           <p
             style={{
-              textShadow: "4px 4px 15px rgba(0,0,0,0.5)",
+              textShadow: '4px 4px 15px rgba(0,0,0,0.5)',
             }}
             className="text-base sm:text-[3rem] py-10 font-bold text-white bg-clip-text text-transparent bg-gradient-to-b from-white to-neutral-300"
           >
@@ -128,11 +127,7 @@ export const TextRevealCardTitle = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  return (
-    <h2 className={twMerge("text-white text-lg mb-2", className)}>
-      {children}
-    </h2>
-  );
+  return <h2 className={twMerge('text-white text-lg mb-2', className)}>{children}</h2>;
 };
 
 export const TextRevealCardDescription = ({
@@ -142,9 +137,7 @@ export const TextRevealCardDescription = ({
   children: React.ReactNode;
   className?: string;
 }) => {
-  return (
-    <p className={twMerge("text-[#a9a9a9] text-sm", className)}>{children}</p>
-  );
+  return <p className={twMerge('text-[#a9a9a9] text-sm', className)}>{children}</p>;
 };
 
 const Stars = () => {
@@ -165,16 +158,16 @@ const Stars = () => {
           transition={{
             duration: random() * 10 + 20,
             repeat: Infinity,
-            ease: "linear",
+            ease: 'linear',
           }}
           style={{
-            position: "absolute",
+            position: 'absolute',
             top: `${random() * 100}%`,
             left: `${random() * 100}%`,
             width: `2px`,
             height: `2px`,
-            backgroundColor: "white",
-            borderRadius: "50%",
+            backgroundColor: 'white',
+            borderRadius: '50%',
             zIndex: 1,
           }}
           className="inline-block"

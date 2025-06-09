@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import { IconArrowLeft, IconArrowRight } from "@tabler/icons-react";
-import { motion, AnimatePresence } from "framer-motion";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { IconArrowLeft, IconArrowRight } from '@tabler/icons-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 type Testimonial = {
   quote: string;
@@ -62,9 +62,7 @@ export const AnimatedTestimonials = ({
                     scale: isActive(index) ? 1 : 0.95,
                     z: isActive(index) ? 0 : -100,
                     rotate: isActive(index) ? 0 : randomRotateY(),
-                    zIndex: isActive(index)
-                      ? 999
-                      : testimonials.length + 2 - index,
+                    zIndex: isActive(index) ? 999 : testimonials.length + 2 - index,
                     y: isActive(index) ? [0, -80, 0] : 0,
                   }}
                   exit={{
@@ -75,7 +73,7 @@ export const AnimatedTestimonials = ({
                   }}
                   transition={{
                     duration: 0.4,
-                    ease: "easeInOut",
+                    ease: 'easeInOut',
                   }}
                   className="absolute inset-0 origin-bottom"
                 >
@@ -109,7 +107,7 @@ export const AnimatedTestimonials = ({
             }}
             transition={{
               duration: 0.2,
-              ease: "easeInOut",
+              ease: 'easeInOut',
             }}
           >
             <h3 className="text-2xl font-bold dark:text-white text-black">
@@ -119,22 +117,22 @@ export const AnimatedTestimonials = ({
               {testimonials[active].designation}
             </p>
             <motion.p className="text-lg text-gray-500 mt-8 dark:text-neutral-300">
-              {testimonials[active].quote.split(" ").map((word, index) => (
+              {testimonials[active].quote.split(' ').map((word, index) => (
                 <motion.span
                   key={index}
                   initial={{
-                    filter: "blur(10px)",
+                    filter: 'blur(10px)',
                     opacity: 0,
                     y: 5,
                   }}
                   animate={{
-                    filter: "blur(0px)",
+                    filter: 'blur(0px)',
                     opacity: 1,
                     y: 0,
                   }}
                   transition={{
                     duration: 0.2,
-                    ease: "easeInOut",
+                    ease: 'easeInOut',
                     delay: 0.02 * index,
                   }}
                   className="inline-block"

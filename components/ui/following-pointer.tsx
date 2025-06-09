@@ -1,9 +1,9 @@
 // Core component that receives mouse positions and renders pointer and content
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 
-import { motion, AnimatePresence, useMotionValue } from "framer-motion";
-import { cn } from "@/lib/utils";
+import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
+import { cn } from '@/lib/utils';
 
 export const FollowerPointerCard = ({
   children,
@@ -47,14 +47,12 @@ export const FollowerPointerCard = ({
       onMouseEnter={handleMouseEnter}
       onMouseMove={handleMouseMove}
       style={{
-        cursor: "none",
+        cursor: 'none',
       }}
       ref={ref}
-      className={cn("relative", className)}
+      className={cn('relative', className)}
     >
-      <AnimatePresence>
-        {isInside && <FollowPointer x={x} y={y} title={title} />}
-      </AnimatePresence>
+      <AnimatePresence>{isInside && <FollowPointer x={x} y={y} title={title} />}</AnimatePresence>
       {children}
     </div>
   );
@@ -70,13 +68,13 @@ export const FollowPointer = ({
   title?: string | React.ReactNode;
 }) => {
   const colors = [
-    "var(--sky-500)",
-    "var(--neutral-500)",
-    "var(--teal-500)",
-    "var(--green-500)",
-    "var(--blue-500)",
-    "var(--red-500)",
-    "var(--yellow-500)",
+    'var(--sky-500)',
+    'var(--neutral-500)',
+    'var(--teal-500)',
+    'var(--green-500)',
+    'var(--blue-500)',
+    'var(--red-500)',
+    'var(--yellow-500)',
   ];
   return (
     <motion.div
@@ -84,7 +82,7 @@ export const FollowPointer = ({
       style={{
         top: y,
         left: x,
-        pointerEvents: "none",
+        pointerEvents: 'none',
       }}
       initial={{
         scale: 1,
@@ -128,7 +126,7 @@ export const FollowPointer = ({
           opacity: 0,
         }}
         className={
-          "px-2 py-2 bg-neutral-200 text-white whitespace-nowrap min-w-max text-xs rounded-full"
+          'px-2 py-2 bg-neutral-200 text-white whitespace-nowrap min-w-max text-xs rounded-full'
         }
       >
         {title || `William Shakespeare`}

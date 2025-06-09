@@ -1,12 +1,12 @@
-import AmazingRecharge from "@/app/componetns/amzain-charge";
-import React from "react";
+import AmazingRecharge from '@/app/componetns/amzain-charge';
+import React from 'react';
 
 function page() {
-    return (
-        <div>
-            <AmazingRecharge />
-        </div>
-    );
+  return (
+    <div>
+      <AmazingRecharge />
+    </div>
+  );
 }
 
 export default page;

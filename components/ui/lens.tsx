@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import React, { useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import React, { useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface LensProps {
   children: React.ReactNode;
@@ -61,7 +61,7 @@ export const Lens: React.FC<LensProps> = ({
             initial={{ opacity: 0, scale: 0.58 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.8 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.3, ease: 'easeOut' }}
             className="absolute inset-0 overflow-hidden"
             style={{
               maskImage: `radial-gradient(circle ${lensSize / 2}px at ${
@@ -92,7 +92,7 @@ export const Lens: React.FC<LensProps> = ({
                 initial={{ opacity: 0, scale: 0.58 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
-                transition={{ duration: 0.3, ease: "easeOut" }}
+                transition={{ duration: 0.3, ease: 'easeOut' }}
                 className="absolute inset-0 overflow-hidden"
                 style={{
                   maskImage: `radial-gradient(circle ${lensSize / 2}px at ${
@@ -100,9 +100,7 @@ export const Lens: React.FC<LensProps> = ({
                   }px ${mousePosition.y}px, black 100%, transparent 100%)`,
                   WebkitMaskImage: `radial-gradient(circle ${
                     lensSize / 2
-                  }px at ${mousePosition.x}px ${
-                    mousePosition.y
-                  }px, black 100%, transparent 100%)`,
+                  }px at ${mousePosition.x}px ${mousePosition.y}px, black 100%, transparent 100%)`,
                   transformOrigin: `${mousePosition.x}px ${mousePosition.y}px`,
                   zIndex: 50,
                 }}

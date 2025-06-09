@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import { useState, useRef, useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Eye, EyeOff, Lock, Mail, User, ArrowRight } from "lucide-react";
-import { loginAction } from "@/app/login/actions";
-import { ErrorMessage } from "./ErrorMessage";
+import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Eye, EyeOff, Lock, Mail, User, ArrowRight } from 'lucide-react';
+import { loginAction } from '@/app/login/actions';
+import { ErrorMessage } from './ErrorMessage';
 
 export default function ModernSignInForm() {
   const refId = useRef<HTMLInputElement>(null);
@@ -50,7 +50,9 @@ export default function ModernSignInForm() {
               <CardTitle className="text-2xl font-bold bg-gradient-to-r from-gray-900 to-gray-600 bg-clip-text text-transparent dark:text-white">
                 خوش آمدید
               </CardTitle>
-              <CardDescription className="text-gray-600 dark:text-gray-300">برای ادامه وارد حساب کاربری خود شوید</CardDescription>
+              <CardDescription className="text-gray-600 dark:text-gray-300">
+                برای ادامه وارد حساب کاربری خود شوید
+              </CardDescription>
             </div>
           </CardHeader>
 
@@ -92,7 +94,7 @@ export default function ModernSignInForm() {
                   <Input
                     id="password"
                     name="password"
-                    type={show ? "text" : "password"}
+                    type={show ? 'text' : 'password'}
                     placeholder="••••••••"
                     className="h-12 pl-12 pr-4 border-gray-200 focus:border-blue-500 focus:ring-blue-500 transition-all duration-200 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
                     disabled={isLoading}
@@ -129,16 +131,18 @@ export default function ModernSignInForm() {
                 <div className="w-full border-t border-gray-200 dark:border-gray-700" />
               </div>
               <div className="relative flex justify-center text-sm">
-                <span className="px-4 bg-white text-gray-500 dark:bg-gray-800 dark:text-gray-400">یا</span>
+                <span className="px-4 bg-white text-gray-500 dark:bg-gray-800 dark:text-gray-400">
+                  یا
+                </span>
               </div>
             </div>
 
             <div className="text-center">
               <p className="text-sm text-gray-600 dark:text-gray-300">
-                حساب ندارید؟{" "}
+                حساب ندارید؟{' '}
                 <button
                   type="button"
-                  onClick={() => router.push("/signup")}
+                  onClick={() => router.push('/signup')}
                   className="font-medium text-blue-600 hover:text-blue-700 transition-colors duration-200 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
                   disabled={isLoading}
                 >
@@ -151,14 +155,20 @@ export default function ModernSignInForm() {
 
         <div className="mt-8 text-center">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            با ورود، شما با{" "}
-            <a href="#" className="text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300">
+            با ورود، شما با{' '}
+            <a
+              href="#"
+              className="text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+            >
               شرایط استفاده
-            </a>{" "}
-            و{" "}
-            <a href="#" className="text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300">
+            </a>{' '}
+            و{' '}
+            <a
+              href="#"
+              className="text-blue-600 hover:underline dark:text-blue-400 dark:hover:text-blue-300"
+            >
               حریم خصوصی
-            </a>{" "}
+            </a>{' '}
             ما موافقت می‌کنید
           </p>
         </div>
