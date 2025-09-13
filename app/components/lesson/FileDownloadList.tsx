@@ -1,60 +1,48 @@
 'use client';
 
-import { Download } from 'lucide-react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { getFileExtensionIcon } from '@/utils/getFileIcon';
+import { motion } from 'motion/react';
+import Link from 'next/link';
 
-interface FileItem {
-  Title: string;
+interface File {
+  id?: number;
+  FileName: string;
   PathFileName: string;
-  Price?: string;
 }
 
-interface FileDownloadProps {
-  files: FileItem[];
-  baseUrl: string;
+interface FileDownloadListProps {
+  files: File[];
 }
 
-export const FileDownloadList = ({ files, baseUrl }: FileDownloadProps) => {
-  if (files.length === 0) {
-    return (
-      <p className="text-sm text-muted-foreground">
-        هیچ فایلی برای دانلود در دسترس نیست.
-      </p>
-    );
-  }
+export function FileDownloadList({ files }: FileDownloadListProps) {
+  if (!files || files.length === 0) return null;
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {files.map((file, index) => (
-        <Card key={index} className="flex flex-col justify-between h-full">
-          <CardContent className="p-4 space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="text-2xl">
-                {getFileExtensionIcon(file.PathFileName)}
-              </span>
-              <h3 className="font-semibold text-base truncate">{file.Title}</h3>
-            </div>
+    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+      {files.map((file, index) => {
+        // تمیز کردن مسیر تا mismatch نگیریم
+        const cleanPath = file.PathFileName.replace(/^\/?Uploadfiles\/Files\//, '/files/');
+        // key یکتا (اولویت با id اگر نبود index و path)
+        const uniqueKey = `${file.id ?? index}-${cleanPath}`;
 
-            <p className="text-sm text-muted-foreground">
-              قیمت: {file.Price ? `${file.Price} تومان` : 'رایگان'}
-            </p>
-
-            <a
-              href={`${baseUrl}${file.PathFileName}`}
+        return (
+          <motion.div
+            key={uniqueKey}
+            whileHover={{ scale: 1.2, transition: { duration: 1.2, ease: 'easeInOut' } }}
+            className="flex flex-col items-start justify-between p-4 rounded-xl shadow-sm border   "
+          >
+            <p className="font-medium">{file.FileName}</p>
+            <Link
+              href={file.PathFileName} // مسیر کامل سرور
               download
               target="_blank"
               rel="noopener noreferrer"
+              className="text-blue-500 hover:underline mt-2"
             >
-              <Button variant="outline" size="sm" className="w-full mt-2">
-                <Download className="ml-2 w-4 h-4" />
-                دانلود فایل
-              </Button>
-            </a>
-          </CardContent>
-        </Card>
-      ))}
+              دانلود فایل
+            </Link>
+          </motion.div>
+        );
+      })}
     </div>
   );
-};
+}

@@ -24,6 +24,7 @@ import {
   useAnimation,
   useInView,
   TargetAndTransition,
+  easeInOut,
 } from 'framer-motion';
 import type { NewsletterResponse, NewsletterEntity, NewsletterPayload } from '@/types/newsletter';
 import confetti from 'canvas-confetti';
@@ -65,7 +66,6 @@ const shimmerAnimation = {
   transition: {
     repeat: Infinity,
     duration: 1.5,
-    ease: 'linear',
   },
 };
 
@@ -125,7 +125,7 @@ const FeatureItem = ({
   return (
     <motion.div
       ref={ref}
-      variants={itemVariants}
+      variants={{ itemVariants }}
       initial="hidden"
       animate={controls}
       className="flex items-start space-x-4 space-x-reverse"
@@ -165,7 +165,7 @@ const AnimatedCounter = ({ value, label }: { value: number; label: string }) => 
   return (
     <motion.div
       ref={ref}
-      variants={itemVariants}
+      variants={{ itemVariants }}
       initial="hidden"
       animate={controls}
       className="text-center"
@@ -521,7 +521,7 @@ export default function NewsletterForm() {
                 >
                   {/* shimmer */}
                   <motion.div
-                    className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/30 dark:via-blue-500/10 to-transparent skew-x-12 -translate-x-full z-0"
+                    className="absolute inset-0 ease-linear w-1/3 h-full bg-gradient-to-r from-transparent via-white/30 dark:via-blue-500/10 to-transparent skew-x-12 -translate-x-full z-0"
                     animate={shimmerAnimation}
                   />
 
@@ -545,12 +545,12 @@ export default function NewsletterForm() {
                     </div>
                   ) : (
                     <>
-                      <motion.div variants={itemVariants} className="relative z-10">
+                      <motion.div variants={{ itemVariants }} className="relative z-10">
                         <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
                           به خبرنامه ما بپیوندید
                         </h2>
                         <form onSubmit={handleSubmit} className="space-y-6">
-                          <motion.div variants={itemVariants} className="space-y-2">
+                          <motion.div variants={{ itemVariants }} className="space-y-2">
                             <Label
                               htmlFor="email"
                               className="text-gray-700 dark:text-gray-200 text-sm font-medium flex items-center"
@@ -608,7 +608,7 @@ export default function NewsletterForm() {
                             </AnimatePresence>
                           </motion.div>
 
-                          <motion.div variants={itemVariants}>
+                          <motion.div variants={{ itemVariants }}>
                             <Button
                               type="submit"
                               disabled={loading || !!error || !email}
@@ -666,7 +666,7 @@ export default function NewsletterForm() {
 
                       {/* mobile features */}
                       <motion.div
-                        variants={itemVariants}
+                        variants={{ itemVariants }}
                         className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 lg:hidden"
                       >
                         <h3 className="text-lg font-semibold mb-4 flex items-center text-gray-900 dark:text-white">
@@ -701,7 +701,7 @@ export default function NewsletterForm() {
                       </motion.div>
 
                       <motion.div
-                        variants={itemVariants}
+                        variants={{ itemVariants }}
                         className="mt-6 text-center text-sm text-gray-500 dark:text-gray-400"
                       >
                         <p>

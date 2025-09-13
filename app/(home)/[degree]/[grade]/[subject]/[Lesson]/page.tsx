@@ -1,18 +1,8 @@
-import Image from 'next/image';
-import { Card, CardContent } from '@/components/ui/card';
 import { JsonPicture, LessonHeadingEntity } from '@/app/type/edcation';
 import { BreadcrumbClient } from '@/app/componetns/breadcrumClinet';
 import DetailsSectionClient from '@/app/componetns/DetailsSectionClient';
 import { fetchDataLessonsClassData } from '@/app/lib/fetchdataLessonsClassData';
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from '@/components/ui/carousel';
-import { Images } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+
 import { MediaCarousel } from '@/app/componetns/lesson/mediaCarousel';
 
 type RouteParams = {

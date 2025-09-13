@@ -1,5 +1,6 @@
 import { FeaturedPost } from '@/app/componetns/blog/featured-post';
 import { PostCard } from '@/app/componetns/blog/post-card';
+import React from 'react';
 
 // Interfaces
 export interface ResultJsonLabel {
@@ -52,7 +53,7 @@ export interface Post {
 }
 
 // Home Component
-const Home = async (): Promise<JSX.Element> => {
+const Home = async (): Promise<React.ReactNode> => {
   let postData: ApiResponsePost;
 
   try {

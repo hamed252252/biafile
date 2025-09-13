@@ -1,13 +1,99 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import { Calendar, Clock, User, Share2, Flag, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/hooks/use-toast';
-import { motion, AnimatePresence } from 'framer-motion';
+import {
+  motion,
+  AnimatePresence,
+  Transition,
+  useScroll,
+  useSpring,
+  useTransform,
+} from 'framer-motion';
 import { cn } from '@/lib/utils';
 
+// MovingLine Component (from previous messages)
+interface MovingLineProps {
+  children: React.ReactNode;
+}
+
+function MovingLine({ children }: MovingLineProps) {
+  const transition: Transition = {
+    duration: 14,
+    ease: [0.25, 0.1, 0.25, 1],
+  };
+
+  const ref = useRef<HTMLDivElement>(null);
+  const [svgHeight, setSvgHeight] = useState(1567);
+
+  useEffect(() => {
+    const updateHeight = () => {
+      if (ref.current) {
+        setSvgHeight(ref.current.offsetHeight);
+      }
+    };
+
+    updateHeight();
+    window.addEventListener('resize', updateHeight);
+    return () => window.removeEventListener('resize', updateHeight);
+  }, [children]);
+
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ['end end', 'start start'],
+  });
+
+  const pathLengthValue = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const PATH = `M0.5 0 L0.5 ${svgHeight}`;
+
+  return (
+    <div className="max-w-4xl mx-auto flex flex-row space-x-10 items-start w-full" ref={ref}>
+      <svg
+        width="1"
+        height={svgHeight}
+        viewBox={`0 0 1 ${svgHeight}`}
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className="flex-shrink-0"
+        aria-hidden="true"
+      >
+        <defs>
+          <linearGradient
+            id="paint0_linear_207_38"
+            x1="1"
+            y1="-102.823"
+            x2="1"
+            y2={svgHeight}
+            gradientUnits="userSpaceOnUse"
+          >
+            <stop stopColor="#3879E7" stopOpacity="0" />
+            <stop offset="1" stopColor="#3879E7" />
+          </linearGradient>
+        </defs>
+        <motion.path
+          style={{
+            pathLength: useSpring(pathLengthValue, {
+              stiffness: 500,
+              damping: 100,
+            }),
+          }}
+          transition={transition}
+          d={PATH}
+          stroke="url(#paint0_linear_207_38)"
+          strokeOpacity="1"
+          strokeLinecap="round"
+          strokeWidth="3"
+        />
+      </svg>
+      <div className="flex flex-col w-full">{children}</div>
+    </div>
+  );
+}
+
+// PostPage Types and Components
 interface Post {
   title: string;
   author: string | null;
@@ -29,6 +115,11 @@ interface Heading {
 }
 
 const extractHeadings = (htmlContent: string): { headings: Heading[]; updatedContent: string } => {
+  // Return fallback if not in browser environment
+  if (typeof window === 'undefined') {
+    return { headings: [], updatedContent: htmlContent };
+  }
+
   const parser = new DOMParser();
   const doc = parser.parseFromString(htmlContent, 'text/html');
   const headings = Array.from(doc.querySelectorAll('h2, h3')).map((heading) => {
@@ -43,17 +134,17 @@ const extractHeadings = (htmlContent: string): { headings: Heading[]; updatedCon
 
   return { headings, updatedContent: doc.body.innerHTML };
 };
+
 const baseImageURl = 'https://api.biafile.ir/Uploadfiles/Files/';
+
 function PostHeader({ post }: { post: Post }) {
-  // Check if the coverImage is a valid JSON string
-  const jsonPictures = post.coverImage ? JSON.parse(post.coverImage) : [];
-
-  // Log the parsed jsonPictures
-  console.log(jsonPictures);
-
-  // If jsonPictures is not empty, extract PathFileName
-  const imagePath = jsonPictures.length > 0 ? jsonPictures[0].PathFileName : '/default-image.jpg';
-  console.log(imagePath); // Path to the image
+  let imagePath = '/default-image.jpg';
+  try {
+    const jsonPictures = post.coverImage ? JSON.parse(post.coverImage) : [];
+    imagePath = jsonPictures.length > 0 ? jsonPictures[0].PathFileName : '/default-image.jpg';
+  } catch (error) {
+    console.error('Error parsing coverImage:', error);
+  }
 
   return (
     <div dir="rtl" className="mb-6 space-y-4">
@@ -76,10 +167,12 @@ function PostHeader({ post }: { post: Post }) {
           <Calendar className="h-4 w-4" />
           <time dateTime={post.date}>{post.date}</time>
         </div>
-        <div className="flex items-center gap-1">
-          <Clock className="h-4 w-4" />
-          <span>{post.readingTime} </span>
-        </div>
+        {post.readingTime && (
+          <div className="flex items-center gap-1">
+            <Clock className="h-4 w-4" />
+            <span>{post.readingTime}</span>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -103,7 +196,6 @@ function TableOfContents({
       dir="rtl"
       className="lg:sticky lg:left-0 lg:top-20 bg-muted rounded-lg shadow-lg p-4 mb-6 lg:mb-0"
     >
-      {/* Header for Mobile View */}
       <div className="flex justify-between items-center lg:hidden">
         <h2 className="text-lg font-semibold">در این صفحه</h2>
         <Button
@@ -117,16 +209,12 @@ function TableOfContents({
         </Button>
       </div>
 
-      {/* Mobile Menu Animation */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
             key="mobile-menu"
             initial={{ height: 0, opacity: 0 }}
-            animate={{
-              height: 'auto',
-              opacity: 1,
-            }}
+            animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
             className="mt-4 lg:hidden"
@@ -141,7 +229,6 @@ function TableOfContents({
         )}
       </AnimatePresence>
 
-      {/* Always Visible on Large Screens */}
       <div className="hidden lg:block">
         <TableOfContentsList
           headings={headings}
@@ -165,14 +252,14 @@ function TableOfContentsList({
   setIsMenuOpen?: (isOpen: boolean) => void;
 }) {
   return (
-    <nav className="" aria-label="Table of contents ">
+    <nav className="" aria-label="Table of contents">
       <ul className="space-y-2">
         {headings.map((heading) => (
           <li key={heading.id} className="text-right">
             <Button
               onClick={() => {
                 scrollToSection(heading.id);
-                setIsMenuOpen?.(false); // Close menu on mobile
+                setIsMenuOpen?.(false);
               }}
               variant="ghost"
               className={cn(
@@ -221,9 +308,7 @@ function PostContent({ updatedContent }: { updatedContent: string }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      dangerouslySetInnerHTML={{
-        __html: updatedContent || '',
-      }}
+      dangerouslySetInnerHTML={{ __html: updatedContent || '' }}
     />
   );
 }
@@ -231,11 +316,18 @@ function PostContent({ updatedContent }: { updatedContent: string }) {
 export default function PostPage({ post }: PostPageProps) {
   const [activeHeading, setActiveHeading] = useState<string>('');
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const { headings, updatedContent } = extractHeadings(post.content || '');
+  const [contentData, setContentData] = useState<{
+    headings: Heading[];
+    updatedContent: string;
+  }>({ headings: [], updatedContent: post.content || '' });
 
-  // Use IntersectionObserver for better performance
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    const { headings, updatedContent } = extractHeadings(post.content || '');
+    setContentData({ headings, updatedContent });
+  }, [post.content]);
+
+  useEffect(() => {
+    if (contentData.headings.length === 0) return;
 
     const observerOptions = {
       root: null,
@@ -253,7 +345,7 @@ export default function PostPage({ post }: PostPageProps) {
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-    headings.forEach((heading) => {
+    contentData.headings.forEach((heading) => {
       const element = document.getElementById(heading.id);
       if (element) {
         observer.observe(element);
@@ -261,14 +353,14 @@ export default function PostPage({ post }: PostPageProps) {
     });
 
     return () => {
-      headings.forEach((heading) => {
+      contentData.headings.forEach((heading) => {
         const element = document.getElementById(heading.id);
         if (element) {
           observer.unobserve(element);
         }
       });
     };
-  }, [headings]);
+  }, [contentData.headings]);
 
   const scrollToSection = (id: string) => {
     const section = document.getElementById(id);
@@ -295,7 +387,7 @@ export default function PostPage({ post }: PostPageProps) {
         console.error('Error sharing:', error);
         toast({
           title: 'خطا در اشتراک‌گذاری',
-          description: 'مت‌أسفانه مشکلی در اشتراک‌گذاری پیش آمد.',
+          description: 'متأسفانه مشکلی در اشتراک‌گذاری پیش آمد.',
           variant: 'destructive',
         });
       }
@@ -320,7 +412,7 @@ export default function PostPage({ post }: PostPageProps) {
         {/* Left Sidebar: Table of Contents */}
         <div className="lg:col-span-3 lg:order-1 lg:!text-left">
           <TableOfContents
-            headings={headings}
+            headings={contentData.headings}
             activeHeading={activeHeading}
             scrollToSection={scrollToSection}
             isMenuOpen={isMenuOpen}
@@ -328,15 +420,15 @@ export default function PostPage({ post }: PostPageProps) {
           />
         </div>
 
-        {/* Main Content */}
+        {/* Main Content with MovingLine */}
         <div className="lg:col-span-9 lg:order-2 bg-background rounded-lg shadow-lg p-6">
-          <PostHeader post={post} />
-          <PostActions handleShare={handleShare} handleReportError={handleReportError} />
-          <PostContent updatedContent={updatedContent} />
+          <MovingLine>
+            <PostHeader post={post} />
+            <PostActions handleShare={handleShare} handleReportError={handleReportError} />
+            <PostContent updatedContent={contentData.updatedContent} />
+          </MovingLine>
         </div>
       </div>
-
-      {/* Mobile Table of Contents */}
     </div>
   );
 }

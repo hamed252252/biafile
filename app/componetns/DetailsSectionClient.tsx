@@ -5,15 +5,18 @@ import { Star, Share2, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LessonHeadingEntity } from '../type/edcation';
-import DOMPurify from 'dompurify';
 import { FileDownloadList } from '../components/lesson/FileDownloadList';
+import sanitize from 'sanitize-html';
 
 interface ExtendedLessonHeadingEntity extends LessonHeadingEntity {
   score?: number;
 }
+interface LessonFile {
+  Title: string; // عنوان فایل
+  PathFileName: string; // مسیر فایل (ممکنه فقط اسم فایل باشه)
+}
 
-const baseUrl =
-  process.env.API_UPLOADED_FILES || 'https://api.biafile.ir/files/';
+const baseUrl = process.env.API_UPLOADED_FILES || 'https://api.biafile.ir/files/';
 
 export default function DetailsSectionClient({
   Lesson,
@@ -22,7 +25,7 @@ export default function DetailsSectionClient({
 }) {
   const [rating] = useState(Math.min(Math.max(Lesson?.score ?? 0, 0), 5));
 
-  const files = useMemo(() => {
+  const files: LessonFile[] = useMemo(() => {
     if (!Lesson?.jsonFiles) return [];
     if (Array.isArray(Lesson.jsonFiles)) return Lesson.jsonFiles;
     try {
@@ -35,9 +38,9 @@ export default function DetailsSectionClient({
 
   const sanitizedDescription = useMemo(() => {
     if (!Lesson?.longDescription) return '';
-    return DOMPurify.sanitize(Lesson.longDescription);
+    return sanitize(Lesson.longDescription); // ✅ مستقیم از sanitize استفاده می‌کنیم
   }, [Lesson?.longDescription]);
-
+  console.log(Lesson);
   if (!Lesson) {
     return (
       <div className="space-y-6 px-4 sm:px-6 md:px-8 lg:px-12 text-center">
@@ -92,8 +95,12 @@ export default function DetailsSectionClient({
       )}
 
       {/* لیست فایل‌ها */}
-      <FileDownloadList files={files} baseUrl={baseUrl} />
-
+      <FileDownloadList
+        files={files.map((file) => ({
+          FileName: file.Title, // Title رو تبدیل می‌کنیم به FileName
+          PathFileName: file.PathFileName,
+        }))}
+      />
       {/* دکمه‌ها */}
       <div className="flex flex-wrap gap-4 justify-center sm:justify-start">
         <Button variant="ghost" size="sm" aria-label="اشتراک‌گذاری درس">

@@ -1,6 +1,6 @@
 'use client';
 import { cn } from '@/lib/utils';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence, cubicBezier } from 'framer-motion';
 import React, { useEffect, useState } from 'react';
 
 export const ImagesSlider = ({
@@ -91,7 +91,7 @@ export const ImagesSlider = ({
       opacity: 1,
       transition: {
         duration: 0.5,
-        ease: [0.645, 0.045, 0.355, 1.0],
+        ease: cubicBezier(0.645, 0.045, 0.355, 1.0),
       },
     },
     upExit: {
@@ -109,6 +109,7 @@ export const ImagesSlider = ({
       },
     },
   };
+  // ✅ نکته‌ها:
 
   const areImagesLoaded = loadedImages.length > 0;
 

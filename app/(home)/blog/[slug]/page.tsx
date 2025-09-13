@@ -1,5 +1,6 @@
 import PostPage from '@/app/componetns/page-post';
 import { ApiResponsePost } from '../page';
+import MovingLine from '@/components/ui/moving-line';
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
@@ -19,7 +20,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   }
 
   return (
-    <div>
+    <MovingLine>
       <PostPage
         post={{
           author: postBySlug.designer,
@@ -32,6 +33,6 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           title: postBySlug.title,
         }}
       />
-    </div>
+    </MovingLine>
   );
 }
