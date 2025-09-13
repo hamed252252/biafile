@@ -84,7 +84,7 @@ export default function RootLayout({
       <body className={` ${myFont.className}   `}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="light"
           enableSystem
           disableTransitionOnChange
         >
