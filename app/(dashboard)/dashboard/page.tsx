@@ -10,27 +10,27 @@ function Page() {
   useEffect(() => {
     const token = Cookies.get('token'); // اسم کوکی رو با پروژه خودت هماهنگ کن
     if (!token) {
-      router.replace('/login');
+      router.replace('/signin');
       return;
     }
 
     try {
       const decoded = jwt.decode(token) as JwtPayload | null;
       if (!decoded?.exp) {
-        router.replace('/login');
+        router.replace('/signin');
         return;
       }
 
       const now = Date.now() / 1000; // زمان فعلی بر حسب ثانیه
       if (decoded.exp < now) {
-        router.replace('/login'); // اگر expired شده بود
+        router.replace('/signin'); // اگر expired شده بود
       } else {
         console.log('✅ Token still valid until:', new Date(decoded.exp * 1000));
         toast({ title: 'ورود موفق', description: 'خوش آمدید', type: 'foreground' }); // اینجا داخل useEffect درست هست
       }
     } catch (err) {
       console.log('❌ Error decoding token', err);
-      router.replace('/login');
+      router.replace('/signin');
     }
   }, [router]);
 
