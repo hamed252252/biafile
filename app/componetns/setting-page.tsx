@@ -1,58 +1,40 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { motion } from 'framer-motion';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Pencil, User, Bell, Lock, Moon, Camera } from 'lucide-react';
+import { Pencil, Camera } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { ScrollArea } from '@/components/ui/scroll-area';
 
-type UserInfo = {
-  name: string;
-  email: string;
-  phone: string;
-};
+import { useUser } from './UserContext';
 
 export default function SettingPage() {
-  const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    name: 'نام کاربر',
-    email: 'user@example.com',
-    phone: '۰۹۱۲۳۴۵۶۷۸۹',
-  });
+  const [isEditing, setIsEditing] = useState(false);
+  const { user, imageUrl, setImageUrl, isLoading, updateUser } = useUser();
 
-  const defaultImages: string[] = [
+  const defaultImages = [
     'https://via.placeholder.com/100x100.png?text=Avatar+1',
     'https://via.placeholder.com/100x100.png?text=Avatar+2',
     'https://via.placeholder.com/100x100.png?text=Avatar+3',
     'https://via.placeholder.com/100x100.png?text=Avatar+4',
-    'https://via.placeholder.com/100x100.png?text=Avatar+5',
   ];
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageUrl(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
+  if (isLoading || !user) return <div className="text-center p-6">در حال بارگذاری...</div>;
+
+  const handleSave = async () => {
+    await updateUser(user);
+    setIsEditing(false);
   };
 
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = event.target;
-    setUserInfo((prevInfo) => ({
-      ...prevInfo,
-      [id]: value,
-    }));
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => setImageUrl(reader.result as string);
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -73,27 +55,9 @@ export default function SettingPage() {
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-xl font-semibold">مشخصات حساب کاربری</h2>
                 <motion.button
-                  whileHover={{
-                    scale: 1.05,
-                  }}
-                  whileTap={{
-                    scale: 0.95,
-                  }}
-                  initial={{
-                    opacity: 0.8,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    transition: {
-                      duration: 0.3,
-                    },
-                  }}
-                  transition={{
-                    type: 'spring',
-                    stiffness: 200,
-                    damping: 20,
-                  }}
-                  onClick={() => setIsEditing(!isEditing)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => (isEditing ? handleSave() : setIsEditing(true))}
                   className={cn(
                     'outline-none border rounded-md px-4 py-2 flex items-center justify-center transition-all ease-in-out duration-300 hover:bg-primary/75',
                     isEditing && 'bg-primary text-white',
@@ -103,29 +67,26 @@ export default function SettingPage() {
                   {isEditing ? 'ذخیره' : 'ویرایش'}
                 </motion.button>
               </div>
+
               <div className="space-y-4">
-                {(Object.keys(userInfo) as Array<keyof UserInfo>).map((key) => (
+                {['name', 'lastName', 'email', 'mobile'].map((key) => (
                   <div key={key} className="flex flex-col space-y-1.5">
                     <Label htmlFor={key}>
-                      {key === 'name' ? 'نام' : key === 'email' ? 'ایمیل' : 'شماره تلفن'}
+                      {key === 'name'
+                        ? 'نام'
+                        : key === 'lastName'
+                          ? 'نام خانوادگی'
+                          : key === 'email'
+                            ? 'ایمیل'
+                            : 'موبایل'}
                     </Label>
                     <Input
                       id={key}
-                      value={userInfo[key]}
-                      onChange={handleInputChange}
+                      value={user[key as keyof typeof user] as string}
                       readOnly={!isEditing}
                     />
                   </div>
                 ))}
-                <div className="flex flex-col space-y-1.5">
-                  <Label htmlFor="password">رمز عبور</Label>
-                  <Input
-                    id="password"
-                    type="password"
-                    defaultValue="********"
-                    readOnly={!isEditing}
-                  />
-                </div>
               </div>
             </TabsContent>
 
@@ -154,37 +115,6 @@ export default function SettingPage() {
                         className="sr-only"
                       />
                     </div>
-                    <p className="text-sm text-gray-500">
-                      برای آپلود یا تغییر عکس پروفایل، روی آیکون دوربین کلیک کنید یا از تصاویر
-                      پیش‌فرض زیر انتخاب کنید
-                    </p>
-                    {imageUrl && (
-                      <Button variant="outline" onClick={() => setImageUrl(null)}>
-                        حذف عکس
-                      </Button>
-                    )}
-                    <ScrollArea className="h-[200px] w-full rounded-md border p-4">
-                      <RadioGroup
-                        defaultValue={imageUrl || defaultImages[0]}
-                        onValueChange={(value) => setImageUrl(value)}
-                      >
-                        {defaultImages.map((image, index) => (
-                          <div
-                            key={index}
-                            className="flex items-center space-x-2 rtl:space-x-reverse"
-                          >
-                            <RadioGroupItem value={image} id={`avatar-${index}`} />
-                            <Label htmlFor={`avatar-${index}`}>
-                              <img
-                                src={image}
-                                alt={`Avatar ${index + 1}`}
-                                className="w-12 h-12 rounded-full object-cover"
-                              />
-                            </Label>
-                          </div>
-                        ))}
-                      </RadioGroup>
-                    </ScrollArea>
                   </div>
                 </CardContent>
               </Card>

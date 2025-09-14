@@ -7,6 +7,7 @@ import SupportButton from './componetns/SupportButton';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from 'next-themes';
 import { Analytics } from '@vercel/analytics/next';
+import { UserProvider } from './componetns/UserContext';
 const myFont = localFont({
   src: [
     // { , path: "./fonts/IRANSansXV.woff2" },
@@ -73,6 +74,9 @@ const myFont = localFont({
 export const metadata: Metadata = {
   title: 'بیا فایل',
   description: 'بیافایل؛ دقیق، قابل اتکا و مقرون به صرفه',
+  icons: {
+    icon: '/logo.svg',
+  },
 };
 export default function RootLayout({
   children,
@@ -82,21 +86,23 @@ export default function RootLayout({
   return (
     <html lang="fa-ir" suppressHydrationWarning dir="rtl">
       <body className={` ${myFont.className}   `}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <SpeedInsights />
-          <Analytics />
+        <UserProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SpeedInsights />
+            <Analytics />
 
-          {/* محتوای صفحه */}
-          {children}
-          <ScrollToTopButton />
-          <SupportButton />
-          <Toaster />
-        </ThemeProvider>
+            {/* محتوای صفحه */}
+            {children}
+            <ScrollToTopButton />
+            {/* <SupportButton /> */}
+            <Toaster />
+          </ThemeProvider>
+        </UserProvider>
       </body>
     </html>
   );

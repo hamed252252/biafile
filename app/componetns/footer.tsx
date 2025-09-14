@@ -120,7 +120,7 @@ export default function Footer() {
             animate={{ x: 0, opacity: 1 }}
             transition={{ delay: 0.4 }}
           >
-            در [نام شرکت]، با ارتقای مداوم کیفیت خدمات و تمرکز بر نیازهای شما، تجربه‌ای بی‌نظیر را
+            در [بیا فایل]، با ارتقای مداوم کیفیت خدمات و تمرکز بر نیازهای شما، تجربه‌ای بی‌نظیر را
             فراهم می‌کنیم.
           </motion.p>
         </FooterSection>
@@ -175,17 +175,25 @@ export default function Footer() {
             ))}
           </div>
           <div className="flex gap-4 mt-4">
-            {[samane, neshan].map((src, idx) => (
-              <motion.div
-                key={idx}
-                whileHover={{
-                  scale: 1.1,
-                }}
-                className="filter grayscale hover:grayscale-0 transition-all"
+            <motion.div
+              whileTap={{ scale: 0.95 }}
+              whileHover={{ scale: 1.2 }}
+              transition={{ type: 'tween', duration: 0.5 }}
+              className="grayscale hover:grayscale-0 transition-all ease-out duration-75"
+            >
+              <Link
+                href="https://trustseal.enamad.ir/?id=647067&Code=rjrcH7Tcw0UrgyuyRA5amVj5ORRO5OvX"
+                target="_blank"
+                rel="noopener noreferrer"
               >
-                <Image src={src} width={60} height={60} alt="اعتماد" priority={true} />
-              </motion.div>
-            ))}
+                <img
+                  src="https://trustseal.enamad.ir/logo.aspx?id=647067&Code=rjrcH7Tcw0UrgyuyRA5amVj5ORRO5OvX"
+                  alt="نماد اعتماد"
+                  style={{ cursor: 'pointer' }}
+                />
+                <Image width={60} height={60} alt="نماد نشان" src={neshan} />
+              </Link>
+            </motion.div>
           </div>
         </motion.div>
       </div>
@@ -198,13 +206,13 @@ export default function Footer() {
           transition={{ delay: 1 }}
         >
           <p className="text-center text-xs text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} [نام شرکت]. تمامی حقوق محفوظ است.
+            © {new Date().getFullYear()} [بیا فایل]. تمامی حقوق محفوظ است.
           </p>
         </motion.div>
       ) : (
         <div className="mt-16 border-t border-gray-300 dark:border-gray-700 pt-6 opacity-0">
           <p className="text-center text-xs text-gray-500 dark:text-gray-400">
-            © {new Date().getFullYear()} [نام شرکت]. تمامی حقوق محفوظ است.
+            © {new Date().getFullYear()} [بیا فایل]. تمامی حقوق محفوظ است.
           </p>
         </div>
       )}

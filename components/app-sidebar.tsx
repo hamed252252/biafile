@@ -20,6 +20,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { dataOfDashboardMenu } from '@/lib/constants';
 import { ChevronDown } from 'lucide-react';
+import ProfileAvatar from './ProfileAvatar';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
@@ -132,16 +133,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
       {/* --- Footer --- */}
       <SidebarFooter className="border-t border-[hsl(var(--sidebar-border))] p-4">
-        <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col">
-            <span className="text-sm font-semibold">User Name</span>
-            <span className="text-xs opacity-60">email@example.com</span>
-          </div>
-        </div>
+        <ProfileAvatar />
       </SidebarFooter>
     </Sidebar>
   );

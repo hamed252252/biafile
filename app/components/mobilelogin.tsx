@@ -1,18 +1,25 @@
 'use client';
 
-import React, { useState } from 'react';
+import type React from 'react';
+import { useState, useEffect } from 'react';
 import Cookie from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, CheckCircle, RefreshCw } from 'lucide-react';
+import { Shield, CheckCircle, RefreshCw, ArrowRight, Loader2, AlertCircle } from 'lucide-react';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { REGEXP_ONLY_DIGITS_AND_CHARS } from 'input-otp';
+import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const API_SEND = 'https://api.biafile.ir/Api/SmsOtpCodes/SendCode/Public';
 const API_VERIFY = 'https://api.biafile.ir/Api/SmsOtpCodes/Verify/Public';
+
+const validatePhoneNumber = (phone: string): boolean => {
+  const phoneRegex = /^09[0-9]{9}$/;
+  return phoneRegex.test(phone);
+};
 
 export function MobileLoginForm() {
   const router = useRouter();
@@ -22,24 +29,41 @@ export function MobileLoginForm() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [timer, setTimer] = useState(0);
+  const [phoneError, setPhoneError] = useState('');
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [timer]);
 
   const startTimer = () => {
-    setTimer(30);
-    const interval = setInterval(() => {
-      setTimer((prev) => {
-        if (prev <= 1) {
-          clearInterval(interval);
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
+    setTimer(120); // Increased to 2 minutes for better UX
+  };
+
+  const handlePhoneChange = (value: string) => {
+    setPhoneNumber(value);
+    setPhoneError('');
+    setError('');
   };
 
   const handleSendOtp = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+
+    if (!validatePhoneNumber(phoneNumber)) {
+      setPhoneError('شماره موبایل باید با 09 شروع شده و 11 رقمی باشد');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
+    setPhoneError('');
 
     try {
       const res = await fetch(API_SEND, {
@@ -53,10 +77,10 @@ export function MobileLoginForm() {
         setStep('otp');
         startTimer();
       } else {
-        setError(data.message || 'خطا در ارسال کد');
+        setError(data.message || 'خطا در ارسال کد تایید');
       }
     } catch (err) {
-      setError('خطا در ارتباط با سرور');
+      setError('خطا در ارتباط با سرور. لطفاً اتصال اینترنت خود را بررسی کنید');
     } finally {
       setIsLoading(false);
     }
@@ -81,14 +105,14 @@ export function MobileLoginForm() {
       const data = await res.json();
 
       if (data.statusCode !== 200) {
-        setError(data.message || 'کد تایید اشتباه است');
+        setError(data.message || 'کد تایید اشتباه است. دوباره تلاش کنید');
         return;
       }
 
       if (data.token) Cookie.set('token', data.token, { expires: 7 });
       router.push('/dashboard');
     } catch (err) {
-      setError('خطا در تایید کد. دوباره تلاش کنید');
+      setError('خطا در تایید کد. لطفاً دوباره تلاش کنید');
     } finally {
       setIsLoading(false);
     }
@@ -98,23 +122,28 @@ export function MobileLoginForm() {
     setStep('phone');
     setOtp('');
     setError('');
+    setPhoneError('');
+    setTimer(0);
   };
 
+  useEffect(() => {
+    if (otp.length === 6 && step === 'otp' && !isLoading) {
+      handleVerifyOtp({ preventDefault: () => {} } as React.FormEvent);
+    }
+  }, [otp, step, isLoading]);
+
   return (
-    <div className="min-h-screen flex items-center justify-center h-screen bg-gradient-to-tr from-primary/1000 via-background/50 to-background/100">
-      <Card className="w-full max-w-md shadow-2xl border-0 bg-white/80 backdrop-blur-xl md:max-w-lg">
-        <CardHeader className="text-center space-y-6 pb-8 md:pb-10 md:pt-10">
-          <div className="mx-auto w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-primary/30 to-primary/20 rounded-2xl flex items-center justify-center shadow-lg">
-            <Shield className="w-10 h-10 md:w-12 md:h-12 text-primary" />
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/10 via-background/50 to-background p-4">
+      <Card className="w-full max-w-md shadow-2xl border-0 bg-white/90 backdrop-blur-xl transition-all duration-300 hover:shadow-3xl">
+        <CardHeader className="text-center space-y-6 pb-8 pt-8">
+          <div className="mx-auto w-20 h-20 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center shadow-lg transition-transform duration-300 hover:scale-105">
+            <Shield className="w-10 h-10 text-primary" />
           </div>
-          <div className="space-y-3 md:space-y-4">
-            <CardTitle className="text-2xl md:text-3xl lg:text-4xl font-bold text-primary">
+          <div className="space-y-3">
+            <CardTitle className="text-2xl font-bold text-primary transition-all duration-300">
               {step === 'phone' ? 'ورود به حساب کاربری' : 'تایید شماره موبایل'}
             </CardTitle>
-            <CardDescription
-              className="text-primary/70 text-base md:text-lg leading-relaxed"
-              dir="rtl"
-            >
+            <CardDescription className="text-primary/70 text-base leading-relaxed" dir="rtl">
               {step === 'phone'
                 ? 'شماره موبایل خود را وارد کنید'
                 : `کد تایید به شماره ${phoneNumber} ارسال شد`}
@@ -122,11 +151,15 @@ export function MobileLoginForm() {
           </div>
         </CardHeader>
 
-        <CardContent className="space-y-8 md:space-y-10 px-6 md:px-8 pb-8 md:pb-10">
+        <CardContent className="space-y-6 px-6 pb-8">
           {step === 'phone' && (
-            <form onSubmit={handleSendOtp} className="space-y-6 md:space-y-8">
-              <div className="space-y-3 md:space-y-4">
-                <Label htmlFor="phone" className="text-right block text-primary/80" dir="rtl">
+            <form onSubmit={handleSendOtp} className="space-y-6">
+              <div className="space-y-3">
+                <Label
+                  htmlFor="phone"
+                  className="text-right block text-primary/80 font-medium"
+                  dir="rtl"
+                >
                   شماره موبایل
                 </Label>
                 <Input
@@ -134,66 +167,135 @@ export function MobileLoginForm() {
                   type="tel"
                   placeholder="09123456789"
                   value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                  className="h-14 md:h-16 text-right text-lg border-2 border-primary/50 focus:border-primary rounded-xl"
+                  onChange={(e) => handlePhoneChange(e.target.value)}
+                  className="h-14 text-right text-lg border-2 border-primary/20 focus:border-primary rounded-xl transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                   dir="rtl"
                   required
+                  disabled={isLoading}
+                  maxLength={11}
                 />
+                {phoneError && (
+                  <Alert variant="destructive" className="text-right" dir="rtl">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{phoneError}</AlertDescription>
+                  </Alert>
+                )}
               </div>
-              {error && <div className="text-red-600">{error}</div>}
-              <Button type="submit" className="w-full h-14">
-                {isLoading ? 'در حال ارسال...' : 'دریافت کد'}
+
+              {error && (
+                <Alert variant="destructive" className="text-right" dir="rtl">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+
+              <Button
+                type="submit"
+                className="w-full h-14 text-lg font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                disabled={isLoading || !phoneNumber.trim()}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin ml-2" />
+                    در حال ارسال...
+                  </>
+                ) : (
+                  'دریافت کد تایید'
+                )}
               </Button>
             </form>
           )}
 
           {step === 'otp' && (
-            <form onSubmit={handleVerifyOtp} className="space-y-6 md:space-y-8">
-              <Label className="text-center text-primary/80">کد تایید ۶ رقمی را وارد کنید</Label>
-              <div className="flex justify-center">
-                <InputOTP
-                  value={otp}
-                  onChange={(value) => setOtp(value)}
-                  maxLength={6}
-                  pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
-                >
-                  <InputOTPGroup dir="ltr">
-                    {[0, 1, 2, 3, 4, 5].map((i) => (
-                      <InputOTPSlot key={i} index={i} />
-                    ))}
-                  </InputOTPGroup>
-                </InputOTP>
+            <form onSubmit={handleVerifyOtp} className="space-y-6">
+              <div className="text-center space-y-4">
+                <Label className="text-primary/80 font-medium block">
+                  کد تایید ۶ رقمی را وارد کنید
+                </Label>
+                <div className="flex justify-center">
+                  <InputOTP
+                    value={otp}
+                    onChange={(value) => {
+                      setOtp(value);
+                      setError('');
+                    }}
+                    maxLength={6}
+                    pattern={REGEXP_ONLY_DIGITS_AND_CHARS}
+                    disabled={isLoading}
+                  >
+                    <InputOTPGroup dir="ltr" className="gap-2">
+                      {[0, 1, 2, 3, 4, 5].map((i) => (
+                        <InputOTPSlot
+                          key={i}
+                          index={i}
+                          className="w-12 h-12 text-lg border-2 border-primary/20 focus:border-primary rounded-lg transition-all duration-200"
+                        />
+                      ))}
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
               </div>
-              {error && <div className="text-red-600">{error}</div>}
 
-              <Button type="submit" className="w-full h-14">
+              {error && (
+                <Alert variant="destructive" className="text-right" dir="rtl">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
+              )}
+
+              <Button
+                type="submit"
+                className="w-full h-14 text-lg font-medium transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                disabled={isLoading || otp.length < 6}
+              >
                 {isLoading ? (
-                  'در حال تایید...'
+                  <>
+                    <Loader2 className="w-5 h-5 animate-spin ml-2" />
+                    در حال تایید...
+                  </>
                 ) : (
                   <>
-                    <CheckCircle className="inline w-5 h-5 mr-2" /> تایید و ورود
+                    <CheckCircle className="w-5 h-5 ml-2" />
+                    تایید و ورود
                   </>
                 )}
               </Button>
 
-              <div className="flex flex-col gap-2 items-center">
+              <div className="flex flex-col gap-3 items-center pt-4 border-t border-primary/10">
                 {timer > 0 ? (
-                  <span className="text-primary/60 text-sm">
-                    ارسال مجدد کد تا {timer} ثانیه دیگر
-                  </span>
+                  <div className="text-center space-y-2">
+                    <div className="text-primary/60 text-sm">
+                      ارسال مجدد کد تا {Math.floor(timer / 60)}:
+                      {(timer % 60).toString().padStart(2, '0')} دقیقه دیگر
+                    </div>
+                    <div className="w-full bg-primary/10 rounded-full h-1">
+                      <div
+                        className="bg-primary h-1 rounded-full transition-all duration-1000"
+                        style={{ width: `${((120 - timer) / 120) * 100}%` }}
+                      />
+                    </div>
+                  </div>
                 ) : (
                   <Button
                     type="button"
                     variant="ghost"
                     onClick={handleSendOtp}
-                    className="text-primary flex items-center gap-2"
+                    className="text-primary hover:bg-primary/10 transition-all duration-200"
+                    disabled={isLoading}
                   >
-                    <RefreshCw className="w-4 h-4" /> ارسال مجدد کد
+                    <RefreshCw className="w-4 h-4 ml-2" />
+                    ارسال مجدد کد
                   </Button>
                 )}
 
-                <Button variant="ghost" onClick={handleBackToPhone} className="text-primary/60">
-                  تغییر شماره
+                <Button
+                  variant="ghost"
+                  onClick={handleBackToPhone}
+                  className="text-primary/60 hover:text-primary hover:bg-primary/5 transition-all duration-200"
+                  disabled={isLoading}
+                >
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                  تغییر شماره موبایل
                 </Button>
               </div>
             </form>
